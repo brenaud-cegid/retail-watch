@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retail Watch</title>
+<style>
+/* Layout concept: a filter rail that collapses to a top sheet on phones, feeding a single sorted feed of cards that grows by windowed pages (lazy load), never a full list in memory. */
+:root{
+  --bg:#F7F8F9; --surface:#FFFFFF; --border:#CCD4DC; --divider:#E6EAEE;
+  --text:#002C52; --text-muted:#5B6B78; --primary:#0046FE; --primary-ink:#FFFFFF;
+  --secondary:#CC492A; --success:#376A1F; --warn:#9A6400; --critical:#BC0E2E; --info:#155AC1;
+  --chip-bg:#E6EAEE; --chip-ink:#2E4154; --overlay-hover:rgba(0,70,254,0.06); --overlay-press:rgba(0,70,254,0.2);
+  --shadow:0 1px 2px rgba(0,44,82,.08),0 1px 1px rgba(0,44,82,.06);
+  color-scheme:light;
+  padding-left:max(16px, env(safe-area-inset-left,0px));
+  padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1C2C; --surface:#12283B; --border:#24415A; --divider:#1C3349;
+    --text:#EAF1F8; --text-muted:#9FB4C4; --primary:#5C8CFF; --primary-ink:#06122A;
+    --secondary:#FF8360; --success:#6FCB4D; --warn:#F2B04C; --critical:#FF6B7E; --info:#6FB0FF;
+    --chip-bg:#1C3349; --chip-ink:#CBDCEA; --overlay-hover:rgba(92,140,255,0.1); --overlay-press:rgba(92,140,255,0.26);
+    --shadow:0 1px 3px rgba(0,0,0,.4);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1C2C; --surface:#12283B; --border:#24415A; --divider:#1C3349;
+  --text:#EAF1F8; --text-muted:#9FB4C4; --primary:#5C8CFF; --primary-ink:#06122A;
+  --secondary:#FF8360; --success:#6FCB4D; --warn:#F2B04C; --critical:#FF6B7E; --info:#6FB0FF;
+  --chip-bg:#1C3349; --chip-ink:#CBDCEA; --overlay-hover:rgba(92,140,255,0.1); --overlay-press:rgba(92,140,255,0.26);
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Roboto",system-ui,sans-serif;}
+h1,h2,h3,.disp{font-family:"Poppins",system-ui,sans-serif;font-weight:400;letter-spacing:-0.01em;}
+.wrap{max-width:1180px;margin:0 auto;padding-block:24px;display:flex;flex-direction:column;gap:20px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:baseline;gap:10px;}
+.brand .mark{font-family:"Poppins",system-ui,sans-serif;font-weight:600;color:var(--primary);font-size:15px;letter-spacing:.02em;}
+.brand h1{font-size:22px;margin:0;color:var(--text);font-weight:400;}
+.sub{color:var(--text-muted);font-size:13px;margin:0;}
+.lang-toggle{display:flex;gap:4px;border:1px solid var(--border);border-radius:999px;padding:3px;background:var(--surface);}
+.lang-toggle button{border:none;background:transparent;padding:4px 10px;border-radius:999px;font-size:12px;font-family:"Poppins",system-ui,sans-serif;color:var(--text-muted);cursor:pointer;}
+.lang-toggle button.active{background:var(--primary);color:var(--primary-ink);}
+
+.tab-bar{display:flex;gap:4px;border-bottom:1px solid var(--border);}
+.tab-btn{border:none;background:transparent;padding:10px 4px;margin-right:18px;font-family:"Poppins",sans-serif;font-size:14px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+.view{display:none;}
+.view.active{display:block;}
+
+.layout{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;}
+@media (max-width:860px){.layout{grid-template-columns:1fr;}}
+
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;box-shadow:var(--shadow);}
+.filters{position:sticky;top:0;display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 32px);overflow:auto;}
+.filters-body{display:flex;flex-direction:column;gap:18px;}
+.filters-toggle{display:none;width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:"Poppins",sans-serif;font-weight:600;font-size:13px;color:var(--text);cursor:pointer;}
+.filters-toggle::after{content:"▾";float:right;transition:transform .2s;}
+.filters.collapsed .filters-toggle::after{transform:rotate(-90deg);}
+.filters.collapsed .filters-body{display:none;}
+@media (max-width:860px){
+  .filters{position:static;max-height:none;overflow:visible;}
+  .filters-toggle{display:block;}
+}
+.back-to-filters{display:none;position:fixed;right:max(16px, env(safe-area-inset-right,0px));bottom:max(16px, env(safe-area-inset-bottom,0px));z-index:20;background:var(--primary);color:var(--primary-ink);border:none;border-radius:999px;padding:10px 18px;font-family:"Poppins",sans-serif;font-weight:600;font-size:13px;cursor:pointer;box-shadow:var(--shadow);}
+.back-to-filters.show{display:inline-flex;align-items:center;}
+.back-to-filters:hover{opacity:.9;}
+.filter-group h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin:0 0 8px;font-weight:600;}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--border);background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer;font-family:"Roboto",sans-serif;transition:background .15s;}
+.chip:hover{background:var(--overlay-hover);}
+.chip.on{background:var(--primary);border-color:var(--primary);color:var(--primary-ink);}
+select.ds{width:100%;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);padding:8px 10px;font-size:13px;font-family:"Roboto",sans-serif;}
+.reset{background:none;border:none;color:var(--info);font-size:12.5px;cursor:pointer;padding:0;text-align:left;}
+
+.count-row{display:flex;align-items:center;justify-content:space-between;color:var(--text-muted);font-size:13px;}
+.feed{display:flex;flex-direction:column;gap:12px;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;}
+.card .meta-top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.badge{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;border-radius:999px;padding:3px 10px;font-family:"Poppins",sans-serif;}
+.badge.enseigne{background:rgba(0,70,254,.12);color:var(--primary);}
+.badge.concurrent{background:rgba(204,73,42,.14);color:var(--secondary);}
+.badge.innovation{background:rgba(21,90,193,.14);color:var(--info);}
+.badge.example{background:var(--warn);color:#2A1C00;}
+.date{color:var(--text-muted);font-size:12.5px;margin-left:auto;}
+.card h2{font-size:17px;margin:0;line-height:1.35;}
+.card .source{font-size:12.5px;color:var(--text-muted);}
+.summary-short{font-size:14px;color:var(--text);margin:0;}
+.summary-long{font-size:13.5px;color:var(--text-muted);margin:0;padding-top:4px;border-top:1px dashed var(--divider);display:none;line-height:1.5;}
+.summary-long.open{display:block;}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{font-size:11.5px;background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:3px 10px;}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;}
+.btn{font-family:"Poppins",sans-serif;font-size:12.5px;font-weight:600;border-radius:6px;padding:7px 14px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text);}
+.btn:hover{background:var(--overlay-hover);}
+.btn.primary{background:var(--primary);color:var(--primary-ink);border-color:var(--primary);}
+.btn.primary:hover{opacity:.9;}
+.btn.copied{background:var(--success);border-color:var(--success);color:#fff;}
+a.src-link{color:var(--info);text-decoration:none;font-size:12.5px;align-self:center;}
+a.src-link:hover{text-decoration:underline;}
+
+.empty{text-align:center;padding:48px 20px;color:var(--text-muted);}
+.loadmore{align-self:center;margin-top:4px;}
+.cand-panel{font-size:13px;}
+.cand-item{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--divider);}
+.cand-item:last-child{border-bottom:none;}
+.footer-note{color:var(--text-muted);font-size:12px;text-align:center;padding-top:8px;}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.comp-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;}
+.comp-head{display:flex;align-items:center;gap:10px;}
+.comp-logo{width:36px;height:36px;border-radius:8px;background:var(--primary);color:var(--primary-ink);display:flex;align-items:center;justify-content:center;font-family:"Poppins",sans-serif;font-weight:600;font-size:14px;flex:none;}
+.comp-logo-box{width:36px;height:36px;border-radius:8px;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;}
+.comp-logo-img{width:70%;height:70%;object-fit:contain;}
+.comp-card h2{font-size:15.5px;margin:0;}
+.comp-card p{font-size:13px;color:var(--text-muted);margin:0;line-height:1.5;}
+.comp-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--text-muted);}
+.comp-meta b{color:var(--text);font-weight:600;}
+.comp-link{font-size:12.5px;color:var(--info);text-decoration:none;align-self:flex-start;}
+.comp-link:hover{text-decoration:underline;}
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <span class="mark">cegid</span>
+      <div>
+        <h1 data-i="title">Retail Watch</h1>
+        <p class="sub" data-i="subtitle">Périmètre actuel : expérience shopper en magasin — CRM · Fidélité · Conditions commerciales</p>
+      </div>
+    </div>
+    <div class="lang-toggle" id="langToggle">
+      <button data-lang="fr">FR</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn" id="tabVeille" data-tab="veille" data-i="tab_veille">Veille</button>
+    <button class="tab-btn" id="tabConcurrents" data-tab="concurrents" data-i="tab_concurrents">Concurrents</button>
+  </div>
+
+  <div class="view" id="viewVeille">
+    <div class="layout">
+      <aside class="panel filters" id="asideVeille">
+        <button class="filters-toggle" type="button" data-i="f_filters">Filtres</button>
+        <div class="filters-body">
+          <div class="filter-group">
+            <h3 data-i="f_sector">Secteur</h3>
+            <select class="ds" id="fSector"></select>
+          </div>
+          <div class="filter-group">
+            <h3 data-i="f_typology">Typologie</h3>
+            <div class="chip-row" id="fTypology"></div>
+          </div>
+          <div class="filter-group">
+            <h3 data-i="f_continent">Continent</h3>
+            <div class="chip-row" id="fContinent"></div>
+          </div>
+          <div class="filter-group">
+            <h3 data-i="f_country">Pays</h3>
+            <select class="ds" id="fCountry"></select>
+          </div>
+          <div class="filter-group">
+            <h3 data-i="f_period">Période</h3>
+            <select class="ds" id="fPeriod"></select>
+          </div>
+          <button class="reset" id="resetFilters" data-i="f_reset">Réinitialiser les filtres</button>
+
+          <div class="filter-group cand-panel" id="candPanel" style="display:none;">
+            <h3 data-i="f_candidates">Nouveaux acteurs détectés</h3>
+            <div id="candList"></div>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <div class="count-row">
+          <span id="countLabel"></span>
+          <span data-i="sort_note">Du plus récent au plus ancien</span>
+        </div>
+        <div class="feed" id="feed">
+          <div class="empty" data-i="loading">Chargement de la veille…</div>
+        </div>
+        <button class="btn primary loadmore" id="loadMore" style="display:none;" data-i="load_more">Charger plus</button>
+        <p class="footer-note" data-i="footer">Veille interne Cegid Retail — mise à jour chaque lundi. Articles réservés à l'organisation.</p>
+      </main>
+    </div>
+  </div>
+
+  <div class="view" id="viewConcurrents">
+    <div class="layout">
+      <aside class="panel filters" id="asideConcurrents">
+        <button class="filters-toggle" type="button" data-i="f_filters">Filtres</button>
+        <div class="filters-body">
+          <div class="filter-group">
+            <h3 data-i="f_typology">Typologie</h3>
+            <div class="chip-row" id="fTypologyComp"></div>
+          </div>
+          <button class="reset" id="resetCompFilters" data-i="f_reset">Réinitialiser les filtres</button>
+        </div>
+      </aside>
+      <main>
+        <div class="count-row">
+          <span id="compCountLabel"></span>
+          <span></span>
+        </div>
+        <div class="comp-grid" id="compGrid">
+          <div class="empty" data-i="loading">Chargement de la veille…</div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<button class="back-to-filters" id="backToFilters" type="button" data-i="f_back_to_filters">↑ Filtres</button>
+
+<script>
+(function(){
+  "use strict";
+
+  var DICT = {
+    fr:{
+      title:"Retail Watch", subtitle:"Périmètre actuel : expérience shopper en magasin — CRM · Fidélité · Conditions commerciales",
+      f_provenance:"Provenance", f_sector:"Secteur", f_typology:"Typologie", f_period:"Période",
+      f_reset:"Réinitialiser les filtres", f_candidates:"Nouveaux acteurs détectés",
+      f_continent:"Continent", f_country:"Pays", country_all:"Tous les pays", f_filters:"Filtres", f_back_to_filters:"↑ Filtres",
+      sort_note:"Du plus récent au plus ancien", loading:"Chargement de la veille…",
+      load_more:"Charger plus", footer:"Veille interne Cegid Retail — mise à jour chaque lundi. Articles réservés à l'organisation.",
+      prov_enseigne:"Enseignes", prov_concurrent:"Concurrents", prov_innovation:"Innovation marché",
+      sector_all:"Tous les secteurs", period_all:"Toute période", period_7:"7 derniers jours", period_30:"30 derniers jours", period_90:"90 derniers jours",
+      typ_crm:"CRM", typ_fidelite:"Fidélité", typ_promo:"Promo & conditions commerciales", typ_wallet:"Wallet & paiement mobile",
+      typ_exp:"Expérience magasin", typ_data:"Data & IA client", typ_autre:"Autre",
+      read_more:"Lire le résumé détaillé", collapse:"Replier", copy:"Copier pour Teams", copied:"Copié",
+      open_source:"Voir la source", no_results:"Aucune news ne correspond à ces filtres.", example:"Exemple",
+      count_suffix:"news", validate:"Valider",
+      cont_europe:"Europe", cont_amerique_nord:"Amérique du Nord", cont_amerique_latine:"Amérique latine",
+      cont_asie:"Asie", cont_moyen_orient:"Moyen-Orient", cont_afrique:"Afrique", cont_oceanie:"Océanie", cont_international:"International",
+      tab_veille:"Veille", tab_concurrents:"Concurrents", comp_no_results:"Aucun concurrent ne correspond à ce filtre.",
+      comp_count_suffix:"éditeurs", comp_visit:"Visiter le site", comp_founded:"Création", comp_revenue:"CA", comp_unknown:"Non communiqué"
+    },
+    en:{
+      title:"Retail Watch", subtitle:"Current scope: in-store shopper experience — CRM · Loyalty · Commercial terms",
+      f_provenance:"Provenance", f_sector:"Sector", f_typology:"Topic", f_period:"Period",
+      f_reset:"Reset filters", f_candidates:"New players detected",
+      f_continent:"Continent", f_country:"Country", country_all:"All countries", f_filters:"Filters", f_back_to_filters:"↑ Filters",
+      sort_note:"Newest first", loading:"Loading the watch…",
+      load_more:"Load more", footer:"Internal Cegid Retail watch — updated every Monday. Articles restricted to the organization.",
+      prov_enseigne:"Retailers", prov_concurrent:"Competitors", prov_innovation:"Market innovation",
+      sector_all:"All sectors", period_all:"All time", period_7:"Last 7 days", period_30:"Last 30 days", period_90:"Last 90 days",
+      typ_crm:"CRM", typ_fidelite:"Loyalty", typ_promo:"Promo & commercial terms", typ_wallet:"Wallet & mobile payment",
+      typ_exp:"In-store experience", typ_data:"Data & customer AI", typ_autre:"Other",
+      read_more:"Read full summary", collapse:"Collapse", copy:"Copy for Teams", copied:"Copied",
+      open_source:"View source", no_results:"No news matches these filters.", example:"Example",
+      count_suffix:"news", validate:"Validate",
+      cont_europe:"Europe", cont_amerique_nord:"North America", cont_amerique_latine:"Latin America",
+      cont_asie:"Asia", cont_moyen_orient:"Middle East", cont_afrique:"Africa", cont_oceanie:"Oceania", cont_international:"International",
+      tab_veille:"Watch", tab_concurrents:"Competitors", comp_no_results:"No competitor matches this filter.",
+      comp_count_suffix:"vendors", comp_visit:"Visit website", comp_founded:"Founded", comp_revenue:"Revenue", comp_unknown:"Not disclosed"
+    }
+  };
+
+  var SECTORS = ["luxe","mode_premium","mode_access","beaute","chaussure","sport","optique","maison","alimentaire","transverse"];
+  var SECTOR_LABEL = {
+    fr:{luxe:"Luxe",mode_premium:"Mode & prêt-à-porter premium",mode_access:"Mode & accessoires",beaute:"Beauté & parfumerie",chaussure:"Chaussure & maroquinerie",sport:"Sport & loisirs",optique:"Optique",maison:"Maison & arts de la table",alimentaire:"Alimentaire premium",transverse:"Éditeurs & transverse"},
+    en:{luxe:"Luxury",mode_premium:"Premium fashion",mode_access:"Fashion & accessories",beaute:"Beauty & selective perfumery",chaussure:"Footwear & leather goods",sport:"Sport & leisure",optique:"Optical",maison:"Home & tableware",alimentaire:"Premium food",transverse:"Vendors & cross-sector"}
+  };
+  var TYPOLOGIES = ["crm","fidelite","promo","wallet","exp","data","autre"];
+
+  var CONTINENTS = ["europe","amerique_nord","amerique_latine","asie","moyen_orient","afrique","oceanie","international"];
+  var COUNTRIES = [
+    {code:"france", continent:"europe", fr:"France", en:"France"},
+    {code:"italie", continent:"europe", fr:"Italie", en:"Italy"},
+    {code:"royaume_uni", continent:"europe", fr:"Royaume-Uni", en:"United Kingdom"},
+    {code:"allemagne", continent:"europe", fr:"Allemagne", en:"Germany"},
+    {code:"espagne", continent:"europe", fr:"Espagne", en:"Spain"},
+    {code:"suisse", continent:"europe", fr:"Suisse", en:"Switzerland"},
+    {code:"etats_unis", continent:"amerique_nord", fr:"États-Unis", en:"United States"},
+    {code:"canada", continent:"amerique_nord", fr:"Canada", en:"Canada"},
+    {code:"bresil", continent:"amerique_latine", fr:"Brésil", en:"Brazil"},
+    {code:"mexique", continent:"amerique_latine", fr:"Mexique", en:"Mexico"},
+    {code:"chine", continent:"asie", fr:"Chine", en:"China"},
+    {code:"japon", continent:"asie", fr:"Japon", en:"Japan"},
+    {code:"coree_du_sud", continent:"asie", fr:"Corée du Sud", en:"South Korea"},
+    {code:"inde", continent:"asie", fr:"Inde", en:"India"},
+    {code:"singapour", continent:"asie", fr:"Singapour", en:"Singapore"},
+    {code:"emirats_arabes_unis", continent:"moyen_orient", fr:"Émirats arabes unis", en:"United Arab Emirates"},
+    {code:"arabie_saoudite", continent:"moyen_orient", fr:"Arabie saoudite", en:"Saudi Arabia"},
+    {code:"qatar", continent:"moyen_orient", fr:"Qatar", en:"Qatar"},
+    {code:"afrique_du_sud", continent:"afrique", fr:"Afrique du Sud", en:"South Africa"},
+    {code:"maroc", continent:"afrique", fr:"Maroc", en:"Morocco"},
+    {code:"australie", continent:"oceanie", fr:"Australie", en:"Australia"}
+  ];
+  function countryLabel(code, lang){ var c=COUNTRIES.filter(function(x){return x.code===code;})[0]; return c ? c[lang]||c.fr : code; }
+  function continentOfCountry(code){ var c=COUNTRIES.filter(function(x){return x.code===code;})[0]; return c ? c.continent : ""; }
+
+  var state = {
+    lang: (navigator.language||"en").toLowerCase().indexOf("fr")===0 ? "fr":"en",
+    typology: {}, sector:"", period:"all", continent:{}, country:"",
+    limit: 20, openLong: {}, tab:"veille", compTypology:{}
+  };
+
+  function t(key){ var d=DICT[state.lang]; return (d&&d[key]) || DICT.en[key] || key; }
+
+  var db=null, newsCol=null, candCol=null, compCol=null;
+  var dataSource = "db"; // "db" (live, inside Claude) or "static" (GitHub Pages / outside Claude, reads data/*.json)
+  var allNewsAll = null; // full news array, filtered/sliced client-side; null = not loaded yet
+  var allDocs = []; // current page of filtered news
+  var allComps = null; // null = not loaded yet
+
+  function init(){
+    renderStaticI18n();
+    buildFilterUI();
+    bindLangToggle();
+    bindTabs();
+    initFiltersCollapse();
+    document.getElementById("resetFilters").addEventListener("click", function(){
+      state.typology={}; state.sector=""; state.period="all"; state.continent={}; state.country=""; state.limit=20;
+      buildFilterUI(); runQuery();
+    });
+    document.getElementById("resetCompFilters").addEventListener("click", function(){
+      state.compTypology={}; buildFilterUI(); renderComps();
+    });
+    document.getElementById("loadMore").addEventListener("click", function(){
+      state.limit += 20; runQuery();
+    });
+    connectDb();
+  }
+
+  function isNarrow(){ return window.matchMedia("(max-width:860px)").matches; }
+
+  function initFiltersCollapse(){
+    var asides = Array.prototype.slice.call(document.querySelectorAll(".filters"));
+    var backBtn = document.getElementById("backToFilters");
+    var SCROLL_THRESHOLD = 24;
+
+    function setCollapsed(collapsed){
+      asides.forEach(function(aside){ aside.classList.toggle("collapsed", collapsed); });
+    }
+
+    asides.forEach(function(aside){
+      var toggle = aside.querySelector(".filters-toggle");
+      if(!toggle) return;
+      toggle.addEventListener("click", function(){
+        aside.classList.toggle("collapsed");
+      });
+    });
+    setCollapsed(isNarrow());
+
+    window.addEventListener("scroll", function(){
+      var scrolled = window.scrollY > SCROLL_THRESHOLD;
+      setCollapsed(scrolled);
+      if(backBtn) backBtn.classList.toggle("show", scrolled);
+    }, {passive:true});
+
+    if(backBtn){
+      backBtn.addEventListener("click", function(){
+        window.scrollTo({top:0, behavior:"smooth"});
+        setCollapsed(false);
+        backBtn.classList.remove("show");
+      });
+    }
+  }
+
+  function bindTabs(){
+    Array.prototype.forEach.call(document.querySelectorAll(".tab-btn"), function(b){
+      b.addEventListener("click", function(){
+        state.tab = b.getAttribute("data-tab");
+        document.getElementById("tabVeille").classList.toggle("active", state.tab==="veille");
+        document.getElementById("tabConcurrents").classList.toggle("active", state.tab==="concurrents");
+        document.getElementById("viewVeille").classList.toggle("active", state.tab==="veille");
+        document.getElementById("viewConcurrents").classList.toggle("active", state.tab==="concurrents");
+        if(state.tab==="concurrents" && allComps===null){ loadComps(); }
+      });
+    });
+    document.getElementById("tabVeille").classList.add("active");
+    document.getElementById("viewVeille").classList.add("active");
+  }
+
+  async function connectDb(){
+    try{
+      db = typeof claude!=="undefined" ? await claude.use("db") : null;
+    }catch(e){ db=null; }
+    if(!db){
+      // Outside the Claude runtime (e.g. GitHub Pages): read the static export instead.
+      dataSource = "static";
+      loadNewsStatic();
+      return;
+    }
+    newsCol = db.collection("news");
+    candCol = db.collection("sources_candidates");
+    compCol = db.collection("competitors");
+    loadNewsLive();
+    watchCandidates();
+  }
+
+  function loadNewsLive(attempt){
+    attempt = attempt||0;
+    newsCol.orderBy("date","desc").limit(1000).get().then(function(snap){
+      allNewsAll = snap.docs.map(function(d){ return Object.assign({}, d.data(), {_id:d.id}); });
+      runQuery();
+    }).catch(function(err){
+      var retryable = err && (err.code==="unavailable" || err.code==="resource_exhausted");
+      if(retryable && attempt<1){ setTimeout(function(){ loadNewsLive(attempt+1); }, 900); return; }
+      var detail = err ? (err.code || err.message || String(err)) : "unknown";
+      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") + ' — <code style="font-size:11px;opacity:.7;">'+escapeHtml(detail)+'</code></div>';
+    });
+  }
+
+  function loadNewsStatic(){
+    fetch("data/news.json").then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.json(); }).then(function(arr){
+      allNewsAll = arr;
+      runQuery();
+    }).catch(function(){
+      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") +'</div>';
+    });
+  }
+
+  function loadComps(){
+    if(compCol){ loadCompsLive(); return; }
+    if(dataSource==="static"){ loadCompsStatic(); return; }
+    allComps=[]; renderComps();
+  }
+
+  function loadCompsLive(attempt){
+    attempt = attempt||0;
+    compCol.orderBy("name","asc").limit(500).get().then(function(snap){
+      allComps = snap.docs.map(function(d){ return Object.assign({}, d.data(), {_id:d.id}); });
+      renderComps();
+    }).catch(function(err){
+      var retryable = err && (err.code==="unavailable" || err.code==="resource_exhausted");
+      if(retryable && attempt<1){ setTimeout(function(){ loadCompsLive(attempt+1); }, 900); return; }
+      allComps=[]; renderComps();
+    });
+  }
+
+  function loadCompsStatic(){
+    fetch("data/competitors.json").then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.json(); }).then(function(arr){
+      allComps = arr;
+      renderComps();
+    }).catch(function(){ allComps=[]; renderComps(); });
+  }
+
+  function renderComps(){
+    var grid = document.getElementById("compGrid");
+    if(allComps===null){ grid.innerHTML = '<div class="empty">'+t("loading")+'</div>'; return; }
+    var typKeys = Object.keys(state.compTypology).filter(function(k){return state.compTypology[k];});
+    var list = allComps.filter(function(v){
+      return typKeys.length===0 || (v.typology||[]).some(function(x){return typKeys.indexOf(x)>-1;});
+    });
+    document.getElementById("compCountLabel").textContent = list.length + " " + t("comp_count_suffix");
+    if(list.length===0){ grid.innerHTML = '<div class="empty">'+t("comp_no_results")+'</div>'; return; }
+    var lang = state.lang;
+    grid.innerHTML = list.map(compCardHtml).join("");
+    Array.prototype.forEach.call(grid.querySelectorAll(".comp-logo-img"), function(img){
+      img.addEventListener("error", function(){
+        var box = img.closest(".comp-logo-box");
+        if(box){ box.outerHTML = '<div class="comp-logo">'+escapeHtml(img.getAttribute("data-fallback")||"?")+'</div>'; }
+      });
+    });
+
+    function compCardHtml(v){
+      var desc = v["description_"+lang] || v.description_fr || v.description_en || "";
+      var tags = (v.typology||[]).map(function(ty){ return '<span class="tag">'+escapeHtml(t("typ_"+ty))+'</span>'; }).join("");
+      var initials = (v.name||"?").split(/\s+/).filter(Boolean).slice(0,2).map(function(w){return w[0];}).join("").toUpperCase();
+      var link = v.website ? '<a class="comp-link" href="'+encodeURI(v.website)+'" target="_blank" rel="noopener">'+t("comp_visit")+' →</a>' : "";
+      var founded = v.founded_year ? '<span>'+t("comp_founded")+' : <b>'+escapeHtml(String(v.founded_year))+'</b></span>' : "";
+      var revenue = '<span>'+t("comp_revenue")+' : <b>'+escapeHtml(v.revenue || t("comp_unknown"))+'</b></span>';
+      var logoBox = v.logo_url
+        ? '<div class="comp-logo-box"><img class="comp-logo-img" src="'+encodeURI(v.logo_url)+'" alt="" data-fallback="'+escapeHtml(initials)+'"></div>'
+        : '<div class="comp-logo">'+escapeHtml(initials)+'</div>';
+      return (
+        '<article class="comp-card">'+
+          '<div class="comp-head">'+logoBox+'<h2>'+escapeHtml(v.name||"")+'</h2></div>'+
+          '<div class="tag-row">'+tags+'</div>'+
+          '<p>'+escapeHtml(desc)+'</p>'+
+          '<div class="comp-meta">'+founded+revenue+'</div>'+
+          (v.note ? '<p style="font-style:italic;font-size:11.5px;">'+escapeHtml(v.note)+'</p>' : '')+
+          link+
+        '</article>'
+      );
+    }
+  }
+
+  function runQuery(){
+    if(allNewsAll===null) return; // not loaded yet; loadNewsLive/Static calls back into runQuery() once it is
+    var typKeys = Object.keys(state.typology).filter(function(k){return state.typology[k];});
+    var contKeys = Object.keys(state.continent).filter(function(k){return state.continent[k];});
+    var cutoff = null;
+    if(state.period!=="all"){
+      var days = state.period==="7"?7:(state.period==="30"?30:90);
+      cutoff = new Date(Date.now()-days*86400000).toISOString().slice(0,10);
+    }
+    var filtered = allNewsAll.filter(function(v){
+      if(state.sector && (v.sector||[]).indexOf(state.sector)===-1) return false;
+      if(typKeys.length && !(v.typology||[]).some(function(x){return typKeys.indexOf(x)>-1;})) return false;
+      if(cutoff && (!v.date || v.date<cutoff)) return false;
+      if(contKeys.length && contKeys.indexOf(v.continent)===-1) return false;
+      if(state.country && v.country!==state.country) return false;
+      return true;
+    });
+    filtered.sort(function(a,b){ return (b.date||"").localeCompare(a.date||""); });
+    allDocs = filtered.slice(0, state.limit);
+    renderFeed(allDocs, filtered.length > state.limit);
+  }
+
+  function watchCandidates(){
+    if(!candCol) return;
+    candCol.where("status","==","pending").limit(20).onSnapshot(function(snap){
+      var panel = document.getElementById("candPanel");
+      var list = document.getElementById("candList");
+      if(snap.empty){ panel.style.display="none"; return; }
+      panel.style.display="block";
+      list.innerHTML = snap.docs.map(function(d){
+        var v = d.data();
+        return '<div class="cand-item"><span>'+escapeHtml(v.name||"?")+'</span><span style="color:var(--text-muted)">'+escapeHtml(v.type||"")+'</span></div>';
+      }).join("");
+    }, function(){ /* ignore */ });
+  }
+
+  function renderFeed(docs, hasMore){
+    var feed = document.getElementById("feed");
+    document.getElementById("countLabel").textContent = docs.length + " " + t("count_suffix");
+    if(docs.length===0){
+      feed.innerHTML = '<div class="empty">'+t("no_results")+'</div>';
+      document.getElementById("loadMore").style.display="none";
+      return;
+    }
+    feed.innerHTML = docs.map(cardHtml).join("");
+    document.getElementById("loadMore").style.display = hasMore ? "inline-block":"none";
+    document.getElementById("loadMore").textContent = t("load_more");
+
+    Array.prototype.forEach.call(feed.querySelectorAll("[data-toggle]"), function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-toggle");
+        var el = feed.querySelector('[data-long="'+id+'"]');
+        var open = el.classList.toggle("open");
+        btn.textContent = open ? t("collapse") : t("read_more");
+      });
+    });
+    Array.prototype.forEach.call(feed.querySelectorAll("[data-copy]"), function(btn){
+      btn.addEventListener("click", function(){ doCopy(btn); });
+    });
+  }
+
+  function cardHtml(v){
+    var lang = state.lang;
+    var title = v["title_"+lang] || v.title_fr || v.title_en || "";
+    var shortS = v["summary_short_"+lang] || v.summary_short_fr || v.summary_short_en || "";
+    var longS = v["summary_long_"+lang] || v.summary_long_fr || v.summary_long_en || "";
+    var badgeClass = v.source_type==="enseigne"?"enseigne":(v.source_type==="concurrent"?"concurrent":"innovation");
+    var badgeLabel = t("prov_"+v.source_type);
+    var sectorTags = (v.sector||[]).map(function(s){ return '<span class="tag">'+escapeHtml((SECTOR_LABEL[lang][s])||s)+'</span>'; }).join("");
+    var typTags = (v.typology||[]).map(function(ty){ return '<span class="tag">'+escapeHtml(t("typ_"+ty))+'</span>'; }).join("");
+    var id = v._id;
+    var exampleBadge = v.is_example ? '<span class="badge example">'+t("example")+'</span>' : "";
+    var link = v.link ? '<a class="src-link" href="'+encodeURI(v.link)+'" target="_blank" rel="noopener">'+t("open_source")+' →</a>' : "";
+    var geoLabel = v.country ? countryLabel(v.country, lang) : (v.continent ? t("cont_"+v.continent) : "");
+    var geoTag = geoLabel ? '<span class="source">· '+escapeHtml(geoLabel)+'</span>' : "";
+    return (
+      '<article class="card">'+
+        '<div class="meta-top">'+
+          '<span class="badge '+badgeClass+'">'+escapeHtml(badgeLabel)+'</span>'+
+          exampleBadge+
+          '<span class="source">'+escapeHtml(v.source_name||"")+'</span>'+
+          geoTag+
+          '<span class="date">'+escapeHtml(v.date||"")+'</span>'+
+        '</div>'+
+        '<h2>'+escapeHtml(title)+'</h2>'+
+        '<p class="summary-short">'+escapeHtml(shortS)+'</p>'+
+        '<div class="tag-row">'+sectorTags+typTags+'</div>'+
+        '<p class="summary-long" data-long="'+id+'">'+escapeHtml(longS)+'</p>'+
+        '<div class="actions">'+
+          '<button class="btn" data-toggle="'+id+'">'+t("read_more")+'</button>'+
+          '<button class="btn" data-copy="'+id+'">'+t("copy")+'</button>'+
+          link+
+        '</div>'+
+      '</article>'
+    );
+  }
+
+  function doCopy(btn){
+    var id = btn.getAttribute("data-copy");
+    var v = allDocs.filter(function(d){return d._id===id;})[0];
+    if(!v) return;
+    var lang = state.lang;
+    var title = v["title_"+lang] || v.title_fr || v.title_en || "";
+    var shortS = v["summary_short_"+lang] || v.summary_short_fr || v.summary_short_en || "";
+    var text = title + "\n" + (v.source_name||"") + " — " + (v.date||"") + "\n" + shortS + (v.link ? ("\n"+v.link) : "");
+    var reset = function(){ btn.textContent = t("copy"); btn.classList.remove("copied"); };
+    var mark = function(){ btn.textContent = t("copied"); btn.classList.add("copied"); setTimeout(reset,1800); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(mark).catch(function(){ fallbackCopy(text); mark(); });
+    } else {
+      fallbackCopy(text); mark();
+    }
+  }
+  function fallbackCopy(text){
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try{ document.execCommand("copy"); }catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  function buildFilterUI(){
+    var typBox = document.getElementById("fTypology");
+    typBox.innerHTML = TYPOLOGIES.map(function(ty){
+      var on = !!state.typology[ty];
+      return '<button class="chip'+(on?' on':'')+'" data-typ="'+ty+'">'+t("typ_"+ty)+'</button>';
+    }).join("");
+    Array.prototype.forEach.call(typBox.querySelectorAll("[data-typ]"), function(b){
+      b.addEventListener("click", function(){
+        var ty=b.getAttribute("data-typ"); state.typology[ty]=!state.typology[ty]; state.limit=20;
+        buildFilterUI(); runQuery();
+      });
+    });
+
+    var sectorSel = document.getElementById("fSector");
+    sectorSel.innerHTML = '<option value="">'+t("sector_all")+'</option>' +
+      SECTORS.map(function(s){ return '<option value="'+s+'"'+(state.sector===s?' selected':'')+'>'+escapeHtml(SECTOR_LABEL[state.lang][s])+'</option>'; }).join("");
+    sectorSel.onchange = function(){ state.sector=sectorSel.value; state.limit=20; runQuery(); };
+
+    var contBox = document.getElementById("fContinent");
+    contBox.innerHTML = CONTINENTS.map(function(c){
+      var on = !!state.continent[c];
+      return '<button class="chip'+(on?' on':'')+'" data-cont="'+c+'">'+t("cont_"+c)+'</button>';
+    }).join("");
+    Array.prototype.forEach.call(contBox.querySelectorAll("[data-cont]"), function(b){
+      b.addEventListener("click", function(){
+        var c=b.getAttribute("data-cont"); state.continent[c]=!state.continent[c]; state.limit=20;
+        // le pays sélectionné doit rester cohérent avec les continents cochés
+        if(state.country && continentOfCountry(state.country) && !state.continent[continentOfCountry(state.country)]){
+          var anyOn = Object.keys(state.continent).some(function(k){return state.continent[k];});
+          if(anyOn) state.country="";
+        }
+        buildFilterUI(); runQuery();
+      });
+    });
+
+    var countrySel = document.getElementById("fCountry");
+    var activeConts = Object.keys(state.continent).filter(function(k){return state.continent[k];});
+    var countryOptions = COUNTRIES.filter(function(c){ return activeConts.length===0 || activeConts.indexOf(c.continent)>-1; });
+    countrySel.innerHTML = '<option value="">'+t("country_all")+'</option>' +
+      countryOptions.map(function(c){ return '<option value="'+c.code+'"'+(state.country===c.code?' selected':'')+'>'+escapeHtml(c[state.lang]||c.fr)+'</option>'; }).join("");
+    countrySel.onchange = function(){ state.country=countrySel.value; state.limit=20; runQuery(); };
+
+    var periodSel = document.getElementById("fPeriod");
+    var periods = [["all","period_all"],["7","period_7"],["30","period_30"],["90","period_90"]];
+    periodSel.innerHTML = periods.map(function(p){ return '<option value="'+p[0]+'"'+(state.period===p[0]?' selected':'')+'>'+t(p[1])+'</option>'; }).join("");
+    periodSel.onchange = function(){ state.period=periodSel.value; state.limit=20; runQuery(); };
+
+    document.getElementById("resetFilters").textContent = t("f_reset");
+    document.getElementById("resetCompFilters").textContent = t("f_reset");
+
+    var typBoxComp = document.getElementById("fTypologyComp");
+    typBoxComp.innerHTML = TYPOLOGIES.map(function(ty){
+      var on = !!state.compTypology[ty];
+      return '<button class="chip'+(on?' on':'')+'" data-typc="'+ty+'">'+t("typ_"+ty)+'</button>';
+    }).join("");
+    Array.prototype.forEach.call(typBoxComp.querySelectorAll("[data-typc]"), function(b){
+      b.addEventListener("click", function(){
+        var ty=b.getAttribute("data-typc"); state.compTypology[ty]=!state.compTypology[ty];
+        buildFilterUI(); renderComps();
+      });
+    });
+  }
+
+  function renderStaticI18n(){
+    Array.prototype.forEach.call(document.querySelectorAll("[data-i]"), function(el){
+      el.textContent = t(el.getAttribute("data-i"));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("#langToggle button"), function(b){
+      b.classList.toggle("active", b.getAttribute("data-lang")===state.lang);
+    });
+  }
+
+  function bindLangToggle(){
+    Array.prototype.forEach.call(document.querySelectorAll("#langToggle button"), function(b){
+      b.addEventListener("click", function(){
+        state.lang = b.getAttribute("data-lang");
+        renderStaticI18n(); buildFilterUI();
+        if(allDocs.length){ renderFeed(allDocs, document.getElementById("loadMore").style.display!=="none"); }
+        if(allComps!==null){ renderComps(); }
+      });
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+  if(document.readyState!=="loading") init();
+})();
+</script>
+</body>
+</html>

@@ -306,7 +306,9 @@ a.src-link:hover{text-decoration:underline;}
   function t(key){ var d=DICT[state.lang]; return (d&&d[key]) || DICT.en[key] || key; }
 
   var db=null, newsCol=null, candCol=null, compCol=null;
-  var allDocs = []; // local cache of latest query snapshot
+  var dataSource = "db"; // "db" (live, inside Claude) or "static" (GitHub Pages / outside Claude, reads data/*.json)
+  var allNewsAll = null; // full news array, filtered/sliced client-side; null = not loaded yet
+  var allDocs = []; // current page of filtered news
   var allComps = null; // null = not loaded yet
 
   function init(){
@@ -380,30 +382,66 @@ a.src-link:hover{text-decoration:underline;}
 
   async function connectDb(){
     try{
-      db = await claude.use("db");
+      db = typeof claude!=="undefined" ? await claude.use("db") : null;
     }catch(e){ db=null; }
     if(!db){
-      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Base indisponible dans cette vue." : "Store unavailable in this view.") +'</div>';
+      // Outside the Claude runtime (e.g. GitHub Pages): read the static export instead.
+      dataSource = "static";
+      loadNewsStatic();
       return;
     }
     newsCol = db.collection("news");
     candCol = db.collection("sources_candidates");
     compCol = db.collection("competitors");
-    runQuery();
+    loadNewsLive();
     watchCandidates();
   }
 
-  function loadComps(attempt){
+  function loadNewsLive(attempt){
     attempt = attempt||0;
-    if(!compCol){ allComps=[]; renderComps(); return; }
+    newsCol.orderBy("date","desc").limit(1000).get().then(function(snap){
+      allNewsAll = snap.docs.map(function(d){ return Object.assign({}, d.data(), {_id:d.id}); });
+      runQuery();
+    }).catch(function(err){
+      var retryable = err && (err.code==="unavailable" || err.code==="resource_exhausted");
+      if(retryable && attempt<1){ setTimeout(function(){ loadNewsLive(attempt+1); }, 900); return; }
+      var detail = err ? (err.code || err.message || String(err)) : "unknown";
+      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") + ' — <code style="font-size:11px;opacity:.7;">'+escapeHtml(detail)+'</code></div>';
+    });
+  }
+
+  function loadNewsStatic(){
+    fetch("data/news.json").then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.json(); }).then(function(arr){
+      allNewsAll = arr;
+      runQuery();
+    }).catch(function(){
+      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") +'</div>';
+    });
+  }
+
+  function loadComps(){
+    if(compCol){ loadCompsLive(); return; }
+    if(dataSource==="static"){ loadCompsStatic(); return; }
+    allComps=[]; renderComps();
+  }
+
+  function loadCompsLive(attempt){
+    attempt = attempt||0;
     compCol.orderBy("name","asc").limit(500).get().then(function(snap){
       allComps = snap.docs.map(function(d){ return Object.assign({}, d.data(), {_id:d.id}); });
       renderComps();
     }).catch(function(err){
       var retryable = err && (err.code==="unavailable" || err.code==="resource_exhausted");
-      if(retryable && attempt<1){ setTimeout(function(){ loadComps(attempt+1); }, 900); return; }
+      if(retryable && attempt<1){ setTimeout(function(){ loadCompsLive(attempt+1); }, 900); return; }
       allComps=[]; renderComps();
     });
+  }
+
+  function loadCompsStatic(){
+    fetch("data/competitors.json").then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.json(); }).then(function(arr){
+      allComps = arr;
+      renderComps();
+    }).catch(function(){ allComps=[]; renderComps(); });
   }
 
   function renderComps(){
@@ -448,38 +486,25 @@ a.src-link:hover{text-decoration:underline;}
   }
 
   function runQuery(){
-    if(!newsCol) return;
-    var q = newsCol.orderBy("date","desc").limit(state.limit);
-    if(state.sector){ q = q.where("sector","array-contains",state.sector); }
+    if(allNewsAll===null) return; // not loaded yet; loadNewsLive/Static calls back into runQuery() once it is
     var typKeys = Object.keys(state.typology).filter(function(k){return state.typology[k];});
-    if(typKeys.length===1){ q = q.where("typology","array-contains",typKeys[0]); }
+    var contKeys = Object.keys(state.continent).filter(function(k){return state.continent[k];});
+    var cutoff = null;
     if(state.period!=="all"){
       var days = state.period==="7"?7:(state.period==="30"?30:90);
-      var cutoff = new Date(Date.now()-days*86400000).toISOString().slice(0,10);
-      q = q.where("date",">=",cutoff);
+      cutoff = new Date(Date.now()-days*86400000).toISOString().slice(0,10);
     }
-    var contKeys = Object.keys(state.continent).filter(function(k){return state.continent[k];});
-    if(contKeys.length>=1 && contKeys.length<=30){ q = q.where("continent","in",contKeys); }
-    if(state.country){ q = q.where("country","==",state.country); }
-    runQueryExec(q, typKeys, 0);
-  }
-
-  function runQueryExec(q, typKeys, attempt){
-    q.get().then(function(snap){
-      var docs = snap.docs.map(function(d){ var v=Object.assign({}, d.data(), {_id:d.id}); return v; });
-      // client-side narrow for multi-select typology beyond single where support
-      if(typKeys.length>1){ docs = docs.filter(function(v){ return (v.typology||[]).some(function(x){return typKeys.indexOf(x)>-1;}); }); }
-      allDocs = docs;
-      renderFeed(docs, snap.size>=state.limit);
-    }).catch(function(err){
-      var retryable = err && (err.code==="unavailable" || err.code==="resource_exhausted");
-      if(retryable && attempt<1){
-        setTimeout(function(){ runQueryExec(q, typKeys, attempt+1); }, 900);
-        return;
-      }
-      var detail = err ? (err.code || err.message || String(err)) : "unknown";
-      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") + ' — <code style="font-size:11px;opacity:.7;">'+escapeHtml(detail)+'</code></div>';
+    var filtered = allNewsAll.filter(function(v){
+      if(state.sector && (v.sector||[]).indexOf(state.sector)===-1) return false;
+      if(typKeys.length && !(v.typology||[]).some(function(x){return typKeys.indexOf(x)>-1;})) return false;
+      if(cutoff && (!v.date || v.date<cutoff)) return false;
+      if(contKeys.length && contKeys.indexOf(v.continent)===-1) return false;
+      if(state.country && v.country!==state.country) return false;
+      return true;
     });
+    filtered.sort(function(a,b){ return (b.date||"").localeCompare(a.date||""); });
+    allDocs = filtered.slice(0, state.limit);
+    renderFeed(allDocs, filtered.length > state.limit);
   }
 
   function watchCandidates(){
