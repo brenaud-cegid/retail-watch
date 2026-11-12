@@ -329,12 +329,17 @@ a.src-link:hover{text-decoration:underline;}
     watchCandidates();
   }
 
-  function loadComps(){
+  function loadComps(attempt){
+    attempt = attempt||0;
     if(!compCol){ allComps=[]; renderComps(); return; }
     compCol.orderBy("name","asc").limit(500).get().then(function(snap){
       allComps = snap.docs.map(function(d){ var v=d.data(); v._id=d.id; return v; });
       renderComps();
-    }).catch(function(){ allComps=[]; renderComps(); });
+    }).catch(function(err){
+      var retryable = err && (err.code==="unavailable" || err.code==="resource_exhausted");
+      if(retryable && attempt<1){ setTimeout(function(){ loadComps(attempt+1); }, 900); return; }
+      allComps=[]; renderComps();
+    });
   }
 
   function renderComps(){
@@ -368,6 +373,10 @@ a.src-link:hover{text-decoration:underline;}
     var contKeys = Object.keys(state.continent).filter(function(k){return state.continent[k];});
     if(contKeys.length>=1 && contKeys.length<=30){ q = q.where("continent","in",contKeys); }
     if(state.country){ q = q.where("country","==",state.country); }
+    runQueryExec(q, typKeys, 0);
+  }
+
+  function runQueryExec(q, typKeys, attempt){
     q.get().then(function(snap){
       var docs = snap.docs.map(function(d){ var v=d.data(); v._id=d.id; return v; });
       // client-side narrow for multi-select typology beyond single where support
@@ -375,7 +384,13 @@ a.src-link:hover{text-decoration:underline;}
       allDocs = docs;
       renderFeed(docs, snap.size>=state.limit);
     }).catch(function(err){
-      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") +'</div>';
+      var retryable = err && (err.code==="unavailable" || err.code==="resource_exhausted");
+      if(retryable && attempt<1){
+        setTimeout(function(){ runQueryExec(q, typKeys, attempt+1); }, 900);
+        return;
+      }
+      var code = err && err.code ? " ("+err.code+")" : "";
+      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") + code +'</div>';
     });
   }
 
