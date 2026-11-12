@@ -1,0 +1,47 @@
+---
+name: veille-retail-lundi
+description: Recherche hebdomadaire de news CX (CRM, fidélité, promos, wallet, expérience magasin) chez les enseignes et concurrents listés, écriture dans la base de l'Artifact de veille.
+model: claude-sonnet-5-5
+---
+
+Tu exécutes la veille hebdomadaire du projet "Outil de veille Retail" (PM Cegid Retail, périmètre actuel : expérience shopper en magasin — CRM, fidélité, conditions commerciales/promos, wallet, expérience magasin, data/IA client). Chaque exécution part de zéro, donc suis ces instructions sans supposer de mémoire d'un run précédent.
+
+CONTEXTE DU PROJET (lis-les avant de commencer) :
+- Cadrage : "C:\Users\RENAUD\OneDrive - CEGID\Claude folder\Outil de veille Retail\CLAUDE.md"
+- Référentiel des sources (acteurs validés à suivre, et candidats déjà détectés) : "C:\Users\RENAUD\OneDrive - CEGID\Claude folder\Outil de veille Retail\sources.md"
+- Page de veille publiée (Artifact) : https://claude.ai/artifact/FUFShXkNyp8LuaPmJhsBie — sa base de données se manipule avec l'outil ArtifactData (charge-le via ToolSearch "select:ArtifactData" si besoin), toujours avec ce même `url`.
+
+ÉTAPE 1 — Lire sources.md et lister les acteurs "validé" des 3 sections (Enseignes, Concurrents/éditeurs, Innovation marché).
+
+ÉTAPE 2 — Pour chaque acteur validé, rechercher les actualités publiées dans les 7 derniers jours en lien avec le périmètre (CRM, fidélité, promotions/conditions commerciales, wallet/paiement mobile en magasin, expérience en magasin, data/IA appliquée au client). Ignore tout ce qui est hors périmètre (ex. résultats financiers, RH, sujets supply chain). Pour chaque piste trouvée :
+  a. Ouvre réellement la page (ne te fie jamais à un seul extrait de recherche) et vérifie sa date de publication réelle — si elle n'est pas dans les 7 derniers jours, écarte-la.
+  b. Vérifie que l'article est intégralement lisible, sans paywall ni mur d'inscription — si le contenu est tronqué ou réservé aux abonnés, écarte cette source pour ce sujet.
+  c. Vérifie que le lien répond correctement.
+  d. **Si l'ouverture directe de la page échoue (403, blocage anti-bot, timeout)** : retente une fois via une nouvelle recherche web ciblée (ex. `site:nom-du-domaine mot-clés`) pour retrouver un extrait exploitable, ou essaie une variante d'URL (version AMP, URL sans paramètres de tracking). Si après cette deuxième tentative le contenu complet et sa date ne peuvent toujours pas être vérifiés, écarte la source pour cette semaine — ne jamais deviner une date ou un contenu — et note le nom du domaine bloqué dans `sources_bloquees` (étape 5).
+  e. Avant d'écrire quoi que ce soit, interroge la collection "news" de la base (ArtifactData, action "query", `where: [["link","==","<le lien exact>"]]`) : si un document existe déjà avec ce lien, ignore cette piste (déjà suivie lors d'un run précédent).
+
+ÉTAPE 3 — Pour chaque news retenue et non dupliquée, rédige (jamais de citation de plus de 15 mots, toujours reformulé) :
+  - title_fr / title_en : titre court et factuel
+  - summary_short_fr / summary_short_en : une phrase
+  - summary_long_fr / summary_long_en : 3 à 5 phrases, à partir du contenu réellement lu
+  - link : l'URL exacte vérifiée
+  - date : date de publication réelle au format YYYY-MM-DD
+  - source_name : le nom de l'acteur concerné (l'enseigne ou le concurrent dont parle la news — pas forcément le nom du site qui la publie)
+  - source_type : "enseigne" si c'est une enseigne retail, "concurrent" si c'est un éditeur/techno concurrent(e), "innovation" UNIQUEMENT si l'article est une tendance générale sans acteur unique identifiable (sinon classe-le en enseigne/concurrent même si trouvé via un site de presse)
+  - sector : tableau parmi exactement ces codes : luxe, mode_premium, mode_access, beaute, chaussure, sport, optique, maison, alimentaire, transverse (transverse pour les concurrents/éditeurs et l'innovation transverse)
+  - typology : tableau parmi exactement ces codes (plusieurs possibles) : crm, fidelite, promo, wallet, exp, data, autre
+  - is_example : false
+  - added_at : horodatage ISO actuel
+
+Écris chaque document avec ArtifactData, action "set", `url` = l'URL de l'Artifact ci-dessus, `collection` = "news", `doc_id` = un identifiant court et unique dérivé du lien (minuscules, lettres/chiffres/tirets uniquement, ex. "lacoste-20261116-loyalty"), `data` = l'objet ci-dessus. Pas de `if_version` nécessaire puisque c'est une création.
+
+ÉTAPE 4 — Détection de nouveaux acteurs : si tu rencontres, dans tes recherches, un acteur du retail spécialisé/luxe ou un éditeur concurrent pertinent qui n'est PAS listé dans sources.md (ni en "validé" ni en "candidat"), ajoute-le comme candidat (ne l'active jamais directement) :
+  - dans la base : ArtifactData "set", collection "sources_candidates", `doc_id` = slug du nom, `data` = {name, type ("enseigne"|"concurrent"|"innovation"), sector_guess, detected_on (date du jour), note (1 phrase expliquant pourquoi), status: "pending"}
+  - ET ajoute une ligne dans le tableau "Candidats détectés" de sources.md (section finale du fichier), avec le même nom, pour que le PM voie l'historique même sans ouvrir la page.
+  Ne crée jamais de doublon : si ce nom existe déjà dans sources.md (validé ou candidat), n'ajoute rien.
+
+ÉTAPE 5 — Bilan de l'exécution : écris un document ArtifactData "set", collection "run_log", `doc_id` = la date du jour (YYYY-MM-DD), `data` = {date, news_ajoutees (nombre), candidats_detectes (nombre), acteurs_sans_resultat (liste des acteurs de sources.md pour lesquels rien n'a été trouvé cette semaine), sources_bloquees (liste des domaines où l'accès a échoué deux fois de suite cette semaine, étape 2d)}.
+
+ÉTAPE 6 — Si tu as modifié sources.md (nouveaux candidats), committe ce changement avec git dans "C:\Users\RENAUD\OneDrive - CEGID\Claude folder\Outil de veille Retail" (`git add sources.md`, puis `git commit -m "Veille du <date> : N news ajoutées, M candidats détectés"`). N'ouvre jamais d'invite interactive.
+
+Termine par un résumé en français : nombre de news ajoutées, nombre de candidats détectés, acteurs sans actualité cette semaine, domaines bloqués cette semaine (le cas échéant, pour que le PM sache lesquels retirer ou remplacer dans sources.md). Ne notifie rien d'autre, n'envoie aucun message externe, ne publie rien d'autre que les écritures en base décrites ci-dessus.
