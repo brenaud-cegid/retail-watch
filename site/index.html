@@ -97,8 +97,14 @@ a.src-link:hover{text-decoration:underline;}
 .footer-note{color:var(--text-muted);font-size:12px;text-align:center;padding-top:8px;}
 .comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
 .comp-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;}
+.comp-head{display:flex;align-items:center;gap:10px;}
+.comp-logo{width:36px;height:36px;border-radius:8px;background:var(--primary);color:var(--primary-ink);display:flex;align-items:center;justify-content:center;font-family:"Poppins",sans-serif;font-weight:600;font-size:14px;flex:none;}
 .comp-card h2{font-size:15.5px;margin:0;}
 .comp-card p{font-size:13px;color:var(--text-muted);margin:0;line-height:1.5;}
+.comp-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--text-muted);}
+.comp-meta b{color:var(--text);font-weight:600;}
+.comp-link{font-size:12.5px;color:var(--info);text-decoration:none;align-self:flex-start;}
+.comp-link:hover{text-decoration:underline;}
 </style>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
@@ -212,7 +218,7 @@ a.src-link:hover{text-decoration:underline;}
       cont_europe:"Europe", cont_amerique_nord:"Amérique du Nord", cont_amerique_latine:"Amérique latine",
       cont_asie:"Asie", cont_moyen_orient:"Moyen-Orient", cont_afrique:"Afrique", cont_oceanie:"Océanie", cont_international:"International",
       tab_veille:"Veille", tab_concurrents:"Concurrents", comp_no_results:"Aucun concurrent ne correspond à ce filtre.",
-      comp_count_suffix:"éditeurs"
+      comp_count_suffix:"éditeurs", comp_visit:"Visiter le site", comp_founded:"Création", comp_revenue:"CA", comp_unknown:"Non communiqué"
     },
     en:{
       title:"Retail Watch", subtitle:"Current scope: in-store shopper experience — CRM · Loyalty · Commercial terms",
@@ -231,7 +237,7 @@ a.src-link:hover{text-decoration:underline;}
       cont_europe:"Europe", cont_amerique_nord:"North America", cont_amerique_latine:"Latin America",
       cont_asie:"Asia", cont_moyen_orient:"Middle East", cont_afrique:"Africa", cont_oceanie:"Oceania", cont_international:"International",
       tab_veille:"Watch", tab_concurrents:"Competitors", comp_no_results:"No competitor matches this filter.",
-      comp_count_suffix:"vendors"
+      comp_count_suffix:"vendors", comp_visit:"Visit website", comp_founded:"Founded", comp_revenue:"Revenue", comp_unknown:"Not disclosed"
     }
   };
 
@@ -352,11 +358,26 @@ a.src-link:hover{text-decoration:underline;}
     document.getElementById("compCountLabel").textContent = list.length + " " + t("comp_count_suffix");
     if(list.length===0){ grid.innerHTML = '<div class="empty">'+t("comp_no_results")+'</div>'; return; }
     var lang = state.lang;
-    grid.innerHTML = list.map(function(v){
+    grid.innerHTML = list.map(compCardHtml).join("");
+
+    function compCardHtml(v){
       var desc = v["description_"+lang] || v.description_fr || v.description_en || "";
       var tags = (v.typology||[]).map(function(ty){ return '<span class="tag">'+escapeHtml(t("typ_"+ty))+'</span>'; }).join("");
-      return '<article class="comp-card"><h2>'+escapeHtml(v.name||"")+'</h2><div class="tag-row">'+tags+'</div><p>'+escapeHtml(desc)+'</p></article>';
-    }).join("");
+      var initials = (v.name||"?").split(/\s+/).filter(Boolean).slice(0,2).map(function(w){return w[0];}).join("").toUpperCase();
+      var link = v.website ? '<a class="comp-link" href="'+encodeURI(v.website)+'" target="_blank" rel="noopener">'+t("comp_visit")+' →</a>' : "";
+      var founded = v.founded_year ? '<span>'+t("comp_founded")+' : <b>'+escapeHtml(String(v.founded_year))+'</b></span>' : "";
+      var revenue = '<span>'+t("comp_revenue")+' : <b>'+escapeHtml(v.revenue || t("comp_unknown"))+'</b></span>';
+      return (
+        '<article class="comp-card">'+
+          '<div class="comp-head"><div class="comp-logo">'+escapeHtml(initials)+'</div><h2>'+escapeHtml(v.name||"")+'</h2></div>'+
+          '<div class="tag-row">'+tags+'</div>'+
+          '<p>'+escapeHtml(desc)+'</p>'+
+          '<div class="comp-meta">'+founded+revenue+'</div>'+
+          (v.note ? '<p style="font-style:italic;font-size:11.5px;">'+escapeHtml(v.note)+'</p>' : '')+
+          link+
+        '</article>'
+      );
+    }
   }
 
   function runQuery(){
