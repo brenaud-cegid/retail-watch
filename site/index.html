@@ -1,0 +1,420 @@
+<title>Outil de veille Retail</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout concept: a filter rail that collapses to a top sheet on phones, feeding a single sorted feed of cards that grows by windowed pages (lazy load), never a full list in memory. */
+:root{
+  --bg:#F7F8F9; --surface:#FFFFFF; --border:#CCD4DC; --divider:#E6EAEE;
+  --text:#002C52; --text-muted:#5B6B78; --primary:#0046FE; --primary-ink:#FFFFFF;
+  --secondary:#CC492A; --success:#376A1F; --warn:#9A6400; --critical:#BC0E2E; --info:#155AC1;
+  --chip-bg:#E6EAEE; --chip-ink:#2E4154; --overlay-hover:rgba(0,70,254,0.06); --overlay-press:rgba(0,70,254,0.2);
+  --shadow:0 1px 2px rgba(0,44,82,.08),0 1px 1px rgba(0,44,82,.06);
+  color-scheme:light;
+  padding-left:max(16px, env(safe-area-inset-left,0px));
+  padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1C2C; --surface:#12283B; --border:#24415A; --divider:#1C3349;
+    --text:#EAF1F8; --text-muted:#9FB4C4; --primary:#5C8CFF; --primary-ink:#06122A;
+    --secondary:#FF8360; --success:#6FCB4D; --warn:#F2B04C; --critical:#FF6B7E; --info:#6FB0FF;
+    --chip-bg:#1C3349; --chip-ink:#CBDCEA; --overlay-hover:rgba(92,140,255,0.1); --overlay-press:rgba(92,140,255,0.26);
+    --shadow:0 1px 3px rgba(0,0,0,.4);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1C2C; --surface:#12283B; --border:#24415A; --divider:#1C3349;
+  --text:#EAF1F8; --text-muted:#9FB4C4; --primary:#5C8CFF; --primary-ink:#06122A;
+  --secondary:#FF8360; --success:#6FCB4D; --warn:#F2B04C; --critical:#FF6B7E; --info:#6FB0FF;
+  --chip-bg:#1C3349; --chip-ink:#CBDCEA; --overlay-hover:rgba(92,140,255,0.1); --overlay-press:rgba(92,140,255,0.26);
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Roboto",system-ui,sans-serif;}
+h1,h2,h3,.disp{font-family:"Poppins",system-ui,sans-serif;font-weight:400;letter-spacing:-0.01em;}
+.wrap{max-width:1180px;margin:0 auto;padding-block:24px;display:flex;flex-direction:column;gap:20px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:baseline;gap:10px;}
+.brand .mark{font-family:"Poppins",system-ui,sans-serif;font-weight:600;color:var(--primary);font-size:15px;letter-spacing:.02em;}
+.brand h1{font-size:22px;margin:0;color:var(--text);font-weight:400;}
+.sub{color:var(--text-muted);font-size:13px;margin:0;}
+.lang-toggle{display:flex;gap:4px;border:1px solid var(--border);border-radius:999px;padding:3px;background:var(--surface);}
+.lang-toggle button{border:none;background:transparent;padding:4px 10px;border-radius:999px;font-size:12px;font-family:"Poppins",system-ui,sans-serif;color:var(--text-muted);cursor:pointer;}
+.lang-toggle button.active{background:var(--primary);color:var(--primary-ink);}
+
+.layout{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;}
+@media (max-width:860px){.layout{grid-template-columns:1fr;}}
+
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;box-shadow:var(--shadow);}
+.filters{position:sticky;top:0;display:flex;flex-direction:column;gap:18px;}
+.filter-group h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin:0 0 8px;font-weight:600;}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--border);background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer;font-family:"Roboto",sans-serif;transition:background .15s;}
+.chip:hover{background:var(--overlay-hover);}
+.chip.on{background:var(--primary);border-color:var(--primary);color:var(--primary-ink);}
+select.ds{width:100%;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);padding:8px 10px;font-size:13px;font-family:"Roboto",sans-serif;}
+.reset{background:none;border:none;color:var(--info);font-size:12.5px;cursor:pointer;padding:0;text-align:left;}
+
+.count-row{display:flex;align-items:center;justify-content:space-between;color:var(--text-muted);font-size:13px;}
+.feed{display:flex;flex-direction:column;gap:12px;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;}
+.card .meta-top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.badge{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;border-radius:999px;padding:3px 10px;font-family:"Poppins",sans-serif;}
+.badge.enseigne{background:rgba(0,70,254,.12);color:var(--primary);}
+.badge.concurrent{background:rgba(204,73,42,.14);color:var(--secondary);}
+.badge.innovation{background:rgba(21,90,193,.14);color:var(--info);}
+.badge.example{background:var(--warn);color:#2A1C00;}
+.date{color:var(--text-muted);font-size:12.5px;margin-left:auto;}
+.card h2{font-size:17px;margin:0;line-height:1.35;}
+.card .source{font-size:12.5px;color:var(--text-muted);}
+.summary-short{font-size:14px;color:var(--text);margin:0;}
+.summary-long{font-size:13.5px;color:var(--text-muted);margin:0;padding-top:4px;border-top:1px dashed var(--divider);display:none;line-height:1.5;}
+.summary-long.open{display:block;}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{font-size:11.5px;background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:3px 10px;}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;}
+.btn{font-family:"Poppins",sans-serif;font-size:12.5px;font-weight:600;border-radius:6px;padding:7px 14px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text);}
+.btn:hover{background:var(--overlay-hover);}
+.btn.primary{background:var(--primary);color:var(--primary-ink);border-color:var(--primary);}
+.btn.primary:hover{opacity:.9;}
+.btn.copied{background:var(--success);border-color:var(--success);color:#fff;}
+a.src-link{color:var(--info);text-decoration:none;font-size:12.5px;align-self:center;}
+a.src-link:hover{text-decoration:underline;}
+
+.empty{text-align:center;padding:48px 20px;color:var(--text-muted);}
+.loadmore{align-self:center;margin-top:4px;}
+.cand-panel{font-size:13px;}
+.cand-item{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--divider);}
+.cand-item:last-child{border-bottom:none;}
+.footer-note{color:var(--text-muted);font-size:12px;text-align:center;padding-top:8px;}
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <span class="mark">cegid</span>
+      <div>
+        <h1 data-i="title">Veille Expérience Shopper</h1>
+        <p class="sub" data-i="subtitle">CRM · Fidélité · Conditions commerciales — enseignes &amp; concurrents</p>
+      </div>
+    </div>
+    <div class="lang-toggle" id="langToggle">
+      <button data-lang="fr">FR</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="panel filters">
+      <div class="filter-group">
+        <h3 data-i="f_provenance">Provenance</h3>
+        <div class="chip-row" id="fProvenance"></div>
+      </div>
+      <div class="filter-group">
+        <h3 data-i="f_sector">Secteur</h3>
+        <select class="ds" id="fSector"></select>
+      </div>
+      <div class="filter-group">
+        <h3 data-i="f_typology">Typologie</h3>
+        <div class="chip-row" id="fTypology"></div>
+      </div>
+      <div class="filter-group">
+        <h3 data-i="f_period">Période</h3>
+        <select class="ds" id="fPeriod"></select>
+      </div>
+      <button class="reset" id="resetFilters" data-i="f_reset">Réinitialiser les filtres</button>
+
+      <div class="filter-group cand-panel" id="candPanel" style="display:none;">
+        <h3 data-i="f_candidates">Nouveaux acteurs détectés</h3>
+        <div id="candList"></div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="count-row">
+        <span id="countLabel"></span>
+        <span data-i="sort_note">Du plus récent au plus ancien</span>
+      </div>
+      <div class="feed" id="feed">
+        <div class="empty" data-i="loading">Chargement de la veille…</div>
+      </div>
+      <button class="btn primary loadmore" id="loadMore" style="display:none;" data-i="load_more">Charger plus</button>
+      <p class="footer-note" data-i="footer">Veille interne Cegid Retail — mise à jour chaque lundi. Articles réservés à l'organisation.</p>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DICT = {
+    fr:{
+      title:"Outil de veille Retail", subtitle:"Périmètre actuel : expérience shopper en magasin — CRM · Fidélité · Conditions commerciales",
+      f_provenance:"Provenance", f_sector:"Secteur", f_typology:"Typologie", f_period:"Période",
+      f_reset:"Réinitialiser les filtres", f_candidates:"Nouveaux acteurs détectés",
+      sort_note:"Du plus récent au plus ancien", loading:"Chargement de la veille…",
+      load_more:"Charger plus", footer:"Veille interne Cegid Retail — mise à jour chaque lundi. Articles réservés à l'organisation.",
+      prov_enseigne:"Enseignes", prov_concurrent:"Concurrents", prov_innovation:"Innovation marché",
+      sector_all:"Tous les secteurs", period_all:"Toute période", period_7:"7 derniers jours", period_30:"30 derniers jours", period_90:"90 derniers jours",
+      typ_crm:"CRM", typ_fidelite:"Fidélité", typ_promo:"Promo & conditions commerciales", typ_wallet:"Wallet & paiement mobile",
+      typ_exp:"Expérience magasin", typ_data:"Data & IA client", typ_autre:"Autre",
+      read_more:"Lire le résumé détaillé", collapse:"Replier", copy:"Copier pour Teams", copied:"Copié",
+      open_source:"Voir la source", no_results:"Aucune news ne correspond à ces filtres.", example:"Exemple",
+      count_suffix:"news", validate:"Valider"
+    },
+    en:{
+      title:"Retail Watch", subtitle:"Current scope: in-store shopper experience — CRM · Loyalty · Commercial terms",
+      f_provenance:"Provenance", f_sector:"Sector", f_typology:"Topic", f_period:"Period",
+      f_reset:"Reset filters", f_candidates:"New players detected",
+      sort_note:"Newest first", loading:"Loading the watch…",
+      load_more:"Load more", footer:"Internal Cegid Retail watch — updated every Monday. Articles restricted to the organization.",
+      prov_enseigne:"Retailers", prov_concurrent:"Competitors", prov_innovation:"Market innovation",
+      sector_all:"All sectors", period_all:"All time", period_7:"Last 7 days", period_30:"Last 30 days", period_90:"Last 90 days",
+      typ_crm:"CRM", typ_fidelite:"Loyalty", typ_promo:"Promo & commercial terms", typ_wallet:"Wallet & mobile payment",
+      typ_exp:"In-store experience", typ_data:"Data & customer AI", typ_autre:"Other",
+      read_more:"Read full summary", collapse:"Collapse", copy:"Copy for Teams", copied:"Copied",
+      open_source:"View source", no_results:"No news matches these filters.", example:"Example",
+      count_suffix:"news", validate:"Validate"
+    }
+  };
+
+  var SECTORS = ["luxe","mode_premium","mode_access","beaute","chaussure","sport","optique","maison","alimentaire","transverse"];
+  var SECTOR_LABEL = {
+    fr:{luxe:"Luxe",mode_premium:"Mode & prêt-à-porter premium",mode_access:"Mode & accessoires",beaute:"Beauté & parfumerie",chaussure:"Chaussure & maroquinerie",sport:"Sport & loisirs",optique:"Optique",maison:"Maison & arts de la table",alimentaire:"Alimentaire premium",transverse:"Éditeurs & transverse"},
+    en:{luxe:"Luxury",mode_premium:"Premium fashion",mode_access:"Fashion & accessories",beaute:"Beauty & selective perfumery",chaussure:"Footwear & leather goods",sport:"Sport & leisure",optique:"Optical",maison:"Home & tableware",alimentaire:"Premium food",transverse:"Vendors & cross-sector"}
+  };
+  var TYPOLOGIES = ["crm","fidelite","promo","wallet","exp","data","autre"];
+  var PROVENANCES = ["enseigne","concurrent","innovation"];
+
+  var state = {
+    lang: (navigator.language||"en").toLowerCase().indexOf("fr")===0 ? "fr":"en",
+    provenance: {}, typology: {}, sector:"", period:"all",
+    limit: 20, openLong: {}
+  };
+
+  function t(key){ var d=DICT[state.lang]; return (d&&d[key]) || DICT.en[key] || key; }
+
+  var db=null, newsCol=null, candCol=null;
+  var allDocs = []; // local cache of latest query snapshot
+
+  function init(){
+    renderStaticI18n();
+    buildFilterUI();
+    bindLangToggle();
+    document.getElementById("resetFilters").addEventListener("click", function(){
+      state.provenance={}; state.typology={}; state.sector=""; state.period="all"; state.limit=20;
+      buildFilterUI(); runQuery();
+    });
+    document.getElementById("loadMore").addEventListener("click", function(){
+      state.limit += 20; runQuery();
+    });
+    connectDb();
+  }
+
+  async function connectDb(){
+    try{
+      db = await claude.use("db");
+    }catch(e){ db=null; }
+    if(!db){
+      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Base indisponible dans cette vue." : "Store unavailable in this view.") +'</div>';
+      return;
+    }
+    newsCol = db.collection("news");
+    candCol = db.collection("sources_candidates");
+    runQuery();
+    watchCandidates();
+  }
+
+  function runQuery(){
+    if(!newsCol) return;
+    var q = newsCol.orderBy("date","desc").limit(state.limit);
+    var provKeys = Object.keys(state.provenance).filter(function(k){return state.provenance[k];});
+    if(provKeys.length===1){ q = q.where("source_type","==",provKeys[0]); }
+    if(state.sector){ q = q.where("sector","array-contains",state.sector); }
+    var typKeys = Object.keys(state.typology).filter(function(k){return state.typology[k];});
+    if(typKeys.length===1){ q = q.where("typology","array-contains",typKeys[0]); }
+    if(state.period!=="all"){
+      var days = state.period==="7"?7:(state.period==="30"?30:90);
+      var cutoff = new Date(Date.now()-days*86400000).toISOString().slice(0,10);
+      q = q.where("date",">=",cutoff);
+    }
+    q.get().then(function(snap){
+      var docs = snap.docs.map(function(d){ var v=d.data(); v._id=d.id; return v; });
+      // client-side narrow for multi-select provenance/typology beyond single where support
+      if(provKeys.length>1){ docs = docs.filter(function(v){ return provKeys.indexOf(v.source_type)>-1; }); }
+      if(typKeys.length>1){ docs = docs.filter(function(v){ return (v.typology||[]).some(function(x){return typKeys.indexOf(x)>-1;}); }); }
+      allDocs = docs;
+      renderFeed(docs, snap.size>=state.limit);
+    }).catch(function(err){
+      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") +'</div>';
+    });
+  }
+
+  function watchCandidates(){
+    if(!candCol) return;
+    candCol.where("status","==","pending").limit(20).onSnapshot(function(snap){
+      var panel = document.getElementById("candPanel");
+      var list = document.getElementById("candList");
+      if(snap.empty){ panel.style.display="none"; return; }
+      panel.style.display="block";
+      list.innerHTML = snap.docs.map(function(d){
+        var v = d.data();
+        return '<div class="cand-item"><span>'+escapeHtml(v.name||"?")+'</span><span style="color:var(--text-muted)">'+escapeHtml(v.type||"")+'</span></div>';
+      }).join("");
+    }, function(){ /* ignore */ });
+  }
+
+  function renderFeed(docs, hasMore){
+    var feed = document.getElementById("feed");
+    document.getElementById("countLabel").textContent = docs.length + " " + t("count_suffix");
+    if(docs.length===0){
+      feed.innerHTML = '<div class="empty">'+t("no_results")+'</div>';
+      document.getElementById("loadMore").style.display="none";
+      return;
+    }
+    feed.innerHTML = docs.map(cardHtml).join("");
+    document.getElementById("loadMore").style.display = hasMore ? "inline-block":"none";
+    document.getElementById("loadMore").textContent = t("load_more");
+
+    Array.prototype.forEach.call(feed.querySelectorAll("[data-toggle]"), function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-toggle");
+        var el = feed.querySelector('[data-long="'+id+'"]');
+        var open = el.classList.toggle("open");
+        btn.textContent = open ? t("collapse") : t("read_more");
+      });
+    });
+    Array.prototype.forEach.call(feed.querySelectorAll("[data-copy]"), function(btn){
+      btn.addEventListener("click", function(){ doCopy(btn); });
+    });
+  }
+
+  function cardHtml(v){
+    var lang = state.lang;
+    var title = v["title_"+lang] || v.title_fr || v.title_en || "";
+    var shortS = v["summary_short_"+lang] || v.summary_short_fr || v.summary_short_en || "";
+    var longS = v["summary_long_"+lang] || v.summary_long_fr || v.summary_long_en || "";
+    var badgeClass = v.source_type==="enseigne"?"enseigne":(v.source_type==="concurrent"?"concurrent":"innovation");
+    var badgeLabel = t("prov_"+v.source_type);
+    var sectorTags = (v.sector||[]).map(function(s){ return '<span class="tag">'+escapeHtml((SECTOR_LABEL[lang][s])||s)+'</span>'; }).join("");
+    var typTags = (v.typology||[]).map(function(ty){ return '<span class="tag">'+escapeHtml(t("typ_"+ty))+'</span>'; }).join("");
+    var id = v._id;
+    var exampleBadge = v.is_example ? '<span class="badge example">'+t("example")+'</span>' : "";
+    var link = v.link ? '<a class="src-link" href="'+encodeURI(v.link)+'" target="_blank" rel="noopener">'+t("open_source")+' →</a>' : "";
+    return (
+      '<article class="card">'+
+        '<div class="meta-top">'+
+          '<span class="badge '+badgeClass+'">'+escapeHtml(badgeLabel)+'</span>'+
+          exampleBadge+
+          '<span class="source">'+escapeHtml(v.source_name||"")+'</span>'+
+          '<span class="date">'+escapeHtml(v.date||"")+'</span>'+
+        '</div>'+
+        '<h2>'+escapeHtml(title)+'</h2>'+
+        '<p class="summary-short">'+escapeHtml(shortS)+'</p>'+
+        '<div class="tag-row">'+sectorTags+typTags+'</div>'+
+        '<p class="summary-long" data-long="'+id+'">'+escapeHtml(longS)+'</p>'+
+        '<div class="actions">'+
+          '<button class="btn" data-toggle="'+id+'">'+t("read_more")+'</button>'+
+          '<button class="btn" data-copy="'+id+'">'+t("copy")+'</button>'+
+          link+
+        '</div>'+
+      '</article>'
+    );
+  }
+
+  function doCopy(btn){
+    var id = btn.getAttribute("data-copy");
+    var v = allDocs.filter(function(d){return d._id===id;})[0];
+    if(!v) return;
+    var lang = state.lang;
+    var title = v["title_"+lang] || v.title_fr || v.title_en || "";
+    var shortS = v["summary_short_"+lang] || v.summary_short_fr || v.summary_short_en || "";
+    var text = title + "\n" + (v.source_name||"") + " — " + (v.date||"") + "\n" + shortS + (v.link ? ("\n"+v.link) : "");
+    var reset = function(){ btn.textContent = t("copy"); btn.classList.remove("copied"); };
+    var mark = function(){ btn.textContent = t("copied"); btn.classList.add("copied"); setTimeout(reset,1800); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(mark).catch(function(){ fallbackCopy(text); mark(); });
+    } else {
+      fallbackCopy(text); mark();
+    }
+  }
+  function fallbackCopy(text){
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try{ document.execCommand("copy"); }catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  function buildFilterUI(){
+    var provBox = document.getElementById("fProvenance");
+    provBox.innerHTML = PROVENANCES.map(function(p){
+      var on = !!state.provenance[p];
+      return '<button class="chip'+(on?' on':'')+'" data-prov="'+p+'">'+t("prov_"+p)+'</button>';
+    }).join("");
+    Array.prototype.forEach.call(provBox.querySelectorAll("[data-prov]"), function(b){
+      b.addEventListener("click", function(){
+        var p=b.getAttribute("data-prov"); state.provenance[p]=!state.provenance[p]; state.limit=20;
+        buildFilterUI(); runQuery();
+      });
+    });
+
+    var typBox = document.getElementById("fTypology");
+    typBox.innerHTML = TYPOLOGIES.map(function(ty){
+      var on = !!state.typology[ty];
+      return '<button class="chip'+(on?' on':'')+'" data-typ="'+ty+'">'+t("typ_"+ty)+'</button>';
+    }).join("");
+    Array.prototype.forEach.call(typBox.querySelectorAll("[data-typ]"), function(b){
+      b.addEventListener("click", function(){
+        var ty=b.getAttribute("data-typ"); state.typology[ty]=!state.typology[ty]; state.limit=20;
+        buildFilterUI(); runQuery();
+      });
+    });
+
+    var sectorSel = document.getElementById("fSector");
+    sectorSel.innerHTML = '<option value="">'+t("sector_all")+'</option>' +
+      SECTORS.map(function(s){ return '<option value="'+s+'"'+(state.sector===s?' selected':'')+'>'+escapeHtml(SECTOR_LABEL[state.lang][s])+'</option>'; }).join("");
+    sectorSel.onchange = function(){ state.sector=sectorSel.value; state.limit=20; runQuery(); };
+
+    var periodSel = document.getElementById("fPeriod");
+    var periods = [["all","period_all"],["7","period_7"],["30","period_30"],["90","period_90"]];
+    periodSel.innerHTML = periods.map(function(p){ return '<option value="'+p[0]+'"'+(state.period===p[0]?' selected':'')+'>'+t(p[1])+'</option>'; }).join("");
+    periodSel.onchange = function(){ state.period=periodSel.value; state.limit=20; runQuery(); };
+
+    document.getElementById("resetFilters").textContent = t("f_reset");
+  }
+
+  function renderStaticI18n(){
+    Array.prototype.forEach.call(document.querySelectorAll("[data-i]"), function(el){
+      el.textContent = t(el.getAttribute("data-i"));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("#langToggle button"), function(b){
+      b.classList.toggle("active", b.getAttribute("data-lang")===state.lang);
+    });
+  }
+
+  function bindLangToggle(){
+    Array.prototype.forEach.call(document.querySelectorAll("#langToggle button"), function(b){
+      b.addEventListener("click", function(){
+        state.lang = b.getAttribute("data-lang");
+        renderStaticI18n(); buildFilterUI();
+        if(allDocs.length){ renderFeed(allDocs, document.getElementById("loadMore").style.display!=="none"); }
+      });
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+  if(document.readyState!=="loading") init();
+})();
+</script>
