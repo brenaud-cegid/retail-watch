@@ -30,6 +30,11 @@ Cible : **retail spécialisé et luxe** (pas le mass market). Extension prévue,
 - Alimentaire premium
 - Éditeurs & transverse (concurrents, innovation)
 
+## Géographie (filtre, continent puis pays)
+- Continents : Europe, Amérique du Nord, Amérique latine, Asie, Moyen-Orient, Afrique, Océanie, International (annonce globale sans pays précis)
+- Pays (liste restreinte aux marchés retail/luxe pertinents, enrichie si besoin) : France, Italie, Royaume-Uni, Allemagne, Espagne, Suisse (Europe) · États-Unis, Canada (Amérique du Nord) · Brésil, Mexique (Amérique latine) · Chine, Japon, Corée du Sud, Inde, Singapour (Asie) · Émirats arabes unis, Arabie saoudite, Qatar (Moyen-Orient) · Afrique du Sud, Maroc (Afrique) · Australie (Océanie)
+- Une news porte le pays où se situe l'actualité (siège, marché visé, déploiement) ; "International" si aucun pays unique ne s'applique.
+
 ## Typologie (filtre 3, multi-valeurs)
 - CRM
 - Fidélité

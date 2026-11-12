@@ -30,6 +30,8 @@ CONTEXTE DU PROJET (lis-les avant de commencer) :
   - source_type : "enseigne" si c'est une enseigne retail, "concurrent" si c'est un éditeur/techno concurrent(e), "innovation" UNIQUEMENT si l'article est une tendance générale sans acteur unique identifiable (sinon classe-le en enseigne/concurrent même si trouvé via un site de presse)
   - sector : tableau parmi exactement ces codes : luxe, mode_premium, mode_access, beaute, chaussure, sport, optique, maison, alimentaire, transverse (transverse pour les concurrents/éditeurs et l'innovation transverse)
   - typology : tableau parmi exactement ces codes (plusieurs possibles) : crm, fidelite, promo, wallet, exp, data, autre
+  - continent : exactement un de ces codes : europe, amerique_nord, amerique_latine, asie, moyen_orient, afrique, oceanie, international (le pays où se situe l'actualité — siège, marché visé, déploiement ; "international" si aucun pays unique ne s'applique)
+  - country : un de ces codes (laisser vide "" si continent="international" ou si aucun ne correspond) : france, italie, royaume_uni, allemagne, espagne, suisse, etats_unis, canada, bresil, mexique, chine, japon, coree_du_sud, inde, singapour, emirats_arabes_unis, arabie_saoudite, qatar, afrique_du_sud, maroc, australie
   - is_example : false
   - added_at : horodatage ISO actuel
 
