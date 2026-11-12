@@ -13,8 +13,12 @@ CONTEXTE DU PROJET (lis-les avant de commencer) :
 
 ÉTAPE 1 — Lire sources.md et lister les acteurs "validé" des 3 sections (Enseignes, Concurrents/éditeurs, Innovation marché).
 
-ÉTAPE 2 — Pour chaque acteur validé, rechercher les actualités publiées dans les 7 derniers jours en lien avec le périmètre (CRM, fidélité, promotions/conditions commerciales, wallet/paiement mobile en magasin, expérience en magasin, data/IA appliquée au client). Ignore tout ce qui est hors périmètre (ex. résultats financiers, RH, sujets supply chain). Pour chaque piste trouvée :
-  a. Ouvre réellement la page (ne te fie jamais à un seul extrait de recherche) et vérifie sa date de publication réelle — si elle n'est pas dans les 7 derniers jours, écarte-la.
+ÉTAPE 2 — Avec ~100 acteurs dans sources.md, tu n'as pas le budget pour interroger chacun individuellement : procède par recherches thématiques larges, puis filtre sur la liste validée.
+  - Lance au moins 8 recherches web distinctes, une par combinaison périmètre × fenêtre temps, par exemple : "retail loyalty program launch" + période, "retail CRM clienteling news" + période, "retail promotion engine" + période, "wallet mobile payment retail store" + période, "in-store customer experience retail" + période, "retail customer data AI" + période — en variant les mots-clés (FR et EN) pour ne pas rater une actualité francophone.
+  - Fais aussi une recherche nommée pour une dizaine d'acteurs parmi les plus importants de sources.md (grands groupes de luxe, enseignes très connues, éditeurs leaders) plutôt que la liste entière.
+  - Ignore tout ce qui est hors périmètre (ex. résultats financiers, RH, sujets supply chain) et tout acteur qui n'est identifiable ni comme "validé" ni comme un candidat plausible.
+  - Fenêtre temporelle : 10 jours (pas 7) pour absorber le décalage entre deux runs et ne pas perdre une actualité parue juste avant le run précédent. Pour chaque piste trouvée :
+  a. Ouvre réellement la page (ne te fie jamais à un seul extrait de recherche) et vérifie sa date de publication réelle — si elle n'est pas dans les 10 derniers jours, écarte-la.
   b. Vérifie que l'article est intégralement lisible, sans paywall ni mur d'inscription — si le contenu est tronqué ou réservé aux abonnés, écarte cette source pour ce sujet.
   c. Vérifie que le lien répond correctement.
   d. **Si l'ouverture directe de la page échoue (403, blocage anti-bot, timeout)** : retente une fois via une nouvelle recherche web ciblée (ex. `site:nom-du-domaine mot-clés`) pour retrouver un extrait exploitable, ou essaie une variante d'URL (version AMP, URL sans paramètres de tracking). Si après cette deuxième tentative le contenu complet et sa date ne peuvent toujours pas être vérifiés, écarte la source pour cette semaine — ne jamais deviner une date ou un contenu — et note le nom du domaine bloqué dans `sources_bloquees` (étape 5).
