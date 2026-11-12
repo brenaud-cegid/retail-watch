@@ -389,8 +389,8 @@ a.src-link:hover{text-decoration:underline;}
         setTimeout(function(){ runQueryExec(q, typKeys, attempt+1); }, 900);
         return;
       }
-      var code = err && err.code ? " ("+err.code+")" : "";
-      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") + code +'</div>';
+      var detail = err ? (err.code || err.message || String(err)) : "unknown";
+      document.getElementById("feed").innerHTML = '<div class="empty">'+ (state.lang==="fr" ? "Impossible de charger la veille." : "Could not load the watch.") + ' — <code style="font-size:11px;opacity:.7;">'+escapeHtml(detail)+'</code></div>';
     });
   }
 
