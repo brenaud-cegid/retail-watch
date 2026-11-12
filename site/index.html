@@ -333,7 +333,7 @@ a.src-link:hover{text-decoration:underline;}
     attempt = attempt||0;
     if(!compCol){ allComps=[]; renderComps(); return; }
     compCol.orderBy("name","asc").limit(500).get().then(function(snap){
-      allComps = snap.docs.map(function(d){ var v=d.data(); v._id=d.id; return v; });
+      allComps = snap.docs.map(function(d){ return Object.assign({}, d.data(), {_id:d.id}); });
       renderComps();
     }).catch(function(err){
       var retryable = err && (err.code==="unavailable" || err.code==="resource_exhausted");
@@ -378,7 +378,7 @@ a.src-link:hover{text-decoration:underline;}
 
   function runQueryExec(q, typKeys, attempt){
     q.get().then(function(snap){
-      var docs = snap.docs.map(function(d){ var v=d.data(); v._id=d.id; return v; });
+      var docs = snap.docs.map(function(d){ var v=Object.assign({}, d.data(), {_id:d.id}); return v; });
       // client-side narrow for multi-select typology beyond single where support
       if(typKeys.length>1){ docs = docs.filter(function(v){ return (v.typology||[]).some(function(x){return typKeys.indexOf(x)>-1;}); }); }
       allDocs = docs;
