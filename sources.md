@@ -118,4 +118,6 @@ Statut : `validé` (suivi actif) / `candidat` (détecté, à valider). Cette lis
 
 ## Candidats détectés (à valider)
 
-_Aucun pour l'instant — alimenté par la tâche hebdomadaire._
+| Nom | Type | Secteur (supposé) | Détecté le | Note |
+|---|---|---|---|---|
+| No7 Software | Concurrent | Transverse | 2026-11-12 | Éditeur de fidélité (Anchor Loyalty & Rewards) pour marques Shopify ; intégration Shopify POS annoncée le 4 nov. 2026. |
