@@ -12,17 +12,54 @@ Statut : `validé` (suivi actif) / `candidat` (détecté, à valider). Cette lis
 | Richemont (maisons du groupe) | Luxe |
 | Chanel | Luxe |
 | Rolex | Luxe |
+| Patek Philippe | Luxe |
+| Cartier | Luxe |
+| Bulgari | Luxe |
+| Louis Vuitton | Luxe |
+| Dior | Luxe |
+| Gucci | Luxe |
+| Prada | Luxe |
+| Burberry | Luxe |
+| Moncler | Luxe |
+| Loro Piana | Luxe |
+| Longchamp | Chaussure & maroquinerie |
+| Sandro | Mode & prêt-à-porter premium |
+| Maje | Mode & prêt-à-porter premium |
+| The Kooples | Mode & prêt-à-porter premium |
+| Ba&sh | Mode & prêt-à-porter premium |
+| Isabel Marant | Mode & prêt-à-porter premium |
+| COS | Mode & prêt-à-porter premium |
 | Lacoste | Mode & accessoires |
 | Tape à l'œil | Mode & accessoires |
+| Celio | Mode & accessoires |
+| Jules | Mode & accessoires |
+| Promod | Mode & accessoires |
+| Camaïeu | Mode & accessoires |
 | Salomon | Sport & loisirs |
 | Decathlon | Sport & loisirs |
+| Intersport | Sport & loisirs |
+| Go Sport | Sport & loisirs |
+| Courir | Sport & loisirs |
 | Sephora | Beauté & parfumerie sélective |
 | Nocibé | Beauté & parfumerie sélective |
 | Marionnaud | Beauté & parfumerie sélective |
+| Yves Rocher | Beauté & parfumerie sélective |
+| L'Occitane | Beauté & parfumerie sélective |
+| Douglas | Beauté & parfumerie sélective |
+| André (chaussures) | Chaussure & maroquinerie |
+| Bata | Chaussure & maroquinerie |
+| JB Martin | Chaussure & maroquinerie |
 | Alain Afflelou | Optique & santé visuelle |
 | Krys | Optique & santé visuelle |
+| Optic 2000 | Optique & santé visuelle |
+| Générale d'Optique | Optique & santé visuelle |
 | Maisons du Monde | Maison & arts de la table |
+| Habitat | Maison & arts de la table |
+| Zara Home | Maison & arts de la table |
 | Nespresso | Alimentaire premium |
+| La Grande Épicerie de Paris | Alimentaire premium |
+| Fauchon | Alimentaire premium |
+| Hédiard | Alimentaire premium |
 
 ## Concurrents / éditeurs — validé
 
@@ -37,6 +74,11 @@ Statut : `validé` (suivi actif) / `candidat` (détecté, à valider). Cette lis
 | Manhattan Active | Commerce unifié |
 | Aptos | POS / commerce unifié |
 | Lightspeed | POS |
+| Vend | POS |
+| Square Retail | POS |
+| Toshiba Global Commerce Solutions | POS / commerce unifié |
+| Diebold Nixdorf | POS / commerce unifié |
+| Zebra Technologies (retail) | Terminaux / expérience magasin |
 | Antavo | Fidélité |
 | Comarch Loyalty | Fidélité |
 | Eagle Eye | Fidélité / promotions |
@@ -44,6 +86,13 @@ Statut : `validé` (suivi actif) / `candidat` (détecté, à valider). Cette lis
 | Smile.io | Fidélité |
 | Fivestars | Fidélité |
 | Zinrelo | Fidélité |
+| Talon.One | Promotions / moteur de règles |
+| Capillary Technologies | Fidélité / CRM |
+| Kognitiv | Fidélité (coalition) |
+| Punchh (PAR Technology) | Fidélité restauration/retail |
+| Adyen | Paiement / wallet |
+| Worldline | Paiement / wallet |
+| Lyra Network | Paiement / wallet |
 | Qualtrics | Expérience client (mesure) |
 
 ## Innovation marché — validé
@@ -60,6 +109,12 @@ Statut : `validé` (suivi actif) / `candidat` (détecté, à valider). Cette lis
 | Vogue Business | Presse spécialisée luxe |
 | Loyalty360 | Presse spécialisée fidélité |
 | Chain Store Age | Presse spécialisée |
+| Retail Week | Presse spécialisée UK |
+| Essential Retail | Presse spécialisée UK |
+| Internet Retailing | Presse spécialisée |
+| FashionUnited | Presse spécialisée mode |
+| Glossy (Digiday) | Presse spécialisée mode/beauté digital |
+| Luxury Daily | Presse spécialisée luxe |
 
 ## Candidats détectés (à valider)
 
