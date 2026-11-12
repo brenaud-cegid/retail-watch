@@ -121,3 +121,4 @@ Statut : `validé` (suivi actif) / `candidat` (détecté, à valider). Cette lis
 | Nom | Type | Secteur (supposé) | Détecté le | Note |
 |---|---|---|---|---|
 | No7 Software | Concurrent | Transverse | 2026-11-12 | Éditeur de fidélité (Anchor Loyalty & Rewards) pour marques Shopify ; intégration Shopify POS annoncée le 4 nov. 2026. |
+| XCCommerce | Concurrent | Transverse | 2026-11-12 | Éditeur de plateforme de promotions et coupons omnicanal pour retailers nord-américains ; tribune Retail TouchPoints du 5 nov. 2026 sur les promotions personnalisées. |
