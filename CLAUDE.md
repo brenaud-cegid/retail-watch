@@ -20,7 +20,7 @@ Cible : **retail spécialisé et luxe** (pas le mass market). Extension prévue,
 - Conservée sur chaque news (badge), mais retirée des filtres de l'onglet Veille (jugée peu utile en pratique).
 
 ## Onglet "Concurrents"
-Annuaire des éditeurs/concurrents (collection `competitors`) : nom + description courte + typologie(s), filtrable par typologie (même taxonomie que la veille). Alimenté manuellement pour l'instant à partir de `sources.md` — pas (encore) mis à jour par la tâche hebdomadaire.
+Annuaire des éditeurs/concurrents (collection `competitors`) : nom + description courte + typologie(s), filtrable par typologie (même taxonomie que la veille). Maintenu par la tâche hebdomadaire : à chaque run, tout acteur "validé" de la section Concurrents/éditeurs de `sources.md` sans fiche existante se voit créer une fiche (jamais pour un simple candidat). Une fiche existante n'est jamais réécrite automatiquement (pour préserver une correction manuelle).
 
 ## Nomenclature sectorielle (filtre 2)
 - Luxe (maroquinerie, joaillerie, horlogerie)

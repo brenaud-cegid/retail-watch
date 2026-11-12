@@ -9,7 +9,7 @@ Tu exécutes la veille hebdomadaire du projet "Outil de veille Retail" (PM Cegid
 CONTEXTE DU PROJET (lis-les avant de commencer) :
 - Cadrage : "C:\Users\RENAUD\OneDrive - CEGID\Claude folder\Outil de veille Retail\CLAUDE.md"
 - Référentiel des sources (acteurs validés à suivre, et candidats déjà détectés) : "C:\Users\RENAUD\OneDrive - CEGID\Claude folder\Outil de veille Retail\sources.md"
-- Page de veille publiée (Artifact) : https://claude.ai/artifact/FUFShXkNyp8LuaPmJhsBie — sa base de données se manipule avec l'outil ArtifactData (charge-le via ToolSearch "select:ArtifactData" si besoin), toujours avec ce même `url`.
+- Page de veille publiée (Artifact) : https://claude.ai/artifact/FUFShXkNyp8LuaPmJhsBie — sa base de données se manipule avec l'outil ArtifactData (charge-le via ToolSearch "select:ArtifactData" si besoin), toujours avec ce même `url`. Collections : "news" (les actualités), "sources_candidates" (nouveaux acteurs à valider), "competitors" (annuaire des concurrents affiché dans l'onglet "Concurrents" de la page), "run_log" (historique des runs).
 
 ÉTAPE 1 — Lire sources.md et lister les acteurs "validé" des 3 sections (Enseignes, Concurrents/éditeurs, Innovation marché).
 
@@ -42,8 +42,13 @@ CONTEXTE DU PROJET (lis-les avant de commencer) :
   - ET ajoute une ligne dans le tableau "Candidats détectés" de sources.md (section finale du fichier), avec le même nom, pour que le PM voie l'historique même sans ouvrir la page.
   Ne crée jamais de doublon : si ce nom existe déjà dans sources.md (validé ou candidat), n'ajoute rien.
 
-ÉTAPE 5 — Bilan de l'exécution : écris un document ArtifactData "set", collection "run_log", `doc_id` = la date du jour (YYYY-MM-DD), `data` = {date, news_ajoutees (nombre), candidats_detectes (nombre), acteurs_sans_resultat (liste des acteurs de sources.md pour lesquels rien n'a été trouvé cette semaine), sources_bloquees (liste des domaines où l'accès a échoué deux fois de suite cette semaine, étape 2d)}.
+ÉTAPE 5 — Mise à jour de l'annuaire concurrents (collection "competitors", affiché dans l'onglet "Concurrents" de la page) : pour chaque acteur de la section "Concurrents / éditeurs" — **validé** uniquement (jamais un candidat) — de sources.md :
+  a. Vérifie s'il existe déjà un document : ArtifactData "get", collection "competitors", `doc_id` = slug du nom (minuscules, tirets, ex. "eagle-eye"). S'il existe déjà, ne le modifie pas (une fiche existante peut avoir été corrigée à la main) et passe au suivant.
+  b. S'il n'existe pas, crée-le : ArtifactData "set", collection "competitors", `doc_id` = ce slug, `data` = {name (nom tel qu'écrit dans sources.md), typology (1 à 3 codes parmi crm, fidelite, promo, wallet, exp, data, autre — déduits de la catégorie de produit, jamais inventés), description_fr, description_en (une seule phrase factuelle et neutre décrivant la catégorie de produit de cet éditeur — jamais de chiffres de marché, classement, client nommé ou levée de fonds non vérifiés directement)}.
+  Ne touche jamais à la collection "competitors" pour un acteur encore "candidat" : il n'y entre que lorsque le PM l'a validé dans sources.md.
 
-ÉTAPE 6 — Si tu as modifié sources.md (nouveaux candidats), committe ce changement avec git dans "C:\Users\RENAUD\OneDrive - CEGID\Claude folder\Outil de veille Retail" (`git add sources.md`, puis `git commit -m "Veille du <date> : N news ajoutées, M candidats détectés"`). N'ouvre jamais d'invite interactive.
+ÉTAPE 6 — Bilan de l'exécution : écris un document ArtifactData "set", collection "run_log", `doc_id` = la date du jour (YYYY-MM-DD), `data` = {date, news_ajoutees (nombre), candidats_detectes (nombre), fiches_concurrents_ajoutees (nombre créé à l'étape 5), acteurs_sans_resultat (liste des acteurs de sources.md pour lesquels rien n'a été trouvé cette semaine), sources_bloquees (liste des domaines où l'accès a échoué deux fois de suite cette semaine, étape 2d)}.
 
-Termine par un résumé en français : nombre de news ajoutées, nombre de candidats détectés, acteurs sans actualité cette semaine, domaines bloqués cette semaine (le cas échéant, pour que le PM sache lesquels retirer ou remplacer dans sources.md). Ne notifie rien d'autre, n'envoie aucun message externe, ne publie rien d'autre que les écritures en base décrites ci-dessus.
+ÉTAPE 7 — Si tu as modifié sources.md (nouveaux candidats), committe ce changement avec git dans "C:\Users\RENAUD\OneDrive - CEGID\Claude folder\Outil de veille Retail" (`git add sources.md`, puis `git commit -m "Veille du <date> : N news ajoutées, M candidats détectés"`). N'ouvre jamais d'invite interactive.
+
+Termine par un résumé en français : nombre de news ajoutées, nombre de candidats détectés, nombre de fiches concurrents créées, acteurs sans actualité cette semaine, domaines bloqués cette semaine (le cas échéant, pour que le PM sache lesquels retirer ou remplacer dans sources.md). Ne notifie rien d'autre, n'envoie aucun message externe, ne publie rien d'autre que les écritures en base décrites ci-dessus.
