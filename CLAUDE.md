@@ -13,10 +13,14 @@ Expérience shopper **en magasin**, sur les briques :
 
 Cible : **retail spécialisé et luxe** (pas le mass market). Extension prévue, dans un second temps, à tout le périmètre Cegid Retail (au-delà de la seule expérience client) : le nom, la structure de données et l'architecture de la page sont déjà pensés pour accueillir d'autres périmètres (ex. supply chain, finance magasin) sans refonte.
 
-## Provenance (filtre 1)
+## Provenance (donnée, pas un filtre)
 - **Enseignes** : tout acteur retail (pas seulement les clients Cegid)
 - **Concurrents** : éditeurs et technologies concurrentes
 - **Innovation marché** : tendances / cas d'usage sans acteur précis
+- Conservée sur chaque news (badge), mais retirée des filtres de l'onglet Veille (jugée peu utile en pratique).
+
+## Onglet "Concurrents"
+Annuaire des éditeurs/concurrents (collection `competitors`) : nom + description courte + typologie(s), filtrable par typologie (même taxonomie que la veille). Alimenté manuellement pour l'instant à partir de `sources.md` — pas (encore) mis à jour par la tâche hebdomadaire.
 
 ## Nomenclature sectorielle (filtre 2)
 - Luxe (maroquinerie, joaillerie, horlogerie)

@@ -43,6 +43,12 @@ h1,h2,h3,.disp{font-family:"Poppins",system-ui,sans-serif;font-weight:400;letter
 .lang-toggle button{border:none;background:transparent;padding:4px 10px;border-radius:999px;font-size:12px;font-family:"Poppins",system-ui,sans-serif;color:var(--text-muted);cursor:pointer;}
 .lang-toggle button.active{background:var(--primary);color:var(--primary-ink);}
 
+.tab-bar{display:flex;gap:4px;border-bottom:1px solid var(--border);}
+.tab-btn{border:none;background:transparent;padding:10px 4px;margin-right:18px;font-family:"Poppins",sans-serif;font-size:14px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+.view{display:none;}
+.view.active{display:block;}
+
 .layout{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;}
 @media (max-width:860px){.layout{grid-template-columns:1fr;}}
 
@@ -89,6 +95,10 @@ a.src-link:hover{text-decoration:underline;}
 .cand-item{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--divider);}
 .cand-item:last-child{border-bottom:none;}
 .footer-note{color:var(--text-muted);font-size:12px;text-align:center;padding-top:8px;}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.comp-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;}
+.comp-card h2{font-size:15.5px;margin:0;}
+.comp-card p{font-size:13px;color:var(--text-muted);margin:0;line-height:1.5;}
 </style>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
@@ -108,51 +118,75 @@ a.src-link:hover{text-decoration:underline;}
     </div>
   </div>
 
-  <div class="layout">
-    <aside class="panel filters">
-      <div class="filter-group">
-        <h3 data-i="f_provenance">Provenance</h3>
-        <div class="chip-row" id="fProvenance"></div>
-      </div>
-      <div class="filter-group">
-        <h3 data-i="f_sector">Secteur</h3>
-        <select class="ds" id="fSector"></select>
-      </div>
-      <div class="filter-group">
-        <h3 data-i="f_typology">Typologie</h3>
-        <div class="chip-row" id="fTypology"></div>
-      </div>
-      <div class="filter-group">
-        <h3 data-i="f_continent">Continent</h3>
-        <div class="chip-row" id="fContinent"></div>
-      </div>
-      <div class="filter-group">
-        <h3 data-i="f_country">Pays</h3>
-        <select class="ds" id="fCountry"></select>
-      </div>
-      <div class="filter-group">
-        <h3 data-i="f_period">Période</h3>
-        <select class="ds" id="fPeriod"></select>
-      </div>
-      <button class="reset" id="resetFilters" data-i="f_reset">Réinitialiser les filtres</button>
+  <div class="tab-bar">
+    <button class="tab-btn" id="tabVeille" data-tab="veille" data-i="tab_veille">Veille</button>
+    <button class="tab-btn" id="tabConcurrents" data-tab="concurrents" data-i="tab_concurrents">Concurrents</button>
+  </div>
 
-      <div class="filter-group cand-panel" id="candPanel" style="display:none;">
-        <h3 data-i="f_candidates">Nouveaux acteurs détectés</h3>
-        <div id="candList"></div>
-      </div>
-    </aside>
+  <div class="view" id="viewVeille">
+    <div class="layout">
+      <aside class="panel filters">
+        <div class="filter-group">
+          <h3 data-i="f_sector">Secteur</h3>
+          <select class="ds" id="fSector"></select>
+        </div>
+        <div class="filter-group">
+          <h3 data-i="f_typology">Typologie</h3>
+          <div class="chip-row" id="fTypology"></div>
+        </div>
+        <div class="filter-group">
+          <h3 data-i="f_continent">Continent</h3>
+          <div class="chip-row" id="fContinent"></div>
+        </div>
+        <div class="filter-group">
+          <h3 data-i="f_country">Pays</h3>
+          <select class="ds" id="fCountry"></select>
+        </div>
+        <div class="filter-group">
+          <h3 data-i="f_period">Période</h3>
+          <select class="ds" id="fPeriod"></select>
+        </div>
+        <button class="reset" id="resetFilters" data-i="f_reset">Réinitialiser les filtres</button>
 
-    <main>
-      <div class="count-row">
-        <span id="countLabel"></span>
-        <span data-i="sort_note">Du plus récent au plus ancien</span>
-      </div>
-      <div class="feed" id="feed">
-        <div class="empty" data-i="loading">Chargement de la veille…</div>
-      </div>
-      <button class="btn primary loadmore" id="loadMore" style="display:none;" data-i="load_more">Charger plus</button>
-      <p class="footer-note" data-i="footer">Veille interne Cegid Retail — mise à jour chaque lundi. Articles réservés à l'organisation.</p>
-    </main>
+        <div class="filter-group cand-panel" id="candPanel" style="display:none;">
+          <h3 data-i="f_candidates">Nouveaux acteurs détectés</h3>
+          <div id="candList"></div>
+        </div>
+      </aside>
+
+      <main>
+        <div class="count-row">
+          <span id="countLabel"></span>
+          <span data-i="sort_note">Du plus récent au plus ancien</span>
+        </div>
+        <div class="feed" id="feed">
+          <div class="empty" data-i="loading">Chargement de la veille…</div>
+        </div>
+        <button class="btn primary loadmore" id="loadMore" style="display:none;" data-i="load_more">Charger plus</button>
+        <p class="footer-note" data-i="footer">Veille interne Cegid Retail — mise à jour chaque lundi. Articles réservés à l'organisation.</p>
+      </main>
+    </div>
+  </div>
+
+  <div class="view" id="viewConcurrents">
+    <div class="layout">
+      <aside class="panel filters">
+        <div class="filter-group">
+          <h3 data-i="f_typology">Typologie</h3>
+          <div class="chip-row" id="fTypologyComp"></div>
+        </div>
+        <button class="reset" id="resetCompFilters" data-i="f_reset">Réinitialiser les filtres</button>
+      </aside>
+      <main>
+        <div class="count-row">
+          <span id="compCountLabel"></span>
+          <span></span>
+        </div>
+        <div class="comp-grid" id="compGrid">
+          <div class="empty" data-i="loading">Chargement de la veille…</div>
+        </div>
+      </main>
+    </div>
   </div>
 </div>
 
@@ -176,7 +210,9 @@ a.src-link:hover{text-decoration:underline;}
       open_source:"Voir la source", no_results:"Aucune news ne correspond à ces filtres.", example:"Exemple",
       count_suffix:"news", validate:"Valider",
       cont_europe:"Europe", cont_amerique_nord:"Amérique du Nord", cont_amerique_latine:"Amérique latine",
-      cont_asie:"Asie", cont_moyen_orient:"Moyen-Orient", cont_afrique:"Afrique", cont_oceanie:"Océanie", cont_international:"International"
+      cont_asie:"Asie", cont_moyen_orient:"Moyen-Orient", cont_afrique:"Afrique", cont_oceanie:"Océanie", cont_international:"International",
+      tab_veille:"Veille", tab_concurrents:"Concurrents", comp_no_results:"Aucun concurrent ne correspond à ce filtre.",
+      comp_count_suffix:"éditeurs"
     },
     en:{
       title:"Retail Watch", subtitle:"Current scope: in-store shopper experience — CRM · Loyalty · Commercial terms",
@@ -193,7 +229,9 @@ a.src-link:hover{text-decoration:underline;}
       open_source:"View source", no_results:"No news matches these filters.", example:"Example",
       count_suffix:"news", validate:"Validate",
       cont_europe:"Europe", cont_amerique_nord:"North America", cont_amerique_latine:"Latin America",
-      cont_asie:"Asia", cont_moyen_orient:"Middle East", cont_afrique:"Africa", cont_oceanie:"Oceania", cont_international:"International"
+      cont_asie:"Asia", cont_moyen_orient:"Middle East", cont_afrique:"Africa", cont_oceanie:"Oceania", cont_international:"International",
+      tab_veille:"Watch", tab_concurrents:"Competitors", comp_no_results:"No competitor matches this filter.",
+      comp_count_suffix:"vendors"
     }
   };
 
@@ -203,7 +241,6 @@ a.src-link:hover{text-decoration:underline;}
     en:{luxe:"Luxury",mode_premium:"Premium fashion",mode_access:"Fashion & accessories",beaute:"Beauty & selective perfumery",chaussure:"Footwear & leather goods",sport:"Sport & leisure",optique:"Optical",maison:"Home & tableware",alimentaire:"Premium food",transverse:"Vendors & cross-sector"}
   };
   var TYPOLOGIES = ["crm","fidelite","promo","wallet","exp","data","autre"];
-  var PROVENANCES = ["enseigne","concurrent","innovation"];
 
   var CONTINENTS = ["europe","amerique_nord","amerique_latine","asie","moyen_orient","afrique","oceanie","international"];
   var COUNTRIES = [
@@ -234,27 +271,47 @@ a.src-link:hover{text-decoration:underline;}
 
   var state = {
     lang: (navigator.language||"en").toLowerCase().indexOf("fr")===0 ? "fr":"en",
-    provenance: {}, typology: {}, sector:"", period:"all", continent:{}, country:"",
-    limit: 20, openLong: {}
+    typology: {}, sector:"", period:"all", continent:{}, country:"",
+    limit: 20, openLong: {}, tab:"veille", compTypology:{}
   };
 
   function t(key){ var d=DICT[state.lang]; return (d&&d[key]) || DICT.en[key] || key; }
 
-  var db=null, newsCol=null, candCol=null;
+  var db=null, newsCol=null, candCol=null, compCol=null;
   var allDocs = []; // local cache of latest query snapshot
+  var allComps = null; // null = not loaded yet
 
   function init(){
     renderStaticI18n();
     buildFilterUI();
     bindLangToggle();
+    bindTabs();
     document.getElementById("resetFilters").addEventListener("click", function(){
-      state.provenance={}; state.typology={}; state.sector=""; state.period="all"; state.continent={}; state.country=""; state.limit=20;
+      state.typology={}; state.sector=""; state.period="all"; state.continent={}; state.country=""; state.limit=20;
       buildFilterUI(); runQuery();
+    });
+    document.getElementById("resetCompFilters").addEventListener("click", function(){
+      state.compTypology={}; buildFilterUI(); renderComps();
     });
     document.getElementById("loadMore").addEventListener("click", function(){
       state.limit += 20; runQuery();
     });
     connectDb();
+  }
+
+  function bindTabs(){
+    Array.prototype.forEach.call(document.querySelectorAll(".tab-btn"), function(b){
+      b.addEventListener("click", function(){
+        state.tab = b.getAttribute("data-tab");
+        document.getElementById("tabVeille").classList.toggle("active", state.tab==="veille");
+        document.getElementById("tabConcurrents").classList.toggle("active", state.tab==="concurrents");
+        document.getElementById("viewVeille").classList.toggle("active", state.tab==="veille");
+        document.getElementById("viewConcurrents").classList.toggle("active", state.tab==="concurrents");
+        if(state.tab==="concurrents" && allComps===null){ loadComps(); }
+      });
+    });
+    document.getElementById("tabVeille").classList.add("active");
+    document.getElementById("viewVeille").classList.add("active");
   }
 
   async function connectDb(){
@@ -267,15 +324,39 @@ a.src-link:hover{text-decoration:underline;}
     }
     newsCol = db.collection("news");
     candCol = db.collection("sources_candidates");
+    compCol = db.collection("competitors");
     runQuery();
     watchCandidates();
+  }
+
+  function loadComps(){
+    if(!compCol){ allComps=[]; renderComps(); return; }
+    compCol.orderBy("name","asc").limit(500).get().then(function(snap){
+      allComps = snap.docs.map(function(d){ var v=d.data(); v._id=d.id; return v; });
+      renderComps();
+    }).catch(function(){ allComps=[]; renderComps(); });
+  }
+
+  function renderComps(){
+    var grid = document.getElementById("compGrid");
+    if(allComps===null){ grid.innerHTML = '<div class="empty">'+t("loading")+'</div>'; return; }
+    var typKeys = Object.keys(state.compTypology).filter(function(k){return state.compTypology[k];});
+    var list = allComps.filter(function(v){
+      return typKeys.length===0 || (v.typology||[]).some(function(x){return typKeys.indexOf(x)>-1;});
+    });
+    document.getElementById("compCountLabel").textContent = list.length + " " + t("comp_count_suffix");
+    if(list.length===0){ grid.innerHTML = '<div class="empty">'+t("comp_no_results")+'</div>'; return; }
+    var lang = state.lang;
+    grid.innerHTML = list.map(function(v){
+      var desc = v["description_"+lang] || v.description_fr || v.description_en || "";
+      var tags = (v.typology||[]).map(function(ty){ return '<span class="tag">'+escapeHtml(t("typ_"+ty))+'</span>'; }).join("");
+      return '<article class="comp-card"><h2>'+escapeHtml(v.name||"")+'</h2><div class="tag-row">'+tags+'</div><p>'+escapeHtml(desc)+'</p></article>';
+    }).join("");
   }
 
   function runQuery(){
     if(!newsCol) return;
     var q = newsCol.orderBy("date","desc").limit(state.limit);
-    var provKeys = Object.keys(state.provenance).filter(function(k){return state.provenance[k];});
-    if(provKeys.length===1){ q = q.where("source_type","==",provKeys[0]); }
     if(state.sector){ q = q.where("sector","array-contains",state.sector); }
     var typKeys = Object.keys(state.typology).filter(function(k){return state.typology[k];});
     if(typKeys.length===1){ q = q.where("typology","array-contains",typKeys[0]); }
@@ -289,8 +370,7 @@ a.src-link:hover{text-decoration:underline;}
     if(state.country){ q = q.where("country","==",state.country); }
     q.get().then(function(snap){
       var docs = snap.docs.map(function(d){ var v=d.data(); v._id=d.id; return v; });
-      // client-side narrow for multi-select provenance/typology beyond single where support
-      if(provKeys.length>1){ docs = docs.filter(function(v){ return provKeys.indexOf(v.source_type)>-1; }); }
+      // client-side narrow for multi-select typology beyond single where support
       if(typKeys.length>1){ docs = docs.filter(function(v){ return (v.typology||[]).some(function(x){return typKeys.indexOf(x)>-1;}); }); }
       allDocs = docs;
       renderFeed(docs, snap.size>=state.limit);
@@ -399,18 +479,6 @@ a.src-link:hover{text-decoration:underline;}
   }
 
   function buildFilterUI(){
-    var provBox = document.getElementById("fProvenance");
-    provBox.innerHTML = PROVENANCES.map(function(p){
-      var on = !!state.provenance[p];
-      return '<button class="chip'+(on?' on':'')+'" data-prov="'+p+'">'+t("prov_"+p)+'</button>';
-    }).join("");
-    Array.prototype.forEach.call(provBox.querySelectorAll("[data-prov]"), function(b){
-      b.addEventListener("click", function(){
-        var p=b.getAttribute("data-prov"); state.provenance[p]=!state.provenance[p]; state.limit=20;
-        buildFilterUI(); runQuery();
-      });
-    });
-
     var typBox = document.getElementById("fTypology");
     typBox.innerHTML = TYPOLOGIES.map(function(ty){
       var on = !!state.typology[ty];
@@ -458,6 +526,19 @@ a.src-link:hover{text-decoration:underline;}
     periodSel.onchange = function(){ state.period=periodSel.value; state.limit=20; runQuery(); };
 
     document.getElementById("resetFilters").textContent = t("f_reset");
+    document.getElementById("resetCompFilters").textContent = t("f_reset");
+
+    var typBoxComp = document.getElementById("fTypologyComp");
+    typBoxComp.innerHTML = TYPOLOGIES.map(function(ty){
+      var on = !!state.compTypology[ty];
+      return '<button class="chip'+(on?' on':'')+'" data-typc="'+ty+'">'+t("typ_"+ty)+'</button>';
+    }).join("");
+    Array.prototype.forEach.call(typBoxComp.querySelectorAll("[data-typc]"), function(b){
+      b.addEventListener("click", function(){
+        var ty=b.getAttribute("data-typc"); state.compTypology[ty]=!state.compTypology[ty];
+        buildFilterUI(); renderComps();
+      });
+    });
   }
 
   function renderStaticI18n(){
@@ -475,6 +556,7 @@ a.src-link:hover{text-decoration:underline;}
         state.lang = b.getAttribute("data-lang");
         renderStaticI18n(); buildFilterUI();
         if(allDocs.length){ renderFeed(allDocs, document.getElementById("loadMore").style.display!=="none"); }
+        if(allComps!==null){ renderComps(); }
       });
     });
   }
