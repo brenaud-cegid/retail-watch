@@ -53,7 +53,16 @@ h1,h2,h3,.disp{font-family:"Poppins",system-ui,sans-serif;font-weight:400;letter
 @media (max-width:860px){.layout{grid-template-columns:1fr;}}
 
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;box-shadow:var(--shadow);}
-.filters{position:sticky;top:0;display:flex;flex-direction:column;gap:18px;}
+.filters{position:sticky;top:0;display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 32px);overflow:auto;}
+.filters-body{display:flex;flex-direction:column;gap:18px;}
+.filters-toggle{display:none;width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:"Poppins",sans-serif;font-weight:600;font-size:13px;color:var(--text);cursor:pointer;}
+.filters-toggle::after{content:"▾";float:right;transition:transform .2s;}
+.filters.collapsed .filters-toggle::after{transform:rotate(-90deg);}
+.filters.collapsed .filters-body{display:none;}
+@media (max-width:860px){
+  .filters{position:static;max-height:none;overflow:visible;}
+  .filters-toggle{display:block;}
+}
 .filter-group h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin:0 0 8px;font-weight:600;}
 .chip-row{display:flex;flex-wrap:wrap;gap:6px;}
 .chip{border:1px solid var(--border);background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer;font-family:"Roboto",sans-serif;transition:background .15s;}
@@ -131,32 +140,35 @@ a.src-link:hover{text-decoration:underline;}
 
   <div class="view" id="viewVeille">
     <div class="layout">
-      <aside class="panel filters">
-        <div class="filter-group">
-          <h3 data-i="f_sector">Secteur</h3>
-          <select class="ds" id="fSector"></select>
-        </div>
-        <div class="filter-group">
-          <h3 data-i="f_typology">Typologie</h3>
-          <div class="chip-row" id="fTypology"></div>
-        </div>
-        <div class="filter-group">
-          <h3 data-i="f_continent">Continent</h3>
-          <div class="chip-row" id="fContinent"></div>
-        </div>
-        <div class="filter-group">
-          <h3 data-i="f_country">Pays</h3>
-          <select class="ds" id="fCountry"></select>
-        </div>
-        <div class="filter-group">
-          <h3 data-i="f_period">Période</h3>
-          <select class="ds" id="fPeriod"></select>
-        </div>
-        <button class="reset" id="resetFilters" data-i="f_reset">Réinitialiser les filtres</button>
+      <aside class="panel filters" id="asideVeille">
+        <button class="filters-toggle" type="button" data-i="f_filters">Filtres</button>
+        <div class="filters-body">
+          <div class="filter-group">
+            <h3 data-i="f_sector">Secteur</h3>
+            <select class="ds" id="fSector"></select>
+          </div>
+          <div class="filter-group">
+            <h3 data-i="f_typology">Typologie</h3>
+            <div class="chip-row" id="fTypology"></div>
+          </div>
+          <div class="filter-group">
+            <h3 data-i="f_continent">Continent</h3>
+            <div class="chip-row" id="fContinent"></div>
+          </div>
+          <div class="filter-group">
+            <h3 data-i="f_country">Pays</h3>
+            <select class="ds" id="fCountry"></select>
+          </div>
+          <div class="filter-group">
+            <h3 data-i="f_period">Période</h3>
+            <select class="ds" id="fPeriod"></select>
+          </div>
+          <button class="reset" id="resetFilters" data-i="f_reset">Réinitialiser les filtres</button>
 
-        <div class="filter-group cand-panel" id="candPanel" style="display:none;">
-          <h3 data-i="f_candidates">Nouveaux acteurs détectés</h3>
-          <div id="candList"></div>
+          <div class="filter-group cand-panel" id="candPanel" style="display:none;">
+            <h3 data-i="f_candidates">Nouveaux acteurs détectés</h3>
+            <div id="candList"></div>
+          </div>
         </div>
       </aside>
 
@@ -176,12 +188,15 @@ a.src-link:hover{text-decoration:underline;}
 
   <div class="view" id="viewConcurrents">
     <div class="layout">
-      <aside class="panel filters">
-        <div class="filter-group">
-          <h3 data-i="f_typology">Typologie</h3>
-          <div class="chip-row" id="fTypologyComp"></div>
+      <aside class="panel filters" id="asideConcurrents">
+        <button class="filters-toggle" type="button" data-i="f_filters">Filtres</button>
+        <div class="filters-body">
+          <div class="filter-group">
+            <h3 data-i="f_typology">Typologie</h3>
+            <div class="chip-row" id="fTypologyComp"></div>
+          </div>
+          <button class="reset" id="resetCompFilters" data-i="f_reset">Réinitialiser les filtres</button>
         </div>
-        <button class="reset" id="resetCompFilters" data-i="f_reset">Réinitialiser les filtres</button>
       </aside>
       <main>
         <div class="count-row">
@@ -205,7 +220,7 @@ a.src-link:hover{text-decoration:underline;}
       title:"Retail Watch", subtitle:"Périmètre actuel : expérience shopper en magasin — CRM · Fidélité · Conditions commerciales",
       f_provenance:"Provenance", f_sector:"Secteur", f_typology:"Typologie", f_period:"Période",
       f_reset:"Réinitialiser les filtres", f_candidates:"Nouveaux acteurs détectés",
-      f_continent:"Continent", f_country:"Pays", country_all:"Tous les pays",
+      f_continent:"Continent", f_country:"Pays", country_all:"Tous les pays", f_filters:"Filtres",
       sort_note:"Du plus récent au plus ancien", loading:"Chargement de la veille…",
       load_more:"Charger plus", footer:"Veille interne Cegid Retail — mise à jour chaque lundi. Articles réservés à l'organisation.",
       prov_enseigne:"Enseignes", prov_concurrent:"Concurrents", prov_innovation:"Innovation marché",
@@ -224,7 +239,7 @@ a.src-link:hover{text-decoration:underline;}
       title:"Retail Watch", subtitle:"Current scope: in-store shopper experience — CRM · Loyalty · Commercial terms",
       f_provenance:"Provenance", f_sector:"Sector", f_typology:"Topic", f_period:"Period",
       f_reset:"Reset filters", f_candidates:"New players detected",
-      f_continent:"Continent", f_country:"Country", country_all:"All countries",
+      f_continent:"Continent", f_country:"Country", country_all:"All countries", f_filters:"Filters",
       sort_note:"Newest first", loading:"Loading the watch…",
       load_more:"Load more", footer:"Internal Cegid Retail watch — updated every Monday. Articles restricted to the organization.",
       prov_enseigne:"Retailers", prov_concurrent:"Competitors", prov_innovation:"Market innovation",
@@ -292,6 +307,7 @@ a.src-link:hover{text-decoration:underline;}
     buildFilterUI();
     bindLangToggle();
     bindTabs();
+    initFiltersCollapse();
     document.getElementById("resetFilters").addEventListener("click", function(){
       state.typology={}; state.sector=""; state.period="all"; state.continent={}; state.country=""; state.limit=20;
       buildFilterUI(); runQuery();
@@ -303,6 +319,29 @@ a.src-link:hover{text-decoration:underline;}
       state.limit += 20; runQuery();
     });
     connectDb();
+  }
+
+  function isNarrow(){ return window.matchMedia("(max-width:860px)").matches; }
+
+  function initFiltersCollapse(){
+    var asides = Array.prototype.slice.call(document.querySelectorAll(".filters"));
+    asides.forEach(function(aside){
+      var toggle = aside.querySelector(".filters-toggle");
+      if(!toggle) return;
+      aside.classList.toggle("collapsed", isNarrow());
+      toggle.addEventListener("click", function(){
+        aside.classList.toggle("collapsed");
+      });
+    });
+    var lastNarrow = isNarrow();
+    window.addEventListener("resize", function(){
+      var narrow = isNarrow();
+      if(narrow!==lastNarrow){ lastNarrow=narrow; asides.forEach(function(aside){ aside.classList.toggle("collapsed", narrow); }); }
+    });
+    window.addEventListener("scroll", function(){
+      if(!isNarrow() || window.scrollY<=24) return;
+      asides.forEach(function(aside){ aside.classList.add("collapsed"); });
+    }, {passive:true});
   }
 
   function bindTabs(){
