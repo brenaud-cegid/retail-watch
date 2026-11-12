@@ -111,6 +111,8 @@ a.src-link:hover{text-decoration:underline;}
 .comp-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;}
 .comp-head{display:flex;align-items:center;gap:10px;}
 .comp-logo{width:36px;height:36px;border-radius:8px;background:var(--primary);color:var(--primary-ink);display:flex;align-items:center;justify-content:center;font-family:"Poppins",sans-serif;font-weight:600;font-size:14px;flex:none;}
+.comp-logo-box{width:36px;height:36px;border-radius:8px;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;}
+.comp-logo-img{width:70%;height:70%;object-fit:contain;}
 .comp-card h2{font-size:15.5px;margin:0;}
 .comp-card p{font-size:13px;color:var(--text-muted);margin:0;line-height:1.5;}
 .comp-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--text-muted);}
@@ -415,6 +417,12 @@ a.src-link:hover{text-decoration:underline;}
     if(list.length===0){ grid.innerHTML = '<div class="empty">'+t("comp_no_results")+'</div>'; return; }
     var lang = state.lang;
     grid.innerHTML = list.map(compCardHtml).join("");
+    Array.prototype.forEach.call(grid.querySelectorAll(".comp-logo-img"), function(img){
+      img.addEventListener("error", function(){
+        var box = img.closest(".comp-logo-box");
+        if(box){ box.outerHTML = '<div class="comp-logo">'+escapeHtml(img.getAttribute("data-fallback")||"?")+'</div>'; }
+      });
+    });
 
     function compCardHtml(v){
       var desc = v["description_"+lang] || v.description_fr || v.description_en || "";
@@ -423,9 +431,12 @@ a.src-link:hover{text-decoration:underline;}
       var link = v.website ? '<a class="comp-link" href="'+encodeURI(v.website)+'" target="_blank" rel="noopener">'+t("comp_visit")+' →</a>' : "";
       var founded = v.founded_year ? '<span>'+t("comp_founded")+' : <b>'+escapeHtml(String(v.founded_year))+'</b></span>' : "";
       var revenue = '<span>'+t("comp_revenue")+' : <b>'+escapeHtml(v.revenue || t("comp_unknown"))+'</b></span>';
+      var logoBox = v.logo_url
+        ? '<div class="comp-logo-box"><img class="comp-logo-img" src="'+encodeURI(v.logo_url)+'" alt="" data-fallback="'+escapeHtml(initials)+'"></div>'
+        : '<div class="comp-logo">'+escapeHtml(initials)+'</div>';
       return (
         '<article class="comp-card">'+
-          '<div class="comp-head"><div class="comp-logo">'+escapeHtml(initials)+'</div><h2>'+escapeHtml(v.name||"")+'</h2></div>'+
+          '<div class="comp-head">'+logoBox+'<h2>'+escapeHtml(v.name||"")+'</h2></div>'+
           '<div class="tag-row">'+tags+'</div>'+
           '<p>'+escapeHtml(desc)+'</p>'+
           '<div class="comp-meta">'+founded+revenue+'</div>'+

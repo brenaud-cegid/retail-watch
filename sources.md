@@ -94,6 +94,12 @@ Statut : `validé` (suivi actif) / `candidat` (détecté, à valider). Cette lis
 | Worldline | Paiement / wallet |
 | Lyra Network | Paiement / wallet |
 | Qualtrics | Expérience client (mesure) |
+| The Wallet Crew | Fidélité / wallet |
+| Captain Wallet | Fidélité / wallet |
+| Orisha | Commerce unifié / ERP retail (groupe) |
+| Sitoo | Commerce unifié / POS |
+| Actito | Marketing automation / CRM |
+| bspk | Clienteling IA (retail luxe) |
 
 ## Innovation marché — validé
 
