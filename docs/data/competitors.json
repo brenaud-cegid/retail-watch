@@ -1,489 +1,489 @@
-﻿[
+[
     {
-        "description_fr":  "Ã‰diteur belge de marketing automation / customer engagement, permettant de concevoir des parcours clients personnalisÃ©s sur 11 canaux.",
-        "note":  "RachetÃ© en 2022 par le groupe QNTM (fonds Altor).",
+        "description_en":  "Belgian marketing automation / customer engagement platform for designing personalized customer journeys across 11 channels.",
+        "description_fr":  "Éditeur belge de marketing automation / customer engagement, permettant de concevoir des parcours clients personnalisés sur 11 canaux.",
         "founded_year":  2000,
         "name":  "Actito",
-        "_id":  "actito",
-        "website":  "https://www.actito.com",
-        "description_en":  "Belgian marketing automation / customer engagement platform for designing personalized customer journeys across 11 channels.",
+        "note":  "Racheté en 2022 par le groupe QNTM (fonds Altor).",
         "revenue":  "",
         "typology":  [
                          "crm",
                          "data"
-                     ]
+                     ],
+        "website":  "https://www.actito.com",
+        "_id":  "actito"
     },
     {
-        "description_fr":  "Prestataire de paiement global, prÃ©sent en caisse magasin et sur les parcours omnicanaux.",
-        "note":  "SociÃ©tÃ© cotÃ©e Euronext Amsterdam depuis 2018.",
-        "logo_url":  "data/logos/adyen.png",
-        "founded_year":  2006,
-        "name":  "Adyen",
-        "_id":  "adyen",
-        "website":  "https://www.adyen.com",
         "description_en":  "Global payment provider, present at in-store checkout and across omnichannel journeys.",
-        "revenue":  "â‰ˆ 1,996 Mdâ‚¬ (CA net, 2024)",
+        "description_fr":  "Prestataire de paiement global, présent en caisse magasin et sur les parcours omnicanaux.",
+        "founded_year":  2006,
+        "logo_url":  "data/logos/adyen.png",
+        "name":  "Adyen",
+        "note":  "Société cotée Euronext Amsterdam depuis 2018.",
+        "revenue":  "≈ 1,996 Md€ (CA net, 2024)",
         "typology":  [
                          "wallet"
-                     ]
+                     ],
+        "website":  "https://www.adyen.com",
+        "_id":  "adyen"
     },
     {
-        "description_fr":  "Plateforme de fidÃ©litÃ© en marque blanche pour enseignes de mode et de retail spÃ©cialisÃ©.",
-        "note":  "SociÃ©tÃ© privÃ©e (UK/Hongrie) ; estimations tierces non fiables Ã©cartÃ©es.",
-        "logo_url":  "data/logos/antavo.png",
-        "founded_year":  2012,
-        "name":  "Antavo",
-        "_id":  "antavo",
-        "website":  "https://antavo.com",
         "description_en":  "White-label loyalty platform for fashion and specialty retail brands.",
+        "description_fr":  "Plateforme de fidélité en marque blanche pour enseignes de mode et de retail spécialisé.",
+        "founded_year":  2012,
+        "logo_url":  "data/logos/antavo.png",
+        "name":  "Antavo",
+        "note":  "Société privée (UK/Hongrie) ; estimations tierces non fiables écartées.",
         "revenue":  "",
         "typology":  [
                          "fidelite"
-                     ]
+                     ],
+        "website":  "https://antavo.com",
+        "_id":  "antavo"
     },
     {
-        "description_fr":  "Ã‰diteur de point de vente et de commerce unifiÃ© dÃ©diÃ© au retail spÃ©cialisÃ©.",
-        "note":  "SociÃ©tÃ© privÃ©e (Goldman Sachs Merchant Banking) ; aucun CA public. Marque \"Aptos\" depuis 2015 (spin-off d\u0027Epicor).",
-        "logo_url":  "data/logos/aptos.png",
-        "founded_year":  1972,
-        "name":  "Aptos",
-        "_id":  "aptos",
-        "website":  "https://www.aptos.com",
         "description_en":  "Point-of-sale and unified-commerce vendor dedicated to specialty retail.",
+        "description_fr":  "Éditeur de point de vente et de commerce unifié dédié au retail spécialisé.",
+        "founded_year":  1972,
+        "logo_url":  "data/logos/aptos.png",
+        "name":  "Aptos",
+        "note":  "Société privée (Goldman Sachs Merchant Banking) ; aucun CA public. Marque \"Aptos\" depuis 2015 (spin-off d\u0027Epicor).",
         "revenue":  "",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.aptos.com",
+        "_id":  "aptos"
     },
     {
-        "description_fr":  "Ã‰diteur amÃ©ricain (San Francisco/Paris) d\u0027une application de clienteling pilotÃ©e par l\u0027IA pour les vendeurs du retail de luxe et premium.",
-        "note":  "Informations de financement contradictoires selon les sources (Series A 7 M$ vs bootstrapped).",
+        "description_en":  "US vendor (San Francisco/Paris) of an AI-driven clienteling app for luxury and premium retail sales associates.",
+        "description_fr":  "Éditeur américain (San Francisco/Paris) d\u0027une application de clienteling pilotée par l\u0027IA pour les vendeurs du retail de luxe et premium.",
         "founded_year":  2018,
         "name":  "bspk",
-        "_id":  "bspk",
-        "website":  "https://www.bspk.com",
-        "description_en":  "US vendor (San Francisco/Paris) of an AI-driven clienteling app for luxury and premium retail sales associates.",
+        "note":  "Informations de financement contradictoires selon les sources (Series A 7 M$ vs bootstrapped).",
         "revenue":  "",
         "typology":  [
                          "crm",
                          "exp",
                          "data"
-                     ]
+                     ],
+        "website":  "https://www.bspk.com",
+        "_id":  "bspk"
     },
     {
-        "description_fr":  "Suite de fidÃ©litÃ© et de CRM, forte prÃ©sence en Asie et au Moyen-Orient.",
-        "note":  "SociÃ©tÃ© privÃ©e (Singapour) ; estimation non confirmÃ©e (~88 M$) Ã©cartÃ©e.",
+        "description_en":  "Loyalty and CRM suite, with a strong presence in Asia and the Middle East.",
+        "description_fr":  "Suite de fidélité et de CRM, forte présence en Asie et au Moyen-Orient.",
         "founded_year":  2008,
         "name":  "Capillary Technologies",
-        "_id":  "capillary-technologies",
-        "website":  "https://www.capillarytech.com",
-        "description_en":  "Loyalty and CRM suite, with a strong presence in Asia and the Middle East.",
+        "note":  "Société privée (Singapour) ; estimation non confirmée (~88 M$) écartée.",
         "revenue":  "",
         "typology":  [
                          "fidelite",
                          "crm"
-                     ]
+                     ],
+        "website":  "https://www.capillarytech.com",
+        "_id":  "capillary-technologies"
     },
     {
-        "description_fr":  "Startup franÃ§aise qui dÃ©matÃ©rialise cartes de fidÃ©litÃ© et offres commerciales dans le wallet mobile, dÃ©sormais filiale de Brevo.",
-        "note":  "RachetÃ©e par Sendinblue (devenu Brevo) en fÃ©vrier 2023 ; opte dÃ©sormais \"Captain Wallet by Brevo\". Clients citÃ©s : Decathlon, Conforama, Intersport.",
+        "description_en":  "French startup digitizing loyalty cards and retail offers into the mobile wallet, now a Brevo subsidiary.",
+        "description_fr":  "Startup française qui dématérialise cartes de fidélité et offres commerciales dans le wallet mobile, désormais filiale de Brevo.",
         "founded_year":  2013,
         "name":  "Captain Wallet",
-        "_id":  "captain-wallet",
-        "website":  "https://www.captainwallet.com",
-        "description_en":  "French startup digitizing loyalty cards and retail offers into the mobile wallet, now a Brevo subsidiary.",
+        "note":  "Rachetée par Sendinblue (devenu Brevo) en février 2023 ; opte désormais \"Captain Wallet by Brevo\". Clients cités : Decathlon, Conforama, Intersport.",
         "revenue":  "",
         "typology":  [
                          "fidelite",
                          "wallet"
-                     ]
+                     ],
+        "website":  "https://www.captainwallet.com",
+        "_id":  "captain-wallet"
     },
     {
-        "description_fr":  "Plateforme de gestion de programmes de fidÃ©litÃ©, utilisÃ©e notamment dans la distribution et l\u0027aÃ©rien.",
-        "note":  "Comarch SA (cotÃ©e Ã  Varsovie) : â‰ˆ1,7 Md PLN de CA groupe en 2025 ; aucun CA isolÃ© publiÃ© pour la solution Loyalty.",
+        "description_en":  "Loyalty program management platform, used notably in retail and airlines.",
+        "description_fr":  "Plateforme de gestion de programmes de fidélité, utilisée notamment dans la distribution et l\u0027aérien.",
         "founded_year":  1993,
         "name":  "Comarch Loyalty",
-        "_id":  "comarch-loyalty",
-        "website":  "https://www.comarch.com/loyalty",
-        "description_en":  "Loyalty program management platform, used notably in retail and airlines.",
+        "note":  "Comarch SA (cotée à Varsovie) : ≈1,7 Md PLN de CA groupe en 2025 ; aucun CA isolé publié pour la solution Loyalty.",
         "revenue":  "",
         "typology":  [
                          "fidelite"
-                     ]
+                     ],
+        "website":  "https://www.comarch.com/loyalty",
+        "_id":  "comarch-loyalty"
     },
     {
-        "description_fr":  "Fournisseur de terminaux de paiement et de systÃ¨mes de caisse pour le retail.",
-        "note":  "SociÃ©tÃ© cotÃ©e NYSE : DBD ; chiffre du groupe entier (ATM + retail).",
-        "logo_url":  "data/logos/diebold-nixdorf.png",
-        "founded_year":  1859,
-        "name":  "Diebold Nixdorf",
-        "_id":  "diebold-nixdorf",
-        "website":  "https://www.dieboldnixdorf.com",
         "description_en":  "Provider of payment terminals and checkout systems for retail.",
-        "revenue":  "â‰ˆ 3,75 Md$ US (CA groupe, 2024)",
+        "description_fr":  "Fournisseur de terminaux de paiement et de systèmes de caisse pour le retail.",
+        "founded_year":  1859,
+        "logo_url":  "data/logos/diebold-nixdorf.png",
+        "name":  "Diebold Nixdorf",
+        "note":  "Société cotée NYSE : DBD ; chiffre du groupe entier (ATM + retail).",
+        "revenue":  "≈ 3,75 Md$ US (CA groupe, 2024)",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.dieboldnixdorf.com",
+        "_id":  "diebold-nixdorf"
     },
     {
-        "description_fr":  "Moteur de fidÃ©litÃ© et de promotions en temps rÃ©el pour enseignes de distribution.",
-        "note":  "Seule sociÃ©tÃ© cotÃ©e (LSE : EYE) de la liste ; chiffre auditÃ©.",
-        "logo_url":  "data/logos/eagle-eye.png",
-        "founded_year":  2003,
-        "name":  "Eagle Eye",
-        "_id":  "eagle-eye",
-        "website":  "https://www.eagleeye.com",
         "description_en":  "Real-time loyalty and promotions engine for retail chains.",
-        "revenue":  "47,7 MÂ£ (CA groupe, exercice clos 30/06/2024)",
+        "description_fr":  "Moteur de fidélité et de promotions en temps réel pour enseignes de distribution.",
+        "founded_year":  2003,
+        "logo_url":  "data/logos/eagle-eye.png",
+        "name":  "Eagle Eye",
+        "note":  "Seule société cotée (LSE : EYE) de la liste ; chiffre audité.",
+        "revenue":  "47,7 M£ (CA groupe, exercice clos 30/06/2024)",
         "typology":  [
                          "fidelite",
                          "promo"
-                     ]
+                     ],
+        "website":  "https://www.eagleeye.com",
+        "_id":  "eagle-eye"
     },
     {
-        "description_fr":  "Programme de fidÃ©litÃ© et marketing client pour commerces de proximitÃ©.",
-        "note":  "RachetÃ© par SumUp en 2021 (317 M$) ; opÃ¨re dÃ©sormais comme marque au sein de SumUp.",
-        "logo_url":  "data/logos/fivestars.png",
-        "founded_year":  2010,
-        "name":  "Fivestars",
-        "_id":  "fivestars",
-        "website":  "https://www.fivestars.com",
         "description_en":  "Loyalty and customer marketing program for local/neighborhood retailers.",
+        "description_fr":  "Programme de fidélité et marketing client pour commerces de proximité.",
+        "founded_year":  2010,
+        "logo_url":  "data/logos/fivestars.png",
+        "name":  "Fivestars",
+        "note":  "Racheté par SumUp en 2021 (317 M$) ; opère désormais comme marque au sein de SumUp.",
         "revenue":  "",
         "typology":  [
                          "fidelite"
-                     ]
+                     ],
+        "website":  "https://www.fivestars.com",
+        "_id":  "fivestars"
     },
     {
-        "description_fr":  "Plateforme de fidÃ©litÃ© orientÃ©e coalitions de marques et programmes partagÃ©s.",
-        "note":  "SociÃ©tÃ© privÃ©e ; possible rachat par Capillary (mai 2025, non confirmÃ© par communiquÃ© officiel).",
+        "description_en":  "Loyalty platform focused on brand coalitions and shared programs.",
+        "description_fr":  "Plateforme de fidélité orientée coalitions de marques et programmes partagés.",
         "founded_year":  2008,
         "name":  "Kognitiv",
-        "_id":  "kognitiv",
-        "website":  "https://www.kognitiv.com",
-        "description_en":  "Loyalty platform focused on brand coalitions and shared programs.",
+        "note":  "Société privée ; possible rachat par Capillary (mai 2025, non confirmé par communiqué officiel).",
         "revenue":  "",
         "typology":  [
                          "fidelite"
-                     ]
+                     ],
+        "website":  "https://www.kognitiv.com",
+        "_id":  "kognitiv"
     },
     {
-        "description_fr":  "SystÃ¨me de point de vente cloud pour commerces spÃ©cialisÃ©s et restauration.",
-        "note":  "SociÃ©tÃ© cotÃ©e NASDAQ/TSX : LSPD.",
-        "logo_url":  "data/logos/lightspeed.png",
-        "founded_year":  2005,
-        "name":  "Lightspeed",
-        "_id":  "lightspeed",
-        "website":  "https://www.lightspeedhq.com",
         "description_en":  "Cloud point-of-sale system for specialty retail and hospitality.",
-        "revenue":  "â‰ˆ 909,3 M$ US (CA groupe, exercice clos 31/03/2024)",
+        "description_fr":  "Système de point de vente cloud pour commerces spécialisés et restauration.",
+        "founded_year":  2005,
+        "logo_url":  "data/logos/lightspeed.png",
+        "name":  "Lightspeed",
+        "note":  "Société cotée NASDAQ/TSX : LSPD.",
+        "revenue":  "≈ 909,3 M$ US (CA groupe, exercice clos 31/03/2024)",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.lightspeedhq.com",
+        "_id":  "lightspeed"
     },
     {
-        "description_fr":  "Acteur franÃ§ais du paiement, fournisseur de terminaux et de solutions de paiement pour le commerce.",
-        "note":  "SociÃ©tÃ© privÃ©e (Toulouse) ; publie ses rÃ©sultats par communiquÃ©.",
-        "logo_url":  "data/logos/lyra-network.png",
-        "founded_year":  2001,
-        "name":  "Lyra Network",
-        "_id":  "lyra-network",
-        "website":  "https://www.lyra.com",
         "description_en":  "French payments player, providing payment terminals and solutions for retail.",
-        "revenue":  "â‰ˆ 87 Mâ‚¬ (CA 2023, dernier chiffre public)",
+        "description_fr":  "Acteur français du paiement, fournisseur de terminaux et de solutions de paiement pour le commerce.",
+        "founded_year":  2001,
+        "logo_url":  "data/logos/lyra-network.png",
+        "name":  "Lyra Network",
+        "note":  "Société privée (Toulouse) ; publie ses résultats par communiqué.",
+        "revenue":  "≈ 87 M€ (CA 2023, dernier chiffre public)",
         "typology":  [
                          "wallet"
-                     ]
+                     ],
+        "website":  "https://www.lyra.com",
+        "_id":  "lyra-network"
     },
     {
-        "description_fr":  "Suite de commerce unifiÃ© et de gestion de la chaÃ®ne d\u0027approvisionnement orientÃ©e grande distribution et retail spÃ©cialisÃ©.",
-        "note":  "Chiffre de la maison mÃ¨re ; pas de ventilation isolÃ©e pour Manhattan Active.",
+        "description_en":  "Unified-commerce and supply chain suite aimed at large retailers and specialty retail.",
+        "description_fr":  "Suite de commerce unifié et de gestion de la chaîne d\u0027approvisionnement orientée grande distribution et retail spécialisé.",
         "founded_year":  1990,
         "name":  "Manhattan Active",
-        "_id":  "manhattan-active",
-        "website":  "https://www.manh.com",
-        "description_en":  "Unified-commerce and supply chain suite aimed at large retailers and specialty retail.",
-        "revenue":  "â‰ˆ 1 042,4 M$ (CA groupe Manhattan Associates, 2024)",
+        "note":  "Chiffre de la maison mère ; pas de ventilation isolée pour Manhattan Active.",
+        "revenue":  "≈ 1 042,4 M$ (CA groupe Manhattan Associates, 2024)",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.manh.com",
+        "_id":  "manhattan-active"
     },
     {
-        "description_fr":  "Solution de commerce unifiÃ© de Microsoft, combinant point de vente, back-office et donnÃ©es client Dynamics.",
-        "note":  "Chiffre de la maison mÃ¨re ; produit interne, pas de CA isolÃ© publiÃ©.",
-        "logo_url":  "data/logos/microsoft-dynamics-365-commerce.png",
-        "founded_year":  2016,
-        "name":  "Microsoft Dynamics 365 Commerce",
-        "_id":  "microsoft-dynamics-365-commerce",
-        "website":  "https://www.microsoft.com",
         "description_en":  "Microsoft\u0027s unified-commerce solution, combining point of sale, back office and Dynamics customer data.",
-        "revenue":  "â‰ˆ 245,1 Md$ (CA groupe Microsoft, FY2024)",
+        "description_fr":  "Solution de commerce unifié de Microsoft, combinant point de vente, back-office et données client Dynamics.",
+        "founded_year":  2016,
+        "logo_url":  "data/logos/microsoft-dynamics-365-commerce.png",
+        "name":  "Microsoft Dynamics 365 Commerce",
+        "note":  "Chiffre de la maison mère ; produit interne, pas de CA isolé publié.",
+        "revenue":  "≈ 245,1 Md$ (CA groupe Microsoft, FY2024)",
         "typology":  [
                          "exp",
                          "crm"
-                     ]
+                     ],
+        "website":  "https://www.microsoft.com",
+        "_id":  "microsoft-dynamics-365-commerce"
     },
     {
-        "description_fr":  "Plateforme de commerce unifiÃ© mobile-first, pensÃ©e pour les enseignes de mode et de luxe.",
-        "note":  "SociÃ©tÃ© privÃ©e ; estimations tierces non fiables (â‰ˆ33-44 M$) Ã©cartÃ©es.",
+        "description_en":  "Mobile-first unified-commerce platform, designed for fashion and luxury retailers.",
+        "description_fr":  "Plateforme de commerce unifié mobile-first, pensée pour les enseignes de mode et de luxe.",
         "founded_year":  2015,
         "name":  "NewStore",
-        "_id":  "newstore",
-        "website":  "https://www.newstore.com",
-        "description_en":  "Mobile-first unified-commerce platform, designed for fashion and luxury retailers.",
+        "note":  "Société privée ; estimations tierces non fiables (≈33-44 M$) écartées.",
         "revenue":  "",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.newstore.com",
+        "_id":  "newstore"
     },
     {
-        "description_fr":  "Suite de commerce unifiÃ© d\u0027Oracle couvrant la gestion des stocks, le point de vente et l\u0027expÃ©rience magasin.",
-        "note":  "Chiffre de la maison mÃ¨re ; activitÃ© issue du rachat de Retek (2005), pas de CA isolÃ© publiÃ©.",
+        "description_en":  "Oracle\u0027s unified-commerce suite covering inventory management, point of sale and the in-store experience.",
+        "description_fr":  "Suite de commerce unifié d\u0027Oracle couvrant la gestion des stocks, le point de vente et l\u0027expérience magasin.",
         "founded_year":  2005,
         "name":  "Oracle Retail",
-        "_id":  "oracle-retail",
-        "website":  "https://www.oracle.com",
-        "description_en":  "Oracle\u0027s unified-commerce suite covering inventory management, point of sale and the in-store experience.",
-        "revenue":  "â‰ˆ 53,0 Md$ (CA groupe Oracle Corporation, FY2024)",
+        "note":  "Chiffre de la maison mère ; activité issue du rachat de Retek (2005), pas de CA isolé publié.",
+        "revenue":  "≈ 53,0 Md$ (CA groupe Oracle Corporation, FY2024)",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.oracle.com",
+        "_id":  "oracle-retail"
     },
     {
-        "description_fr":  "Groupe europÃ©en d\u0027Ã©dition de logiciels mÃ©tier (1800+ salariÃ©s) ; l\u0027activitÃ© retail est portÃ©e par sa division Orisha Commerce (ex-Openbravo, Fastmag, Ginkoia, Cow Hills) pour la gestion commerciale et le commerce unifiÃ©.",
-        "note":  "Fiche au niveau du GROUPE (ex-DL Software, renommÃ© 2023) ; pas de filiale \"Orisha Retail\" nommÃ©e sÃ©parÃ©ment, l\u0027activitÃ© retail est la division Orisha Commerce. Aucun lien avec Cegid.",
+        "description_en":  "European business-software group (1,800+ employees); its retail activity is carried by the Orisha Commerce division (formerly Openbravo, Fastmag, Ginkoia, Cow Hills) for unified commerce and retail management.",
+        "description_fr":  "Groupe européen d\u0027édition de logiciels métier (1800+ salariés) ; l\u0027activité retail est portée par sa division Orisha Commerce (ex-Openbravo, Fastmag, Ginkoia, Cow Hills) pour la gestion commerciale et le commerce unifié.",
         "founded_year":  2003,
         "name":  "Orisha",
-        "_id":  "orisha",
-        "website":  "https://www.orisha.com",
-        "description_en":  "European business-software group (1,800+ employees); its retail activity is carried by the Orisha Commerce division (formerly Openbravo, Fastmag, Ginkoia, Cow Hills) for unified commerce and retail management.",
-        "revenue":  "200 Mâ‚¬ (CA groupe 2023, objectif 250 Mâ‚¬ en 2024)",
+        "note":  "Fiche au niveau du GROUPE (ex-DL Software, renommé 2023) ; pas de filiale \"Orisha Retail\" nommée séparément, l\u0027activité retail est la division Orisha Commerce. Aucun lien avec Cegid.",
+        "revenue":  "200 M€ (CA groupe 2023, objectif 250 M€ en 2024)",
         "typology":  [
                          "crm",
                          "data",
                          "autre"
-                     ]
+                     ],
+        "website":  "https://www.orisha.com",
+        "_id":  "orisha"
     },
     {
-        "description_fr":  "Plateforme de fidÃ©litÃ© et d\u0027engagement client, utilisÃ©e en restauration et retail.",
-        "note":  "RachetÃ© par PAR Technology (NYSE : PAR) en 2021 (~500 M$) ; CA intÃ©grÃ© aux comptes de PAR.",
-        "logo_url":  "data/logos/punchh.png",
-        "founded_year":  2010,
-        "name":  "Punchh (PAR Technology)",
-        "_id":  "punchh",
-        "website":  "https://punchh.com",
         "description_en":  "Loyalty and customer engagement platform, used in restaurants and retail.",
+        "description_fr":  "Plateforme de fidélité et d\u0027engagement client, utilisée en restauration et retail.",
+        "founded_year":  2010,
+        "logo_url":  "data/logos/punchh.png",
+        "name":  "Punchh (PAR Technology)",
+        "note":  "Racheté par PAR Technology (NYSE : PAR) en 2021 (~500 M$) ; CA intégré aux comptes de PAR.",
         "revenue":  "",
         "typology":  [
                          "fidelite"
-                     ]
+                     ],
+        "website":  "https://punchh.com",
+        "_id":  "punchh"
     },
     {
-        "description_fr":  "Plateforme de mesure de l\u0027expÃ©rience client, utilisÃ©e pour les enquÃªtes de satisfaction en magasin.",
-        "note":  "RachetÃ©e par Silver Lake/CPP Investments en 2023 (~12,5 Md$) ; dernier chiffre public : â‰ˆ1,46 Md$ (2022). Ne publie plus de rÃ©sultats dÃ©taillÃ©s.",
+        "description_en":  "Customer experience measurement platform, used for in-store satisfaction surveys.",
+        "description_fr":  "Plateforme de mesure de l\u0027expérience client, utilisée pour les enquêtes de satisfaction en magasin.",
         "founded_year":  2002,
         "name":  "Qualtrics",
-        "_id":  "qualtrics",
-        "website":  "https://www.qualtrics.com",
-        "description_en":  "Customer experience measurement platform, used for in-store satisfaction surveys.",
+        "note":  "Rachetée par Silver Lake/CPP Investments en 2023 (~12,5 Md$) ; dernier chiffre public : ≈1,46 Md$ (2022). Ne publie plus de résultats détaillés.",
         "revenue":  "",
         "typology":  [
                          "data"
-                     ]
+                     ],
+        "website":  "https://www.qualtrics.com",
+        "_id":  "qualtrics"
     },
     {
-        "description_fr":  "Plateforme de commerce unifiÃ© et CRM cloud, avec des modules de clienteling et de personnalisation en magasin.",
-        "note":  "Chiffre de la maison mÃ¨re ; Commerce Cloud (ex-Demandware, fondÃ©e 2004, rachetÃ©e 2016) ne publie pas de CA isolÃ©.",
-        "logo_url":  "data/logos/salesforce-commerce-cloud.png",
-        "founded_year":  2016,
-        "name":  "Salesforce Commerce Cloud",
-        "_id":  "salesforce-commerce-cloud",
-        "website":  "https://www.salesforce.com",
         "description_en":  "Cloud unified-commerce and CRM platform, with clienteling and in-store personalization modules.",
-        "revenue":  "â‰ˆ 34,9 Md$ (CA groupe Salesforce Inc., FY2024)",
+        "description_fr":  "Plateforme de commerce unifié et CRM cloud, avec des modules de clienteling et de personnalisation en magasin.",
+        "founded_year":  2016,
+        "logo_url":  "data/logos/salesforce-commerce-cloud.png",
+        "name":  "Salesforce Commerce Cloud",
+        "note":  "Chiffre de la maison mère ; Commerce Cloud (ex-Demandware, fondée 2004, rachetée 2016) ne publie pas de CA isolé.",
+        "revenue":  "≈ 34,9 Md$ (CA groupe Salesforce Inc., FY2024)",
         "typology":  [
                          "crm",
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.salesforce.com",
+        "_id":  "salesforce-commerce-cloud"
     },
     {
-        "description_fr":  "Suite CRM et commerce de SAP, intÃ©grant la gestion de la relation client aux systÃ¨mes ERP du retailer.",
-        "note":  "Chiffre de la maison mÃ¨re ; ex-Hybris (rachetÃ© 2013), pas de CA isolÃ© publiÃ©.",
+        "description_en":  "SAP\u0027s CRM and commerce suite, integrating customer relationship management with the retailer\u0027s ERP systems.",
+        "description_fr":  "Suite CRM et commerce de SAP, intégrant la gestion de la relation client aux systèmes ERP du retailer.",
         "founded_year":  1997,
         "name":  "SAP Customer Experience",
-        "_id":  "sap-customer-experience",
-        "website":  "https://www.sap.com",
-        "description_en":  "SAP\u0027s CRM and commerce suite, integrating customer relationship management with the retailer\u0027s ERP systems.",
-        "revenue":  "â‰ˆ 34,18 Mdâ‚¬ (CA groupe SAP SE, FY2024)",
+        "note":  "Chiffre de la maison mère ; ex-Hybris (racheté 2013), pas de CA isolé publié.",
+        "revenue":  "≈ 34,18 Md€ (CA groupe SAP SE, FY2024)",
         "typology":  [
                          "crm",
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.sap.com",
+        "_id":  "sap-customer-experience"
     },
     {
-        "description_fr":  "Point de vente de Shopify, pensÃ© pour unifier les stocks et les commandes entre boutique en ligne et magasin physique.",
-        "note":  "Chiffre de la maison mÃ¨re ; pas de CA isolÃ© pour la ligne POS.",
-        "logo_url":  "data/logos/shopify-pos.png",
-        "founded_year":  2006,
-        "name":  "Shopify POS",
-        "_id":  "shopify-pos",
-        "website":  "https://www.shopify.com",
         "description_en":  "Shopify\u0027s point of sale, built to unify inventory and orders between the online store and physical shops.",
-        "revenue":  "â‰ˆ 8,88 Md$ (CA groupe Shopify Inc., 2024)",
+        "description_fr":  "Point de vente de Shopify, pensé pour unifier les stocks et les commandes entre boutique en ligne et magasin physique.",
+        "founded_year":  2006,
+        "logo_url":  "data/logos/shopify-pos.png",
+        "name":  "Shopify POS",
+        "note":  "Chiffre de la maison mère ; pas de CA isolé pour la ligne POS.",
+        "revenue":  "≈ 8,88 Md$ (CA groupe Shopify Inc., 2024)",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.shopify.com",
+        "_id":  "shopify-pos"
     },
     {
-        "description_fr":  "Ã‰diteur suÃ©dois d\u0027une plateforme de commerce unifiÃ© cloud-native centrÃ©e sur l\u0027encaissement, utilisÃ©e par plus de 300 enseignes de mode et lifestyle.",
-        "note":  "A reÃ§u un investissement minoritaire de 26 Mâ‚¬ de Verdane (private equity) en novembre 2024.",
-        "logo_url":  "data/logos/sitoo.svg",
-        "founded_year":  2015,
-        "name":  "Sitoo",
-        "_id":  "sitoo",
-        "website":  "https://www.sitoo.com",
         "description_en":  "Swedish cloud-native Unified Commerce Platform anchored by point of sale, used by 300+ fashion and lifestyle retailers.",
+        "description_fr":  "Éditeur suédois d\u0027une plateforme de commerce unifié cloud-native centrée sur l\u0027encaissement, utilisée par plus de 300 enseignes de mode et lifestyle.",
+        "founded_year":  2015,
+        "logo_url":  "data/logos/sitoo.svg",
+        "name":  "Sitoo",
+        "note":  "A reçu un investissement minoritaire de 26 M€ de Verdane (private equity) en novembre 2024.",
         "revenue":  "",
         "typology":  [
                          "exp",
                          "data"
-                     ]
+                     ],
+        "website":  "https://www.sitoo.com",
+        "_id":  "sitoo"
     },
     {
-        "description_fr":  "Programme de fidÃ©litÃ© en marque blanche, populaire auprÃ¨s des marques sur Shopify.",
-        "note":  "SociÃ©tÃ© privÃ©e bootstrappÃ©e ; estimations tierces trop divergentes pour Ãªtre fiables.",
-        "logo_url":  "data/logos/smile-io.png",
-        "founded_year":  2012,
-        "name":  "Smile.io",
-        "_id":  "smile-io",
-        "website":  "https://smile.io",
         "description_en":  "White-label loyalty program, popular among Shopify-based brands.",
+        "description_fr":  "Programme de fidélité en marque blanche, populaire auprès des marques sur Shopify.",
+        "founded_year":  2012,
+        "logo_url":  "data/logos/smile-io.png",
+        "name":  "Smile.io",
+        "note":  "Société privée bootstrappée ; estimations tierces trop divergentes pour être fiables.",
         "revenue":  "",
         "typology":  [
                          "fidelite"
-                     ]
+                     ],
+        "website":  "https://smile.io",
+        "_id":  "smile-io"
     },
     {
-        "description_fr":  "Offre point de vente de Square pour le commerce de dÃ©tail, avec encaissement et gestion de stock intÃ©grÃ©s.",
-        "note":  "Chiffre du groupe Block (inclut aussi Cash App) ; pas de CA isolÃ© fiable pour Square seul.",
-        "logo_url":  "data/logos/square-retail.png",
-        "founded_year":  2009,
-        "name":  "Square Retail",
-        "_id":  "square-retail",
-        "website":  "https://squareup.com",
         "description_en":  "Square\u0027s point-of-sale offering for retail, with integrated checkout and inventory management.",
-        "revenue":  "â‰ˆ 24,12 Md$ US (CA groupe Block Inc., 2024)",
+        "description_fr":  "Offre point de vente de Square pour le commerce de détail, avec encaissement et gestion de stock intégrés.",
+        "founded_year":  2009,
+        "logo_url":  "data/logos/square-retail.png",
+        "name":  "Square Retail",
+        "note":  "Chiffre du groupe Block (inclut aussi Cash App) ; pas de CA isolé fiable pour Square seul.",
+        "revenue":  "≈ 24,12 Md$ US (CA groupe Block Inc., 2024)",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://squareup.com",
+        "_id":  "square-retail"
     },
     {
-        "description_fr":  "Moteur de rÃ¨gles promotionnelles permettant de crÃ©er des campagnes de remises complexes.",
-        "note":  "SociÃ©tÃ© privÃ©e (Berlin) ; estimations tierces trÃ¨s divergentes (15-42 M$) Ã©cartÃ©es.",
-        "logo_url":  "data/logos/talon-one.png",
-        "founded_year":  2015,
-        "name":  "Talon.One",
-        "_id":  "talon-one",
-        "website":  "https://www.talon.one",
         "description_en":  "Promotion rules engine for building complex discount campaigns.",
+        "description_fr":  "Moteur de règles promotionnelles permettant de créer des campagnes de remises complexes.",
+        "founded_year":  2015,
+        "logo_url":  "data/logos/talon-one.png",
+        "name":  "Talon.One",
+        "note":  "Société privée (Berlin) ; estimations tierces très divergentes (15-42 M$) écartées.",
         "revenue":  "",
         "typology":  [
                          "promo"
-                     ]
+                     ],
+        "website":  "https://www.talon.one",
+        "_id":  "talon-one"
     },
     {
-        "description_fr":  "Plateforme qui connecte les systÃ¨mes d\u0027une marque Ã  Apple Wallet et Google Wallet pour diffuser cartes de fidÃ©litÃ©, billets et cartes cadeaux sans application dÃ©diÃ©e.",
-        "note":  "SociÃ©tÃ© franÃ§aise (rÃ©gion lyonnaise), pas nÃ©erlandaise. Informations financiÃ¨res non publiques.",
+        "description_en":  "Platform connecting a brand\u0027s systems to Apple Wallet and Google Wallet to deliver loyalty cards, tickets and gift cards without a dedicated app.",
+        "description_fr":  "Plateforme qui connecte les systèmes d\u0027une marque à Apple Wallet et Google Wallet pour diffuser cartes de fidélité, billets et cartes cadeaux sans application dédiée.",
         "founded_year":  2021,
         "name":  "The Wallet Crew",
-        "_id":  "the-wallet-crew",
-        "website":  "https://www.thewalletcrew.io",
-        "description_en":  "Platform connecting a brand\u0027s systems to Apple Wallet and Google Wallet to deliver loyalty cards, tickets and gift cards without a dedicated app.",
+        "note":  "Société française (région lyonnaise), pas néerlandaise. Informations financières non publiques.",
         "revenue":  "",
         "typology":  [
                          "fidelite",
                          "wallet"
-                     ]
+                     ],
+        "website":  "https://www.thewalletcrew.io",
+        "_id":  "the-wallet-crew"
     },
     {
+        "description_en":  "Long-standing provider of point-of-sale terminals and software for large retailers.",
         "description_fr":  "Fournisseur historique de terminaux et de logiciels de point de vente pour la grande distribution.",
-        "note":  "Filiale de Toshiba Tec ; aucun CA standalone fiable trouvÃ©.",
         "founded_year":  2012,
         "name":  "Toshiba Global Commerce Solutions",
-        "_id":  "toshiba-global-commerce-solutions",
+        "note":  "Filiale de Toshiba Tec ; aucun CA standalone fiable trouvé.",
+        "revenue":  "",
+        "typology":  [
+                         "exp"
+                     ],
         "website":  "https://www.toshibacommerce.com",
-        "description_en":  "Long-standing provider of point-of-sale terminals and software for large retailers.",
-        "revenue":  "",
-        "typology":  [
-                         "exp"
-                     ]
+        "_id":  "toshiba-global-commerce-solutions"
     },
     {
-        "description_fr":  "Point de vente cloud destinÃ© aux commerces de dÃ©tail indÃ©pendants et chaÃ®nes de taille moyenne.",
-        "note":  "RachetÃ© par Lightspeed en 2021 (~350 M$ US) ; marque intÃ©grÃ©e, CA consolidÃ© dans Lightspeed.",
-        "logo_url":  "data/logos/vend.png",
-        "founded_year":  2010,
-        "name":  "Vend",
-        "_id":  "vend",
-        "website":  "https://www.lightspeedhq.com",
         "description_en":  "Cloud point of sale aimed at independent retailers and mid-sized chains.",
+        "description_fr":  "Point de vente cloud destiné aux commerces de détail indépendants et chaînes de taille moyenne.",
+        "founded_year":  2010,
+        "logo_url":  "data/logos/vend.png",
+        "name":  "Vend",
+        "note":  "Racheté par Lightspeed en 2021 (~350 M$ US) ; marque intégrée, CA consolidé dans Lightspeed.",
         "revenue":  "",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.lightspeedhq.com",
+        "_id":  "vend"
     },
     {
-        "description_fr":  "Acteur europÃ©en du paiement, fournisseur de terminaux et de solutions de paiement en magasin.",
-        "note":  "SociÃ©tÃ© cotÃ©e Euronext Paris ; ex-filiale d\u0027Atos, indÃ©pendante depuis 2019.",
+        "description_en":  "European payments player, providing in-store payment terminals and solutions.",
+        "description_fr":  "Acteur européen du paiement, fournisseur de terminaux et de solutions de paiement en magasin.",
         "founded_year":  2004,
         "name":  "Worldline",
-        "_id":  "worldline",
-        "website":  "https://www.worldline.com",
-        "description_en":  "European payments player, providing in-store payment terminals and solutions.",
-        "revenue":  "â‰ˆ 4,632 Mdâ‚¬ (CA groupe, 2024)",
+        "note":  "Société cotée Euronext Paris ; ex-filiale d\u0027Atos, indépendante depuis 2019.",
+        "revenue":  "≈ 4,632 Md€ (CA groupe, 2024)",
         "typology":  [
                          "wallet"
-                     ]
+                     ],
+        "website":  "https://www.worldline.com",
+        "_id":  "worldline"
     },
     {
-        "description_fr":  "Plateforme marketing combinant avis clients, fidÃ©litÃ© et SMS pour le e-commerce et le retail.",
-        "note":  "SociÃ©tÃ© privÃ©e ; estimations tierces trÃ¨s divergentes (150-213 M$) Ã©cartÃ©es.",
-        "logo_url":  "data/logos/yotpo.png",
-        "founded_year":  2011,
-        "name":  "Yotpo",
-        "_id":  "yotpo",
-        "website":  "https://www.yotpo.com",
         "description_en":  "Marketing platform combining reviews, loyalty and SMS for e-commerce and retail.",
+        "description_fr":  "Plateforme marketing combinant avis clients, fidélité et SMS pour le e-commerce et le retail.",
+        "founded_year":  2011,
+        "logo_url":  "data/logos/yotpo.png",
+        "name":  "Yotpo",
+        "note":  "Société privée ; estimations tierces très divergentes (150-213 M$) écartées.",
         "revenue":  "",
         "typology":  [
                          "fidelite",
                          "crm"
-                     ]
+                     ],
+        "website":  "https://www.yotpo.com",
+        "_id":  "yotpo"
     },
     {
-        "description_fr":  "Fournisseur de terminaux mobiles et d\u0027Ã©tiquetage Ã©lectronique utilisÃ©s pour l\u0027expÃ©rience en magasin.",
-        "note":  "Chiffre du groupe ; le retail est un marchÃ© transverse, pas une ligne comptable isolÃ©e.",
+        "description_en":  "Provider of mobile terminals and electronic shelf labels used for the in-store experience.",
+        "description_fr":  "Fournisseur de terminaux mobiles et d\u0027étiquetage électronique utilisés pour l\u0027expérience en magasin.",
         "founded_year":  1969,
         "name":  "Zebra Technologies (retail)",
-        "_id":  "zebra-technologies",
-        "website":  "https://www.zebra.com",
-        "description_en":  "Provider of mobile terminals and electronic shelf labels used for the in-store experience.",
-        "revenue":  "â‰ˆ 4,98 Md$ US (CA groupe, 2024)",
+        "note":  "Chiffre du groupe ; le retail est un marché transverse, pas une ligne comptable isolée.",
+        "revenue":  "≈ 4,98 Md$ US (CA groupe, 2024)",
         "typology":  [
                          "exp"
-                     ]
+                     ],
+        "website":  "https://www.zebra.com",
+        "_id":  "zebra-technologies"
     },
     {
-        "description_fr":  "Plateforme de fidÃ©litÃ© multi-niveaux pour marques de retail et de e-commerce.",
-        "note":  "âš  FusionnÃ©e avec TINT en aoÃ»t 2025 pour former TrueLoyal (trueloyal.com) â€” fiche Ã  mettre Ã  jour.",
+        "description_en":  "Multi-tier loyalty platform for retail and e-commerce brands.",
+        "description_fr":  "Plateforme de fidélité multi-niveaux pour marques de retail et de e-commerce.",
         "founded_year":  2008,
         "name":  "Zinrelo",
-        "_id":  "zinrelo",
-        "website":  "https://zinrelo.com",
-        "description_en":  "Multi-tier loyalty platform for retail and e-commerce brands.",
+        "note":  "⚠ Fusionnée avec TINT en août 2025 pour former TrueLoyal (trueloyal.com) — fiche à mettre à jour.",
         "revenue":  "",
         "typology":  [
                          "fidelite"
-                     ]
+                     ],
+        "website":  "https://zinrelo.com",
+        "_id":  "zinrelo"
     }
 ]
