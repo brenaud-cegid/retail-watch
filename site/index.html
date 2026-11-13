@@ -74,32 +74,40 @@ h1,h2,h3,.disp{font-family:"Poppins",system-ui,sans-serif;font-weight:400;letter
 select.ds{width:100%;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);padding:8px 10px;font-size:13px;font-family:"Roboto",sans-serif;}
 .reset{background:none;border:none;color:var(--info);font-size:12.5px;cursor:pointer;padding:0;text-align:left;}
 
-.count-row{display:flex;align-items:center;justify-content:space-between;color:var(--text-muted);font-size:13px;}
+.count-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--text-muted);font-size:13px;}
+.active-filter{display:inline-flex;align-items:center;gap:6px;background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:4px 6px 4px 12px;font-size:12px;}
+.active-filter button{border:none;background:var(--primary);color:var(--primary-ink);border-radius:999px;width:18px;height:18px;line-height:1;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;}
 .feed{display:flex;flex-direction:column;gap:12px;}
 
-.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;}
-.card .meta-top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;}
+.card .meta-top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-right:28px;}
 .badge{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;border-radius:999px;padding:3px 10px;font-family:"Poppins",sans-serif;}
-.badge.enseigne{background:rgba(0,70,254,.12);color:var(--primary);}
-.badge.concurrent{background:rgba(204,73,42,.14);color:var(--secondary);}
-.badge.innovation{background:rgba(21,90,193,.14);color:var(--info);}
 .badge.example{background:var(--warn);color:#2A1C00;}
 .date{color:var(--text-muted);font-size:12.5px;margin-left:auto;}
 .card h2{font-size:17px;margin:0;line-height:1.35;}
+.card h2 a{color:inherit;text-decoration:none;}
+.card h2 a:hover{text-decoration:underline;}
 .card .source{font-size:12.5px;color:var(--text-muted);}
+.source-tag{background:none;border:none;padding:0;font:inherit;font-size:12.5px;color:var(--info);cursor:pointer;}
+.source-tag:hover{text-decoration:underline;}
 .summary-short{font-size:14px;color:var(--text);margin:0;}
 .summary-long{font-size:13.5px;color:var(--text-muted);margin:0;padding-top:4px;border-top:1px dashed var(--divider);display:none;line-height:1.5;}
 .summary-long.open{display:block;}
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;}
 .tag{font-size:11.5px;background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:3px 10px;}
+.tag-btn{border:none;font:inherit;}
+.tag-btn.clickable{cursor:pointer;}
+.tag-btn.clickable:hover{background:var(--overlay-hover);}
+.tag-btn.on{background:var(--primary);color:var(--primary-ink);}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;}
 .btn{font-family:"Poppins",sans-serif;font-size:12.5px;font-weight:600;border-radius:6px;padding:7px 14px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text);}
 .btn:hover{background:var(--overlay-hover);}
 .btn.primary{background:var(--primary);color:var(--primary-ink);border-color:var(--primary);}
 .btn.primary:hover{opacity:.9;}
-.btn.copied{background:var(--success);border-color:var(--success);color:#fff;}
-a.src-link{color:var(--info);text-decoration:none;font-size:12.5px;align-self:center;}
-a.src-link:hover{text-decoration:underline;}
+.btn.small{padding:5px 10px;font-size:12px;}
+.copy-icon{position:absolute;top:14px;right:14px;width:26px;height:26px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text-muted);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;}
+.copy-icon:hover{background:var(--overlay-hover);color:var(--text);}
+.copy-icon.copied{background:var(--success);border-color:var(--success);color:#fff;}
 
 .empty{text-align:center;padding:48px 20px;color:var(--text-muted);}
 .loadmore{align-self:center;margin-top:4px;}
@@ -119,6 +127,7 @@ a.src-link:hover{text-decoration:underline;}
 .comp-meta b{color:var(--text);font-weight:600;}
 .comp-link{font-size:12.5px;color:var(--info);text-decoration:none;align-self:flex-start;}
 .comp-link:hover{text-decoration:underline;}
+.comp-actions{display:flex;gap:8px;margin-top:2px;}
 </style>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
@@ -180,6 +189,7 @@ a.src-link:hover{text-decoration:underline;}
       <main>
         <div class="count-row">
           <span id="countLabel"></span>
+          <span id="activeFilterSlot"></span>
           <span data-i="sort_note">Du plus récent au plus ancien</span>
         </div>
         <div class="feed" id="feed">
@@ -234,13 +244,14 @@ a.src-link:hover{text-decoration:underline;}
       sector_all:"Tous les secteurs", period_all:"Toute période", period_7:"7 derniers jours", period_30:"30 derniers jours", period_90:"90 derniers jours",
       typ_crm:"CRM", typ_fidelite:"Fidélité", typ_promo:"Promo & conditions commerciales", typ_wallet:"Wallet & paiement mobile",
       typ_exp:"Expérience magasin", typ_data:"Data & IA client", typ_autre:"Autre",
-      read_more:"Lire le résumé détaillé", collapse:"Replier", copy:"Copier pour Teams", copied:"Copié",
+      read_more:"Lire le résumé détaillé", collapse:"Replier", copy:"Copier le résumé", copied:"Copié",
       open_source:"Voir la source", no_results:"Aucune news ne correspond à ces filtres.", example:"Exemple",
       count_suffix:"news", validate:"Valider",
       cont_europe:"Europe", cont_amerique_nord:"Amérique du Nord", cont_amerique_latine:"Amérique latine",
       cont_asie:"Asie", cont_moyen_orient:"Moyen-Orient", cont_afrique:"Afrique", cont_oceanie:"Océanie", cont_international:"International",
       tab_veille:"Veille", tab_concurrents:"Concurrents", comp_no_results:"Aucun concurrent ne correspond à ce filtre.",
-      comp_count_suffix:"éditeurs", comp_visit:"Visiter le site", comp_founded:"Création", comp_revenue:"CA", comp_unknown:"Non communiqué"
+      comp_count_suffix:"éditeurs", comp_visit:"Visiter le site", comp_founded:"Création", comp_revenue:"CA", comp_unknown:"Non communiqué",
+      comp_see_news:"Voir les news"
     },
     en:{
       title:"Retail Watch", subtitle:"Current scope: in-store shopper experience — CRM · Loyalty · Commercial terms",
@@ -253,13 +264,14 @@ a.src-link:hover{text-decoration:underline;}
       sector_all:"All sectors", period_all:"All time", period_7:"Last 7 days", period_30:"Last 30 days", period_90:"Last 90 days",
       typ_crm:"CRM", typ_fidelite:"Loyalty", typ_promo:"Promo & commercial terms", typ_wallet:"Wallet & mobile payment",
       typ_exp:"In-store experience", typ_data:"Data & customer AI", typ_autre:"Other",
-      read_more:"Read full summary", collapse:"Collapse", copy:"Copy for Teams", copied:"Copied",
+      read_more:"Read full summary", collapse:"Collapse", copy:"Copy summary", copied:"Copied",
       open_source:"View source", no_results:"No news matches these filters.", example:"Example",
       count_suffix:"news", validate:"Validate",
       cont_europe:"Europe", cont_amerique_nord:"North America", cont_amerique_latine:"Latin America",
       cont_asie:"Asia", cont_moyen_orient:"Middle East", cont_afrique:"Africa", cont_oceanie:"Oceania", cont_international:"International",
       tab_veille:"Watch", tab_concurrents:"Competitors", comp_no_results:"No competitor matches this filter.",
-      comp_count_suffix:"vendors", comp_visit:"Visit website", comp_founded:"Founded", comp_revenue:"Revenue", comp_unknown:"Not disclosed"
+      comp_count_suffix:"vendors", comp_visit:"Visit website", comp_founded:"Founded", comp_revenue:"Revenue", comp_unknown:"Not disclosed",
+      comp_see_news:"See news"
     }
   };
 
@@ -299,7 +311,7 @@ a.src-link:hover{text-decoration:underline;}
 
   var state = {
     lang: (navigator.language||"en").toLowerCase().indexOf("fr")===0 ? "fr":"en",
-    typology: {}, sector:"", period:"all", continent:{}, country:"",
+    typology: {}, sector:"", period:"all", continent:{}, country:"", sourceNameFilter:"",
     limit: 20, openLong: {}, tab:"veille", compTypology:{}
   };
 
@@ -318,7 +330,7 @@ a.src-link:hover{text-decoration:underline;}
     bindTabs();
     initFiltersCollapse();
     document.getElementById("resetFilters").addEventListener("click", function(){
-      state.typology={}; state.sector=""; state.period="all"; state.continent={}; state.country=""; state.limit=20;
+      state.typology={}; state.sector=""; state.period="all"; state.continent={}; state.country=""; state.sourceNameFilter=""; state.limit=20;
       buildFilterUI(); runQuery();
     });
     document.getElementById("resetCompFilters").addEventListener("click", function(){
@@ -462,6 +474,9 @@ a.src-link:hover{text-decoration:underline;}
         if(box){ box.outerHTML = '<div class="comp-logo">'+escapeHtml(img.getAttribute("data-fallback")||"?")+'</div>'; }
       });
     });
+    Array.prototype.forEach.call(grid.querySelectorAll("[data-comp-news]"), function(btn){
+      btn.addEventListener("click", function(){ goToVeilleFilteredBy(btn.getAttribute("data-comp-news")); });
+    });
 
     function compCardHtml(v){
       var desc = v["description_"+lang] || v.description_fr || v.description_en || "";
@@ -473,6 +488,8 @@ a.src-link:hover{text-decoration:underline;}
       var logoBox = v.logo_url
         ? '<div class="comp-logo-box"><img class="comp-logo-img" src="'+encodeURI(v.logo_url)+'" alt="" data-fallback="'+escapeHtml(initials)+'"></div>'
         : '<div class="comp-logo">'+escapeHtml(initials)+'</div>';
+      var newsCount = allNewsAll ? allNewsAll.filter(function(n){ return (n.source_name||"").toLowerCase()===(v.name||"").toLowerCase(); }).length : null;
+      var newsBtn = '<button type="button" class="btn small" data-comp-news="'+escapeHtml(v.name||"")+'">'+t("comp_see_news")+(newsCount!==null ? ' ('+newsCount+')' : '')+'</button>';
       return (
         '<article class="comp-card">'+
           '<div class="comp-head">'+logoBox+'<h2>'+escapeHtml(v.name||"")+'</h2></div>'+
@@ -480,7 +497,7 @@ a.src-link:hover{text-decoration:underline;}
           '<p>'+escapeHtml(desc)+'</p>'+
           '<div class="comp-meta">'+founded+revenue+'</div>'+
           (v.note ? '<p style="font-style:italic;font-size:11.5px;">'+escapeHtml(v.note)+'</p>' : '')+
-          link+
+          '<div class="comp-actions">'+newsBtn+link+'</div>'+
         '</article>'
       );
     }
@@ -501,11 +518,43 @@ a.src-link:hover{text-decoration:underline;}
       if(cutoff && (!v.date || v.date<cutoff)) return false;
       if(contKeys.length && contKeys.indexOf(v.continent)===-1) return false;
       if(state.country && v.country!==state.country) return false;
+      if(state.sourceNameFilter && (v.source_name||"")!==state.sourceNameFilter) return false;
       return true;
     });
     filtered.sort(function(a,b){ return (b.date||"").localeCompare(a.date||""); });
     allDocs = filtered.slice(0, state.limit);
     renderFeed(allDocs, filtered.length > state.limit);
+  }
+
+  function toggleSectorFromTag(s){
+    state.sector = (state.sector===s) ? "" : s;
+    state.limit = 20;
+    buildFilterUI(); runQuery();
+  }
+  function toggleTypologyFromTag(ty){
+    state.typology[ty] = !state.typology[ty];
+    state.limit = 20;
+    buildFilterUI(); runQuery();
+  }
+  function setSourceNameFilter(name){
+    state.sourceNameFilter = name;
+    state.limit = 20;
+    runQuery();
+  }
+  function clearSourceNameFilter(){
+    state.sourceNameFilter = "";
+    runQuery();
+  }
+  function goToVeilleFilteredBy(name){
+    state.tab = "veille";
+    document.getElementById("tabVeille").classList.add("active");
+    document.getElementById("tabConcurrents").classList.remove("active");
+    document.getElementById("viewVeille").classList.add("active");
+    document.getElementById("viewConcurrents").classList.remove("active");
+    state.sector=""; state.typology={}; state.continent={}; state.country=""; state.period="all";
+    setSourceNameFilter(name);
+    buildFilterUI();
+    window.scrollTo({top:0, behavior:"smooth"});
   }
 
   function watchCandidates(){
@@ -522,9 +571,19 @@ a.src-link:hover{text-decoration:underline;}
     }, function(){ /* ignore */ });
   }
 
+  function renderActiveFilterChip(){
+    var row = document.getElementById("activeFilterSlot");
+    if(!row) return;
+    if(!state.sourceNameFilter){ row.innerHTML=""; return; }
+    row.innerHTML = '<span class="active-filter">'+escapeHtml(state.sourceNameFilter)+'<button id="clearSourceFilter" type="button" aria-label="'+escapeHtml(t("f_reset"))+'">✕</button></span>';
+    var btn = document.getElementById("clearSourceFilter");
+    if(btn) btn.addEventListener("click", clearSourceNameFilter);
+  }
+
   function renderFeed(docs, hasMore){
     var feed = document.getElementById("feed");
     document.getElementById("countLabel").textContent = docs.length + " " + t("count_suffix");
+    renderActiveFilterChip();
     if(docs.length===0){
       feed.innerHTML = '<div class="empty">'+t("no_results")+'</div>';
       document.getElementById("loadMore").style.display="none";
@@ -545,6 +604,15 @@ a.src-link:hover{text-decoration:underline;}
     Array.prototype.forEach.call(feed.querySelectorAll("[data-copy]"), function(btn){
       btn.addEventListener("click", function(){ doCopy(btn); });
     });
+    Array.prototype.forEach.call(feed.querySelectorAll("[data-sector-tag]"), function(btn){
+      btn.addEventListener("click", function(){ toggleSectorFromTag(btn.getAttribute("data-sector-tag")); });
+    });
+    Array.prototype.forEach.call(feed.querySelectorAll("[data-typ-tag]"), function(btn){
+      btn.addEventListener("click", function(){ toggleTypologyFromTag(btn.getAttribute("data-typ-tag")); });
+    });
+    Array.prototype.forEach.call(feed.querySelectorAll("[data-source-tag]"), function(btn){
+      btn.addEventListener("click", function(){ setSourceNameFilter(btn.getAttribute("data-source-tag")); });
+    });
   }
 
   function cardHtml(v){
@@ -552,29 +620,35 @@ a.src-link:hover{text-decoration:underline;}
     var title = v["title_"+lang] || v.title_fr || v.title_en || "";
     var shortS = v["summary_short_"+lang] || v.summary_short_fr || v.summary_short_en || "";
     var longS = v["summary_long_"+lang] || v.summary_long_fr || v.summary_long_en || "";
-    var sectorTags = (v.sector||[]).map(function(s){ return '<span class="tag">'+escapeHtml((SECTOR_LABEL[lang][s])||s)+'</span>'; }).join("");
-    var typTags = (v.typology||[]).map(function(ty){ return '<span class="tag">'+escapeHtml(t("typ_"+ty))+'</span>'; }).join("");
+    var sectorTags = (v.sector||[]).map(function(s){
+      var on = state.sector===s;
+      return '<button type="button" class="tag tag-btn clickable'+(on?' on':'')+'" data-sector-tag="'+escapeHtml(s)+'">'+escapeHtml((SECTOR_LABEL[lang][s])||s)+'</button>';
+    }).join("");
+    var typTags = (v.typology||[]).map(function(ty){
+      var on = !!state.typology[ty];
+      return '<button type="button" class="tag tag-btn clickable'+(on?' on':'')+'" data-typ-tag="'+escapeHtml(ty)+'">'+escapeHtml(t("typ_"+ty))+'</button>';
+    }).join("");
     var id = v._id;
     var exampleBadge = v.is_example ? '<span class="badge example">'+t("example")+'</span>' : "";
-    var link = v.link ? '<a class="src-link" href="'+encodeURI(v.link)+'" target="_blank" rel="noopener">'+t("open_source")+' →</a>' : "";
+    var titleHtml = v.link ? '<a href="'+encodeURI(v.link)+'" target="_blank" rel="noopener">'+escapeHtml(title)+'</a>' : escapeHtml(title);
+    var sourceHtml = v.source_name ? '<button type="button" class="source-tag" data-source-tag="'+escapeHtml(v.source_name)+'">'+escapeHtml(v.source_name)+'</button>' : '';
     var geoLabel = v.country ? countryLabel(v.country, lang) : (v.continent ? t("cont_"+v.continent) : "");
     var geoTag = geoLabel ? '<span class="source">· '+escapeHtml(geoLabel)+'</span>' : "";
     return (
       '<article class="card">'+
+        '<button type="button" class="copy-icon" data-copy="'+id+'" title="'+escapeHtml(t("copy"))+'" aria-label="'+escapeHtml(t("copy"))+'">⧉</button>'+
         '<div class="meta-top">'+
           exampleBadge+
-          '<span class="source">'+escapeHtml(v.source_name||"")+'</span>'+
+          sourceHtml+
           geoTag+
           '<span class="date">'+escapeHtml(v.date||"")+'</span>'+
         '</div>'+
-        '<h2>'+escapeHtml(title)+'</h2>'+
+        '<h2>'+titleHtml+'</h2>'+
         '<p class="summary-short">'+escapeHtml(shortS)+'</p>'+
         '<div class="tag-row">'+sectorTags+typTags+'</div>'+
         '<p class="summary-long" data-long="'+id+'">'+escapeHtml(longS)+'</p>'+
         '<div class="actions">'+
           '<button class="btn" data-toggle="'+id+'">'+t("read_more")+'</button>'+
-          '<button class="btn" data-copy="'+id+'">'+t("copy")+'</button>'+
-          link+
         '</div>'+
       '</article>'
     );
@@ -588,8 +662,8 @@ a.src-link:hover{text-decoration:underline;}
     var title = v["title_"+lang] || v.title_fr || v.title_en || "";
     var shortS = v["summary_short_"+lang] || v.summary_short_fr || v.summary_short_en || "";
     var text = title + "\n" + (v.source_name||"") + " — " + (v.date||"") + "\n" + shortS + (v.link ? ("\n"+v.link) : "");
-    var reset = function(){ btn.textContent = t("copy"); btn.classList.remove("copied"); };
-    var mark = function(){ btn.textContent = t("copied"); btn.classList.add("copied"); setTimeout(reset,1800); };
+    var reset = function(){ btn.textContent = "⧉"; btn.classList.remove("copied"); btn.title = t("copy"); };
+    var mark = function(){ btn.textContent = "✓"; btn.classList.add("copied"); btn.title = t("copied"); setTimeout(reset,1800); };
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(text).then(mark).catch(function(){ fallbackCopy(text); mark(); });
     } else {
