@@ -20,11 +20,12 @@ Cible : **retail spécialisé et luxe** (pas le mass market). Extension prévue,
 - Champ `source_type` conservé sur chaque document pour un usage futur, mais plus affiché nulle part dans l'UI (ni filtre, ni badge sur les cartes) — jugé peu lisible en pratique.
 
 ## Onglet "Concurrents"
-Annuaire des éditeurs/concurrents (collection `competitors`) : nom, logo (favicon officiel du site, ou monogramme si introuvable), lien vers le site, année de création, chiffre d'affaires sourcé (ou "Non communiqué" si privé/non public — jamais un chiffre inventé ou une estimation tierce non vérifiée présentée comme un fait), description courte, typologie(s), filtrable par typologie (même taxonomie que la veille).
+Annuaire des éditeurs/concurrents (collection `competitors`, 48 fiches au 13/11/2026) : nom, logo (favicon officiel du site, ou monogramme si introuvable), lien vers le site, année de création, chiffre d'affaires sourcé (ou "Non communiqué" si privé/non public — jamais un chiffre inventé ou une estimation tierce non vérifiée présentée comme un fait), description courte, typologie(s), filtrable par typologie (même taxonomie que la veille), bouton "Voir les news (N)" qui bascule sur l'onglet Veille filtré sur ce nom exact (`source_name`).
 - Maintenu par la tâche hebdomadaire pour les champs texte : à chaque run, tout acteur "validé" de la section Concurrents/éditeurs de `sources.md` sans fiche existante se voit créer une fiche minimale (nom, typologie, description). Jamais pour un simple candidat.
 - Website/année/CA/logo sont ajoutés manuellement (par recherche ponctuelle), pas automatiquement par la tâche hebdomadaire.
 - Une fiche existante n'est jamais réécrite automatiquement (pour préserver une correction manuelle).
-- Logos : récupérés via le favicon/apple-touch-icon officiel du site (jamais un service tiers comme Clearbit — bloqué par le CSP de l'Artifact, et de toute façon indisponible). Stockés comme assets de l'Artifact (`/_blob/...`) pour la version Claude, et comme fichiers locaux dans `docs/data/logos/<id>.(png|svg)` pour la version GitHub Pages. Beaucoup de sites renvoient 403/404/429 sur ces tentatives (protection anti-bot) : pas de logo = repli automatique sur un monogramme, c'est un état normal et attendu, pas un bug.
+- Fusions/rachats : quand deux éditeurs fusionnent (ex. Tulip Retail + Salesfloor, mars 2026), une seule fiche combinée plutôt que deux entrées — note explicite dans le champ `note`. Quand le statut d'indépendance d'un éditeur est incertain (rachat annoncé mais pas finalisé, ex. Marigold/Zeta Global sept. 2025, PredictSpring/Salesforce 2024), garder la fiche mais marquer `note` avec ⚠️ et un rappel à reconfirmer.
+- Logos (22/48 au 13/11/2026) : récupérés via le favicon/apple-touch-icon officiel du site (jamais un service tiers comme Clearbit — bloqué par le CSP de l'Artifact, et de toute façon indisponible/DNS mort). Ordre d'essai qui marche le mieux : `apple-touch-icon.png` d'abord (plus souvent accessible que `favicon.ico`), puis `favicon.png`, puis variante sans `www`. Stockés comme assets de l'Artifact (`/_blob/...`) pour la version Claude, et comme fichiers locaux dans `docs/data/logos/<id>.(png|svg)` pour la version GitHub Pages — toujours convertir en PNG/SVG, jamais stocker un `.ico` tel quel (type non accepté par le store d'assets). Limite connue : l'outil WebFetch renvoie la page en markdown sans le `<head>`, donc impossible de lire une balise `<link rel="icon">` déclarée dans le head — seules les icônes aux chemins conventionnels (`apple-touch-icon.png`, etc.) sont trouvables ainsi. Beaucoup de sites renvoient aussi 403/404/429 sur ces tentatives (protection anti-bot) : pas de logo = repli automatique sur un monogramme, c'est un état normal et attendu, pas un bug.
 
 ## Nomenclature sectorielle (filtre 2)
 - Luxe (maroquinerie, joaillerie, horlogerie)
@@ -71,6 +72,13 @@ L'outil tourne sur **deux fronts, un seul fichier HTML** (`site/index.html`, cop
 - FR/EN selon la langue du navigateur, thème clair/sombre selon la préférence système.
 - Filtres repliables : repliés par défaut sous ~860px de large (où ils sont au-dessus de la liste) et au scroll dans ce cas précis uniquement ; toujours visibles en fenêtre large. Bouton flottant "↑ Filtres" pour remonter et les rouvrir.
 - Charte graphique : Cegid Design System (Material) — voir design system partagé dans l'organisation.
+
+## Interactions sur les cartes de news
+- **Titre** : lien direct vers la source (`v.link`), pas de bouton "Voir la source" séparé.
+- **Tags secteur/typologie** : boutons cliquables qui activent/désactivent le filtre correspondant dans la sidebar (secteur = remplace la sélection, typologie = ajoute/retire).
+- **Nom de l'acteur** (`source_name`) : bouton cliquable, filtre les news sur ce nom exact (`state.sourceNameFilter`, comparaison stricte, pas de recherche floue). Une puce "Nom ✕" apparaît à côté du compteur pour voir/effacer ce filtre ; "Réinitialiser les filtres" l'efface aussi.
+- **Icône copier** (`⧉`, devient `✓`) : petit bouton dans le coin supérieur droit de la carte, pas un bouton texte "Copier pour Teams" — le texte copié (titre, source, date, résumé court, lien) est générique, utilisable n'importe où, pas seulement dans Teams.
+- Ce filtre par nom n'a pas de contrôle dédié dans la sidebar : il ne s'active que par clic (sur une news ou depuis le bouton "Voir les news" d'un concurrent).
 
 ## Tâche planifiée (`veille-retail-lundi`, SKILL.md, copie dans `tache-planifiee.md`)
 Chaque lundi 7h31 (si l'app est ouverte, sinon au prochain démarrage) :
