@@ -552,8 +552,6 @@ a.src-link:hover{text-decoration:underline;}
     var title = v["title_"+lang] || v.title_fr || v.title_en || "";
     var shortS = v["summary_short_"+lang] || v.summary_short_fr || v.summary_short_en || "";
     var longS = v["summary_long_"+lang] || v.summary_long_fr || v.summary_long_en || "";
-    var badgeClass = v.source_type==="enseigne"?"enseigne":(v.source_type==="concurrent"?"concurrent":"innovation");
-    var badgeLabel = t("prov_"+v.source_type);
     var sectorTags = (v.sector||[]).map(function(s){ return '<span class="tag">'+escapeHtml((SECTOR_LABEL[lang][s])||s)+'</span>'; }).join("");
     var typTags = (v.typology||[]).map(function(ty){ return '<span class="tag">'+escapeHtml(t("typ_"+ty))+'</span>'; }).join("");
     var id = v._id;
@@ -564,7 +562,6 @@ a.src-link:hover{text-decoration:underline;}
     return (
       '<article class="card">'+
         '<div class="meta-top">'+
-          '<span class="badge '+badgeClass+'">'+escapeHtml(badgeLabel)+'</span>'+
           exampleBadge+
           '<span class="source">'+escapeHtml(v.source_name||"")+'</span>'+
           geoTag+
