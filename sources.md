@@ -128,3 +128,9 @@ Statut : `validé` (suivi actif) / `candidat` (détecté, à valider). Cette lis
 |---|---|---|---|---|
 | No7 Software | Concurrent | Transverse | 2026-11-12 | Éditeur de fidélité (Anchor Loyalty & Rewards) pour marques Shopify ; intégration Shopify POS annoncée le 4 nov. 2026. |
 | XCCommerce | Concurrent | Transverse | 2026-11-12 | Éditeur de plateforme de promotions et coupons omnicanal pour retailers nord-américains ; tribune Retail TouchPoints du 5 nov. 2026 sur les promotions personnalisées. |
+| Paul Smith | Enseigne | Mode & prêt-à-porter premium | 2026-11-13 | Marque britannique (31 magasins, 8 pays) ; a finalisé le déploiement de Sitoo dans tout son réseau (sept. 2026). |
+| JINS | Enseigne | Optique & santé visuelle | 2026-11-13 | Enseigne japonaise d'optique (~500 magasins) ; déploiement d'Adyen (Tap to Pay iPhone) sur 150 points de vente à partir de nov. 2026. |
+| Proximity | Concurrent | Transverse | 2026-11-13 | Plateforme SaaS de clienteling déployée en 2026 chez plusieurs enseignes premium/luxe (Stella McCartney, Frette, Fortnum & Mason, Paul Smith). |
+| Vêtir | Concurrent | Transverse | 2026-11-13 | Éditeur d'une plateforme IA de styling/garde-robe digitale et dashboard clienteling ; brevet obtenu en nov. 2026. |
+| Olymp (Olymp Bezner KG) | Enseigne | Mode & prêt-à-porter premium | 2026-11-13 | Fabricant/enseigne de mode masculine premium ; programme de fidélité paneuropéen sur Salesforce Loyalty Cloud (date de l'article source non vérifiable, à confirmer). |
+| Chalhoub Group | Enseigne | Luxe | 2026-11-13 | Distributeur/partenaire de marques luxe au Moyen-Orient (Faces, Level Shoes) ; assistant IA générative interne "Layla AI" pour le clienteling. |
