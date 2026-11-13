@@ -121,9 +121,9 @@ select.ds{width:100%;border:1px solid var(--border);border-radius:6px;background
 .comp-news-btn:hover{background:var(--overlay-hover);}
 .comp-head{display:flex;align-items:flex-start;gap:8px;padding-right:56px;}
 .comp-head h2{flex:1;min-width:0;}
-.comp-site-link{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;flex:none;margin-top:2px;color:var(--text-muted);text-decoration:none;}
-.comp-site-link:hover{color:var(--info);}
-.comp-site-link svg{width:13px;height:13px;}
+.comp-site-link{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex:none;margin-top:1px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text-muted);text-decoration:none;}
+.comp-site-link:hover{color:var(--info);border-color:var(--info);background:var(--overlay-hover);}
+.comp-site-link svg{width:14px;height:14px;}
 .comp-logo{width:36px;height:36px;border-radius:8px;background:var(--primary);color:var(--primary-ink);display:flex;align-items:center;justify-content:center;font-family:"Poppins",sans-serif;font-weight:600;font-size:14px;flex:none;}
 .comp-logo-box{width:36px;height:36px;border-radius:8px;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;}
 .comp-logo-img{width:70%;height:70%;object-fit:contain;}
@@ -485,7 +485,7 @@ select.ds{width:100%;border:1px solid var(--border);border-radius:6px;background
       var desc = v["description_"+lang] || v.description_fr || v.description_en || "";
       var tags = (v.typology||[]).map(function(ty){ return '<span class="tag">'+escapeHtml(t("typ_"+ty))+'</span>'; }).join("");
       var initials = (v.name||"?").split(/\s+/).filter(Boolean).slice(0,2).map(function(w){return w[0];}).join("").toUpperCase();
-      var siteIcon = v.website ? '<a class="comp-site-link" href="'+encodeURI(v.website)+'" target="_blank" rel="noopener" title="'+escapeHtml(t("comp_visit"))+'" aria-label="'+escapeHtml(t("comp_visit"))+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>' : "";
+      var siteIcon = v.website ? '<a class="comp-site-link" href="'+encodeURI(v.website)+'" target="_blank" rel="noopener" title="'+escapeHtml(t("comp_visit"))+'" aria-label="'+escapeHtml(t("comp_visit"))+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>' : "";
       var founded = v.founded_year ? '<span>'+t("comp_founded")+' : <b>'+escapeHtml(String(v.founded_year))+'</b></span>' : "";
       var revenue = '<span>'+t("comp_revenue")+' : <b>'+escapeHtml(v.revenue || t("comp_unknown"))+'</b></span>';
       var logoBox = v.logo_url
