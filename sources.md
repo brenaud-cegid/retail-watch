@@ -100,6 +100,19 @@ Statut : `validé` (suivi actif) / `candidat` (détecté, à valider). Cette lis
 | Sitoo | Commerce unifié / POS |
 | Actito | Marketing automation / CRM |
 | bspk | Clienteling IA (retail luxe) |
+| LoyaltyLion | Fidélité |
+| Paytronix Systems | Fidélité / promotions |
+| Annex Cloud | Fidélité / CRM |
+| Kangaroo Rewards | Fidélité |
+| Thanx | CRM / fidélité |
+| Voucherify | Promotions |
+| Optimove | Data / CRM / fidélité |
+| Marigold (ex-Cheetah Digital) | Fidélité / CRM / promotions |
+| Dynamic Yield | Data / personnalisation |
+| Tulip (ex-Tulip + Salesfloor) | Clienteling / expérience magasin |
+| Mercaux | Expérience magasin / data |
+| PredictSpring | Expérience magasin / CRM |
+| PassKit | Wallet / fidélité |
 
 ## Innovation marché — validé
 

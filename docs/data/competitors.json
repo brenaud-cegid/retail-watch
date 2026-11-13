@@ -28,6 +28,20 @@
         "_id":  "adyen"
     },
     {
+        "description_en":  "Enterprise SaaS loyalty platform (\"Loyalty Experience Platform\") covering acquisition, engagement, retention and advocacy.",
+        "description_fr":  "Plateforme SaaS de fidélité d\u0027entreprise (\"Loyalty Experience Platform\") couvrant acquisition, engagement, fidélisation et parrainage.",
+        "founded_year":  2010,
+        "name":  "Annex Cloud",
+        "note":  "Anciennement Social Annex ; siège à McLean, Virginie (États-Unis).",
+        "revenue":  "",
+        "typology":  [
+                         "fidelite",
+                         "crm"
+                     ],
+        "website":  "https://www.annexcloud.com",
+        "_id":  "annex-cloud"
+    },
+    {
         "description_en":  "White-label loyalty platform for fashion and specialty retail brands.",
         "description_fr":  "Plateforme de fidélité en marque blanche pour enseignes de mode et de retail spécialisé.",
         "founded_year":  2012,
@@ -126,6 +140,20 @@
         "_id":  "diebold-nixdorf"
     },
     {
+        "description_en":  "AI-driven personalization and A/B testing platform for omnichannel (web, mobile, in-store) customer experience.",
+        "description_fr":  "Plateforme de personnalisation et de tests A/B pilotée par l\u0027IA pour l\u0027expérience client omnicanale (web, mobile, en magasin).",
+        "founded_year":  2012,
+        "name":  "Dynamic Yield",
+        "note":  "Rachetée par McDonald\u0027s en 2019 puis revendue à Mastercard en décembre 2021.",
+        "revenue":  "",
+        "typology":  [
+                         "data",
+                         "exp"
+                     ],
+        "website":  "https://www.dynamicyield.com",
+        "_id":  "dynamic-yield"
+    },
+    {
         "description_en":  "Real-time loyalty and promotions engine for retail chains.",
         "description_fr":  "Moteur de fidélité et de promotions en temps réel pour enseignes de distribution.",
         "founded_year":  2003,
@@ -155,6 +183,19 @@
         "_id":  "fivestars"
     },
     {
+        "description_en":  "White-label loyalty and customer engagement platform for mid-to-large retail businesses.",
+        "description_fr":  "Plateforme de fidélité et d\u0027engagement client en marque blanche pour commerces de détail de taille moyenne à grande.",
+        "founded_year":  2012,
+        "name":  "Kangaroo Rewards",
+        "note":  "Siège à Montréal (Canada).",
+        "revenue":  "",
+        "typology":  [
+                         "fidelite"
+                     ],
+        "website":  "https://loyalty.kangaroorewards.com",
+        "_id":  "kangaroo-rewards"
+    },
+    {
         "description_en":  "Loyalty platform focused on brand coalitions and shared programs.",
         "description_fr":  "Plateforme de fidélité orientée coalitions de marques et programmes partagés.",
         "founded_year":  2008,
@@ -182,6 +223,19 @@
         "_id":  "lightspeed"
     },
     {
+        "description_en":  "SaaS loyalty platform for e-commerce and retail merchants, integrated with Shopify/BigCommerce, offering points and tier programs.",
+        "description_fr":  "Plateforme de fidélité SaaS pour marchands e-commerce et retail, intégrée à Shopify/BigCommerce, avec programmes de points et paliers.",
+        "founded_year":  2012,
+        "name":  "LoyaltyLion",
+        "note":  "Siège à Londres (Royaume-Uni), société privée.",
+        "revenue":  "",
+        "typology":  [
+                         "fidelite"
+                     ],
+        "website":  "https://loyaltylion.com",
+        "_id":  "loyaltylion"
+    },
+    {
         "description_en":  "French payments player, providing payment terminals and solutions for retail.",
         "description_fr":  "Acteur français du paiement, fournisseur de terminaux et de solutions de paiement pour le commerce.",
         "founded_year":  2001,
@@ -199,6 +253,7 @@
         "description_en":  "Unified-commerce and supply chain suite aimed at large retailers and specialty retail.",
         "description_fr":  "Suite de commerce unifié et de gestion de la chaîne d\u0027approvisionnement orientée grande distribution et retail spécialisé.",
         "founded_year":  1990,
+        "logo_url":  "data/logos/manhattan-active.png",
         "name":  "Manhattan Active",
         "note":  "Chiffre de la maison mère ; pas de ventilation isolée pour Manhattan Active.",
         "revenue":  "≈ 1 042,4 M$ (CA groupe Manhattan Associates, 2024)",
@@ -207,6 +262,35 @@
                      ],
         "website":  "https://www.manh.com",
         "_id":  "manhattan-active"
+    },
+    {
+        "description_en":  "Relationship marketing and loyalty platform (formerly Cheetah Digital) covering email, SMS and loyalty programs for retail.",
+        "description_fr":  "Plateforme de marketing relationnel et de fidélité (ex-Cheetah Digital) couvrant email, SMS et programmes de fidélité pour le retail.",
+        "founded_year":  2022,
+        "name":  "Marigold (ex-Cheetah Digital)",
+        "note":  "⚠ Zeta Global a annoncé le rachat de l\u0027activité \"enterprise\" de Marigold (dont Cheetah Digital) le 30 septembre 2025 (~325 M$) — statut à reconfirmer.",
+        "revenue":  "",
+        "typology":  [
+                         "fidelite",
+                         "crm",
+                         "promo"
+                     ],
+        "website":  "https://meetmarigold.com",
+        "_id":  "marigold"
+    },
+    {
+        "description_en":  "SaaS platform for in-store digital transformation: clienteling, assisted selling, mobile POS, kiosks, connected fitting rooms, in-store analytics.",
+        "description_fr":  "Plateforme SaaS de transformation digitale en magasin : clienteling, vente assistée, mobile POS, bornes, cabines d\u0027essayage connectées, analytics in-store.",
+        "founded_year":  2013,
+        "name":  "Mercaux",
+        "note":  "Siège à Londres (Royaume-Uni).",
+        "revenue":  "",
+        "typology":  [
+                         "exp",
+                         "data"
+                     ],
+        "website":  "https://mercaux.com",
+        "_id":  "mercaux"
     },
     {
         "description_en":  "Microsoft\u0027s unified-commerce solution, combining point of sale, back office and Dynamics customer data.",
@@ -237,6 +321,21 @@
         "_id":  "newstore"
     },
     {
+        "description_en":  "Data- and AI-driven customer retention and relationship marketing platform orchestrating multichannel customer journeys.",
+        "description_fr":  "Plateforme de marketing de rétention et de fidélisation client pilotée par la donnée et l\u0027IA, orchestrant des parcours client multicanaux.",
+        "founded_year":  2009,
+        "name":  "Optimove",
+        "note":  "Sièges à New York et Tel Aviv selon les sources.",
+        "revenue":  "",
+        "typology":  [
+                         "data",
+                         "crm",
+                         "fidelite"
+                     ],
+        "website":  "https://www.optimove.com",
+        "_id":  "optimove"
+    },
+    {
         "description_en":  "Oracle\u0027s unified-commerce suite covering inventory management, point of sale and the in-store experience.",
         "description_fr":  "Suite de commerce unifié d\u0027Oracle couvrant la gestion des stocks, le point de vente et l\u0027expérience magasin.",
         "founded_year":  2005,
@@ -265,6 +364,49 @@
         "_id":  "orisha"
     },
     {
+        "description_en":  "Platform for creating and managing digital loyalty cards, tickets and coupons for Apple Wallet and Google Wallet.",
+        "description_fr":  "Plateforme de création et de gestion de cartes de fidélité, billets et coupons dématérialisés pour Apple Wallet et Google Wallet.",
+        "founded_year":  2012,
+        "logo_url":  "data/logos/passkit.png",
+        "name":  "PassKit",
+        "note":  "Siège à Wilmington, Delaware (États-Unis) ; société privée.",
+        "revenue":  "",
+        "typology":  [
+                         "wallet",
+                         "fidelite"
+                     ],
+        "website":  "https://passkit.com",
+        "_id":  "passkit"
+    },
+    {
+        "description_en":  "Guest engagement suite (online ordering, loyalty, omnichannel messaging, payments) mainly for restaurant and convenience chains, with lighter retail coverage.",
+        "description_fr":  "Suite de fidélisation client (commande en ligne, fidélité, messagerie omnicanale, paiement) surtout pour la restauration et la proximité, avec une présence retail plus limitée.",
+        "founded_year":  2001,
+        "name":  "Paytronix Systems",
+        "note":  "Rachetée par The Access Group le 1er novembre 2024.",
+        "revenue":  "",
+        "typology":  [
+                         "fidelite",
+                         "promo"
+                     ],
+        "website":  "https://paytronix.com",
+        "_id":  "paytronix"
+    },
+    {
+        "description_en":  "Mobile-first unified commerce platform (mobile POS, clienteling, order management) for specialty retail.",
+        "description_fr":  "Plateforme de commerce unifié mobile-first (POS mobile, clienteling, gestion de commandes) pour le retail spécialisé.",
+        "founded_year":  2013,
+        "name":  "PredictSpring",
+        "note":  "⚠ Rachetée par Salesforce (annonce août 2024) — statut d\u0027éditeur indépendant à reconfirmer.",
+        "revenue":  "",
+        "typology":  [
+                         "exp",
+                         "crm"
+                     ],
+        "website":  "https://predictspring.com",
+        "_id":  "predictspring"
+    },
+    {
         "description_en":  "Loyalty and customer engagement platform, used in restaurants and retail.",
         "description_fr":  "Plateforme de fidélité et d\u0027engagement client, utilisée en restauration et retail.",
         "founded_year":  2010,
@@ -282,6 +424,7 @@
         "description_en":  "Customer experience measurement platform, used for in-store satisfaction surveys.",
         "description_fr":  "Plateforme de mesure de l\u0027expérience client, utilisée pour les enquêtes de satisfaction en magasin.",
         "founded_year":  2002,
+        "logo_url":  "data/logos/qualtrics.png",
         "name":  "Qualtrics",
         "note":  "Rachetée par Silver Lake/CPP Investments en 2023 (~12,5 Md$) ; dernier chiffre public : ≈1,46 Md$ (2022). Ne publie plus de résultats détaillés.",
         "revenue":  "",
@@ -392,6 +535,20 @@
         "_id":  "talon-one"
     },
     {
+        "description_en":  "CRM and digital marketing platform with a loyalty engine for restaurant and retail chains.",
+        "description_fr":  "Plateforme CRM et marketing digital avec moteur de fidélité pour enseignes de restauration et retail.",
+        "founded_year":  2011,
+        "name":  "Thanx",
+        "note":  "Siège à San Francisco (États-Unis).",
+        "revenue":  "",
+        "typology":  [
+                         "crm",
+                         "fidelite"
+                     ],
+        "website":  "https://www.thanx.com",
+        "_id":  "thanx"
+    },
+    {
         "description_en":  "Platform connecting a brand\u0027s systems to Apple Wallet and Google Wallet to deliver loyalty cards, tickets and gift cards without a dedicated app.",
         "description_fr":  "Plateforme qui connecte les systèmes d\u0027une marque à Apple Wallet et Google Wallet pour diffuser cartes de fidélité, billets et cartes cadeaux sans application dédiée.",
         "founded_year":  2021,
@@ -419,6 +576,21 @@
         "_id":  "toshiba-global-commerce-solutions"
     },
     {
+        "description_en":  "Clienteling and customer engagement platform for retail (virtual selling, mobile POS, associate insights), formed by the March 2026 merger of Tulip Retail and Salesfloor.",
+        "description_fr":  "Plateforme de clienteling et d\u0027engagement client pour le retail (vente virtuelle, mobile POS, insights vendeur), née de la fusion de Tulip Retail et Salesfloor en mars 2026.",
+        "founded_year":  2013,
+        "logo_url":  "data/logos/tulip-salesfloor.png",
+        "name":  "Tulip (ex-Tulip + Salesfloor)",
+        "note":  "Fusion Tulip Retail + Salesfloor annoncée en mars 2026 (~100 clients retail entreprise combinés) ; siège au Canada.",
+        "revenue":  "",
+        "typology":  [
+                         "exp",
+                         "crm"
+                     ],
+        "website":  "https://www.tulip.com",
+        "_id":  "tulip-salesfloor"
+    },
+    {
         "description_en":  "Cloud point of sale aimed at independent retailers and mid-sized chains.",
         "description_fr":  "Point de vente cloud destiné aux commerces de détail indépendants et chaînes de taille moyenne.",
         "founded_year":  2010,
@@ -431,6 +603,19 @@
                      ],
         "website":  "https://www.lightspeedhq.com",
         "_id":  "vend"
+    },
+    {
+        "description_en":  "API-first promotion and coupon engine for building, targeting and tracking complex promotional campaigns, in-store and online.",
+        "description_fr":  "Moteur de promotions et de coupons API-first pour créer, cibler et suivre des campagnes promotionnelles complexes, en magasin et en ligne.",
+        "founded_year":  2015,
+        "name":  "Voucherify",
+        "note":  "Siège à Katowice (Pologne) ; cité dans le Gartner Market Guide for Loyalty Program Vendors 2025.",
+        "revenue":  "",
+        "typology":  [
+                         "promo"
+                     ],
+        "website":  "https://www.voucherify.io",
+        "_id":  "voucherify"
     },
     {
         "description_en":  "European payments player, providing in-store payment terminals and solutions.",
