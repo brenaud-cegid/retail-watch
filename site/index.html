@@ -351,6 +351,7 @@ a.src-link:hover{text-decoration:underline;}
     setCollapsed(isNarrow());
 
     window.addEventListener("scroll", function(){
+      if(!isNarrow()){ setCollapsed(false); if(backBtn) backBtn.classList.remove("show"); return; }
       var scrolled = window.scrollY > SCROLL_THRESHOLD;
       setCollapsed(scrolled);
       if(backBtn) backBtn.classList.toggle("show", scrolled);
